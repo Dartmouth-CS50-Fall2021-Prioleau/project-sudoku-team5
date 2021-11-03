@@ -81,6 +81,7 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
     // nomalize level input
     normalize_word(level);
     int num_repeats;
+
     if (strcmp(level, "easy") == 0){
         num_repeats = 37;
        // for 37 times, do the following
