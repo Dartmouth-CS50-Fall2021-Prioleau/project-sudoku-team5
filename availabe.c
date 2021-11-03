@@ -8,8 +8,8 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-#include "../libcs50/counters.h"
-#include "../libcs50/bag.h"
+#include "../library/counters.h"
+#include "../common/box.h"
 
 void horizontal_available(int x, int y, counters_t* main);
 void vertical_available(int x, int y, counters_t* main);
@@ -32,7 +32,7 @@ counters_t* check_availabilty(int x, int y)  {
 
 }
 
-void horizontal_available(int x, int y, counters_t* main)
+void horizontal_available(int x, int y, counters_t* main )
 {
     // i dont like this hardcoded
     for (int i = 0; i < 9; i++) {
