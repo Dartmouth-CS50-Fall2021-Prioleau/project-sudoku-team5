@@ -1,5 +1,5 @@
-# Your Team Name
-## Your Team Members
+# Team 5
+## Dylan Beinstock, Salifyanji J Namwila, Veronica Quidore
 ## CS50 Fall 2021, Final Project - Sudoku 2.0
 
 GitHub usernames:
