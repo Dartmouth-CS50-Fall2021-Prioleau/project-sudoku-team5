@@ -39,17 +39,18 @@ The `sudoku` module shall execute as follows:
 
 1. Determine if the arguments are the correct number and valid.
 2. Call the correct mode (and difficulty if the mode is `create`).
-3. Print the created or solved sudoku puzzle in the proper format.
+3. Initialize a sudoku grid of `boxes` of a given SIZE.
+4. Print the created or solved sudoku puzzle in the proper format.
 
 The `create` mode shall execute as follows:
 
-1. Initialize a sudoku grid of `boxes` of a given SIZE.
+1. Normalize the inputted difficulty level. If the level corresponds to 'easy', set the values of 37 boxes. If the level corresponds to 'hard', set the values of 25 boxes. 
 2. Pick a random x and y coordinate for a box, each of [0, SIZE).
-3. If the box at the given coordinate has a non-zero value (1-9) already, pick a different random box coordinate pair until the current value is 0. Otherwise:
+3. If the box at the given coordinate has a non-zero value [1-9] already, pick a different random box coordinate pair until the current value is 0. Otherwise:
   1. Pick a random value [1,9]. 
   2. If the value is in the box's row, column, or 3x3 box, pick a different random value. Otherwise, set the box's value to the random value.
   3. Update the possible values for the box and in the box's row, column, and 3x3 box.
-4. Repeat steps 1-3 until the proper number of boxes have been assigned a value [1-9] according to the given `easy` or `hard` difficulty.
+4. Repeat steps 1-3 until the correct number of boxes (37 or 25) have been assigned a value [1-9] according to the given `easy` or `hard` difficulty. 
 
 The `solve` mode shall execute as follows:
 
@@ -62,6 +63,9 @@ The `solve` mode shall execute as follows:
 
 ### Dataflow through modules
 
+1. `sudoku` receives arguments from the command line and passes them to one of two modes, `create` or `solve`. It then outputs a  sudoku puzzle (2-D array of boxes) and a formatted printed puzzle. 
+2. `create` receives an initialized sudoku and the level needed to build it. It produces a valid sudoku puzzle ready to be solved of level easy or hard.
+3. `solve` receives a valid sudoku puzzle from `stdin`. It produces a solved version of that puzzle.
 
 ### Major data structures
 
@@ -69,3 +73,5 @@ The `solve` mode shall execute as follows:
 2. `counters_t` a counterset of possible values for a box (keys) with their status initialized to 1 (possible) and set to 0 if impossible (impossible)
 
 ### Testing plan
+
+We will begin with **visual testing** from the `sudoku` main method. We will proceed to conduct **unit testing** on individual methods and modules, **fuzz testing**, and **integration testing**.
