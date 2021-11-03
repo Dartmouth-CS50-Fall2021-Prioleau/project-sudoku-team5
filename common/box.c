@@ -20,7 +20,9 @@
 
 /**************** global types ****************/
 typedef struct box {
-  int value;    
+  int value;
+  int x;
+  int y;    
   counters_t* ctr;
 } box_t;
 

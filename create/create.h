@@ -50,6 +50,30 @@ void sudoku_new( box_t sudoku[9][9], const int SIZE);
 void sudoku_print (FILE *fp, box_t* sudoku[9][9]);
 
 
+/************************** sudoku_unsolved() **********************/
+/* Buils from scratch  an unsolved but solvable sudoku puzzle
+ * User provides a new (init valuues == 0) sudoku, and the level of difficulty desired
+ * If level is invaalid, we print an error to std and return.
+ * If sudoku is invalid we print error message and return.
+ * We build a an *inplace* randomized sudoku from scratch.
+ * 
+ */
+
+void
+sudoku_unsolved(box_t* sudoku[9][9], char* level);
+
+
+/*********************** sudoku_update_rows_cols_box() ******************/
+/* description of method here...
+ *
+ *
+ * 
+ * 
+ * 
+ * 
+ */
+void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x, int random_box_y, int key_value, char* level);
+
 
 
 #endif // __CREATE_H
