@@ -30,17 +30,23 @@ static void valueprint(FILE* fp, int value);
 /* see create.h for description */
 
  void 
- sudoku_new( box_t* sudoku[9][9], const int SIZE){
+ sudoku_new(box_t* sudoku[9][9], const int SIZE)
+ {
      
      // handle NULL sudoku
     if(sudoku == NULL){
         return;
     }
     for(int i=0;  i < SIZE ; i++) // rows
-    { 
+    {   
         for (int j = 0; j < SIZE; j++) // columns
-        {
+        { 
+          
+          sudoku[i][j] = malloc(sizeof(box_t*));
+          sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
             sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
+          sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
+
         }
     }
 
@@ -51,7 +57,6 @@ static void valueprint(FILE* fp, int value);
 /* see create.h for description  */
 void
 sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* item)){
-    
     // handle NULL sudoku
     if(fp == NULL){ 
         return;
@@ -61,11 +66,12 @@ sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* 
         printf("(null)");
         return;
     }
+
     for( int i = 0; i < 9; i++){  // row
         for(int j= 0 ;j < 9; j++){  // column
-           box_value_print(sudoku[i][j],fp, valueprint); 
+           box_value_print(sudoku[i][j],fp, NULL); 
         }
-        fprintf(fp, "\n"); // print next row of sudoku
+        printf("\n"); // print next row of sudoku
     }
 
 }
@@ -87,7 +93,6 @@ sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* 
  */
 static void valueprint(FILE* fp, int value)
 {  
-    int value = value;
     if(value != NULL){
         fprintf(fp, "%d ", value); 
   }

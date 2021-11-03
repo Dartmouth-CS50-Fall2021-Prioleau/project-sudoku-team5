@@ -35,7 +35,7 @@
  * array with a new box structure. 
  *
 */
-void sudoku_new( box_t sudoku[9][9], const int SIZE);
+void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
 
 
@@ -47,7 +47,7 @@ void sudoku_new( box_t sudoku[9][9], const int SIZE);
  * and the sudoku to print
  * 
  */
-void sudoku_print (FILE *fp, box_t* sudoku[9][9]);
+void sudoku_print (box_t* sudoku[9][9], FILE *fp );
 
 
 
