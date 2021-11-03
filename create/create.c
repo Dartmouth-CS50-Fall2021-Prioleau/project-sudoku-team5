@@ -10,11 +10,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
-#include <stdbool.h>
-#include <ctype.h>
-#include <time.h>
-
 #include "../library/counters.h"
 #include "../common/box.h"
 
@@ -49,6 +44,8 @@ static char* normalize_word(char* word);
         { 
           
           sudoku[i][j] = malloc(sizeof(box_t*));
+          sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
+            sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
           sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
 
         }
@@ -86,7 +83,7 @@ sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* 
 void
 sudoku_unsolved(box_t* sudoku[9][9], char* level){
 /* see create.h for description */
-    srand(time(NULL));
+    
     // nomalize level input
     normalize_word(level);
     int num_repeats;
@@ -98,20 +95,11 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
         num_repeats = 25;
     }
     else{
-<<<<<<< HEAD
         printf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD");
         return;
     }
        
     for(int i = 0; i < num_repeats; i++){
-=======
-        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD");
-        return;
-    }
-
-    for(int i = 0; i < num_repeats; i++){
-
->>>>>>> refs/remotes/origin/main
         // pick a random box in the grid until found one with value zero
         // current x,y values
         int random_box_x;
@@ -119,15 +107,15 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
 
         do{
             // pick a random x
-            random_box_x = rand() % 9; // from 0 to 8 
+            random_box_x = rand() % 8; // from 0 to 8 
 
             //pick a random y
-            random_box_y = rand() % 9; // from 0 to 8
+            random_box_y = rand() % 8; // from 0 to 8
                 
         }
         // check if the box at that location has values of zero
         // while we haven't found one, keep picking random x,y locations
-        while(get_value(sudoku[random_box_x][random_box_y]) != 0);
+        while(sudoku[random_box_x][random_box_y]->value != 0);
                 
             // keep cuurent random key and value 
             int random_key;
@@ -137,24 +125,19 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
             do{
                 // pick a random key between 1 and 9 
                 random_key = (rand() % 9 )+ 1; // from 1 to 9
-
                 //gey key value form box's counterset
-                counters_t* curr = get_counter(sudoku[random_box_x][random_box_y]);
-                key_value = counters_get(curr, random_key);
-
+                key_value = counters_get(sudoku[random_box_x][random_box_y]->ctr, random_key);
             }
-
+                
             // check if value of key in that box's counterset is 1
             // while its not, keep picking keys
             while(key_value !=1);
 
             // set the key's value as value of the box
-            set_value(sudoku[random_box_x][random_box_y], random_key);
-            //sudoku[random_box_x][random_box_y]->value = random_key; 
+            sudoku[random_box_x][random_box_y]->value = random_key; 
 
             // update relevant coresponding row, cols, and box->ctr possible values affected by choice of key
-            //sudoku_update_rows_cols_box(sudoku[9][9], random_box_x, random_box_y, key_value, level); // Veronica's to do
-    
+            sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x, int random_box_y, int key_value, char* level) // Veronica's to do
     }  
 
 //     // verify that the unsolved sudoku is solvable before returning to user.
@@ -165,7 +148,7 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
 
 }
 
-void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level){
+void sudoku_update_rows_cols_box(box_t sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level){
     // to do
 }
 
