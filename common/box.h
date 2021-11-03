@@ -40,7 +40,9 @@ typedef struct box box_t;
  */
 box_t* box_new(void);
 
-
+counters_t* get_counter(box_t* box);
+void set_value(box_t* box, int val);
+int get_value(box_t* box); 
 /********************** box_value_print() *****************/
 /* Print the value of a box to file
  * Caller provides box  the file to print to and the the valueprint function

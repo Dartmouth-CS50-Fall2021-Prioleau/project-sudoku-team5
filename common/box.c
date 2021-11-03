@@ -82,3 +82,17 @@ static void box_delete(box_t *box)
 }
 
 
+counters_t* get_counter(box_t* box) {
+
+  return box->ctr;
+}
+
+int get_value(box_t* box){
+
+  return box->value;
+}
+
+void set_value(box_t* box, int val){
+
+  box->value = val;
+}
