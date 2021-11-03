@@ -9,12 +9,6 @@
 #include "../library/memory.h"
 #include "../library/counters.h"
 
-
-
-
-
-box_t* box_new(void);
-
 int main(const int argc, const char** argv)
 {
 
@@ -37,6 +31,10 @@ int main(const int argc, const char** argv)
 
   sudoku_new(sudoku, 9);
   sudoku_print(sudoku, stdout);
+  sudoku_unsolved(sudoku, mode);
+  printf("\n");
+  sudoku_print(sudoku, stdout);
+
 
 }
 
