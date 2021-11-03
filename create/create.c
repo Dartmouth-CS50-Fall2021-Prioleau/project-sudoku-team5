@@ -101,10 +101,10 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
 
         do{
             // pick a random x
-            random_box.x = rand() % 8 // from 0 to 8 
+            random_box_x = rand() % 8 // from 0 to 8 
 
             //pick a random y
-            random_box.y = rand() % 8 // from 0 to 8
+            random_box_y = rand() % 8 // from 0 to 8
                 
         }
         // check if the box at that location has values of zero
@@ -118,7 +118,7 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
             // next pick key from counter until found one whose key value is 1
             do{
                 // pick a random key between 1 and 9 
-                random_key = (rand() % 9 )// from 0 to 8
+                random_key = (rand() % 9 )+ 1 // from 1 to 9
             }
             //gey key value form box's counterset
             key_value = counters_get(sudoku[random_box_x][random_box_y]->ctr, random_key);
@@ -131,7 +131,7 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
             sudoku[random_box_x][random_box_y]->value = random_key; 
 
             // update relevant coresponding row, cols, and box->ctr possible values affected by choice of key
-            sudoku_update_rows_cols_box(box*t sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level) // Veronica's to do
+            sudoku_update_rows_cols_box(box*t sudoku[9][9], int random_box_x, int random_box_y, int key_value, char* level) // Veronica's to do
     }  
 
 //     // verify that the unsolved sudoku is solvable before returning to user.
