@@ -95,11 +95,11 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
         num_repeats = 25;
     }
     else{
-        printf(sterr, "Invalid level: Enter easy(or EASY) or hard(or HARD");
+        printf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD");
         return;
     }
        
-    for(int i = 0; i < num_repeats: i++){
+    for(int i = 0; i < num_repeats; i++){
         // pick a random box in the grid until found one with value zero
         // current x,y values
         int random_box_x;
