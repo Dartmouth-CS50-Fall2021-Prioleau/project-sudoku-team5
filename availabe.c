@@ -1,4 +1,3 @@
-
 //find 4 corners
 //add their values to the bag if count is 1
 
@@ -9,10 +8,12 @@
 #include <stdbool.h>
 #include <ctype.h>
 
-#include "../libcs50/counters.h"
-#include "../libcs50/bag.h"
+#include "../library/counters.h"
+#include "../common/box.h"
 
-void box_available(int x, int y, counters_t* main) ;
+void horizontal_available(int x, int y, counters_t* main);
+void vertical_available(int x, int y, counters_t* main);
+void box_available(int x, int y, counters_t* main);
 void A_and_B_merge_helper(void *arg, const int key, const int count);
 
 counters_t* check_availabilty(int x, int y)  {
@@ -29,6 +30,29 @@ counters_t* check_availabilty(int x, int y)  {
 
   return main;
 
+}
+
+void horizontal_available(int x, int y, counters_t* main )
+{
+    // i dont like this hardcoded
+    for (int i = 0; i < 9; i++) {
+        if (i != y) {
+            int py = i + y;
+            counters_t* curr = sudoku[x][py];
+            update_range(curr, main);
+        }
+    }
+}
+
+void vertical_available(int x, int y, counters_t* main)
+{
+    for (int j = 0; j < 9; j++) {
+        if (j != x) {
+            int px = j + x;
+            counters_t* curr = sudoku[px][y];
+            update_range(curr, main);
+        }
+    }
 }
 
 
@@ -64,6 +88,7 @@ void box_available(int x, int y, counters_t* main)
     for( ; j < 3 - (j%3); j ++ ) {
 
       //Allows us to ignore points already reached by horizonal and vertical check
+      // logic on adding x or y? 
       if(i != x || j != y) {
         int px = x + i;
         int py = y + j;

@@ -8,8 +8,8 @@
  * counter is incremented. The current counter value can be retrieved by
  * asking for the relevant key.
  * 
- * David Kotz, April 2016, 2017, 2019
- * Xia Zhou, July 2017
+ * Salifyanji J Namwila October 8 2021
+ * 
  */
 
 #ifndef __COUNTERS_H
@@ -125,3 +125,4 @@ void counters_iterate(counters_t *ctrs, void *arg,
 void counters_delete(counters_t *ctrs);
 
 #endif // __COUNTERS_H
+

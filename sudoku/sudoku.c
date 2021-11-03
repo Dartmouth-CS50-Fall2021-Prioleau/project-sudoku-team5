@@ -4,6 +4,16 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+#include "../create/create.h"
+#include "../common/box.h"
+#include "../library/memory.h"
+#include "../library/counters.h"
+
+
+
+
+
+box_t* box_new(void);
 
 int main(const int argc, const char** argv)
 {
@@ -17,25 +27,17 @@ int main(const int argc, const char** argv)
 
   }
   
-  char* mode = assertp(malloc(strlen(argv[1]) * sizeof(char) + 1), "Error allocating for mode");
-  char* difficulty = assertp(malloc(strlen(argv[2]) * sizeof(char) + 1), "Error allocating for difficulty");
+  char* mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
+  char* difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
 
   strcpy(mode, argv[1]);
   strcpy(difficulty, argv[2]);
+  
+  box_t* sudoku[9][9];
 
-
-}
-
-/*
-suduko_t* create(char* mode) {
-
+  sudoku_new(sudoku, 9);
+  sudoku_print(sudoku, stdout);
 
 }
 
 
-suduko_t* solve(suduko_t* unsolved) {
-
-
-}
-
-*/
