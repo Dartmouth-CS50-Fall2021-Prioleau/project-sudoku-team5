@@ -125,3 +125,4 @@ void counters_iterate(counters_t *ctrs, void *arg,
 void counters_delete(counters_t *ctrs);
 
 #endif // __COUNTERS_H
+

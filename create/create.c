@@ -10,28 +10,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "counters.h"
-#include "box.h"
+#include "../library/counters.h"
+#include "../common/box.h"
 
 
 
-/**************** file-local global variables ****************/
+/************************** file-local global variables   ***********************/
 /* none */
 
 
+/************************  static helper  functions  prototypes ******************/
+/* that is, not visible outside this file */
+static void valueprint(FILE* fp, int value);
 
-/***************************** global functions ****************/
+/***************************** global functions *********************************/
 /* that is, visible outside this file */
 
-/*************************** sudoku_create() **********************/
+/******************************* sudoku_create() ********************************/
 /* see create.h for description */
 
- box_t**
-sudoku_new(const int SIZE){
+ void 
+ sudoku_new( box_t* sudoku[9][9], const int SIZE){
      
-     
-    box_t** sudoku[SIZE][SIZE] ; // allocate space for 2D array  of size SIZE on stack 
-
+     // handle NULL sudoku
+    if(sudoku == NULL){
+        return;
+    }
     for(int i=0;  i < SIZE ; i++) // rows
     { 
         for (int j = 0; j < SIZE; j++) // columns
@@ -39,7 +43,30 @@ sudoku_new(const int SIZE){
             sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
         }
     }
-    return sudoku; // return the newly initialized sudoku to caller
+
+}
+
+
+/******************************* sudoku_print() *************************************/
+/* see create.h for description  */
+void
+sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* item)){
+    
+    // handle NULL sudoku
+    if(fp == NULL){ 
+        return;
+    }
+    // print null if sudoku is null
+    if(sudoku == NULL){
+        printf("(null)");
+        return;
+    }
+    for( int i = 0; i < 9; i++){  // row
+        for(int j= 0 ;j < 9; j++){  // column
+           box_value_print(sudoku[i][j],fp, valueprint); 
+        }
+        fprintf(fp, "\n"); // print next row of sudoku
+    }
 
 }
 
@@ -47,7 +74,23 @@ sudoku_new(const int SIZE){
 
 
 
+/******************************************************************************************/
+/******************************************************************************************/
+/***************** static    helper   methods   defined   here   **************************/
+/******************************************************************************************/
+/******************************************************************************************/
+/* that is, not visible outside this file */
 
-
+/********************* valueprint() ***********************/
+/* helper method that prints the box value to  given file
+ *
+ */
+static void valueprint(FILE* fp, int value)
+{  
+    int value = value;
+    if(value != NULL){
+        fprintf(fp, "%d ", value); 
+  }
+}
 
 

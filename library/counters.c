@@ -181,3 +181,4 @@ void counters_delete(counters_t *ctrs)
     count_report(stdout, "End of counters_delete");
 #endif
 }
+

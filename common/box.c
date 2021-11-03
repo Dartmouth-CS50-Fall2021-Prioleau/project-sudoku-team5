@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "counters.h"
+#include "../library/counters.h"
 
 /**************** file-local global variables ****************/
 /* none */
@@ -27,10 +27,12 @@ typedef struct box {
 /********************************* global functions ********************/
 /* that is, visible outside this file */
 
+
+
 /*********************** counters_new() *******************/
 /* see box.h for description*/
 
-counters_t* box_new(void)
+box_t* box_new(void)
 {
 
     box_t* box = malloc(sizeof(box_t));
@@ -52,11 +54,29 @@ counters_t* box_new(void)
 }
 
 
+
+/********************** box_value_print() *****************/
+/* see box.h for description*/
+void box_value_print(box_t* box, FILE* fp, void (*valueprint)(FILE* fp, void* item)){
+
+    if (fp != NULL){
+        if (box != NULL){
+            if(valueprint != NULL){
+                (*valueprint)(fp, box->value); 
+            }
+        }
+    }
+}
+
+
+
 /************************* box_delete ********************/
 /* see box.h for description*/
-void box_delete(box_t *box)
+static void box_delete(box_t *box)
 {
     if (box != NULL){
         counters_delete(box->ctr);
     }
 }
+
+

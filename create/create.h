@@ -19,8 +19,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "counters.h"
-#include "box.h"
+#include "../library/counters.h"
+#include "../common/box.h"
 
 /*************************** global types ***********************/
 /* none */
@@ -35,7 +35,22 @@
  * array with a new box structure. 
  *
 */
-box_t** sudoku_new(const int SIZE);
+void sudoku_new( box_t sudoku[9][9], const int SIZE);
+
+
+
+
+/******************** sudoku_print ***************/
+/*  
+ * Prints  given sudoku in grid format to given output file.
+ * Caller provides an output file 
+ * and the sudoku to print
+ * 
+ */
+void sudoku_print (FILE *fp, box_t* sudoku[9][9]);
+
+
+
 
 #endif // __CREATE_H
 

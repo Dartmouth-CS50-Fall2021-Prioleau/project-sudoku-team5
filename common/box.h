@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "../library/counters.h"
 
 
 /**************** global types ****************/
@@ -39,6 +40,16 @@ typedef struct box box_t;
  */
 box_t* box_new(void);
 
+
+/********************** box_value_print() *****************/
+/* Print the value of a box to file
+ * Caller provides box  the file to print to and the the valueprint function
+ * We do nothing if file pointer is null,
+ * do nothing if box is null or valuprint function is null,
+ * 
+ */ 
+
+void box_value_print(box_t* box, FILE* fp, void (*valueprint)(FILE* fp, void* item));
 
 
 /********************* box_delete() *********************/
