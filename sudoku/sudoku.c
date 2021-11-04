@@ -15,7 +15,7 @@ int main(const int argc, const char** argv)
   //check for valid number of parameters
   if (argc != 3) {
 
-    fprintf(stderr, "Incorrect number of arguemnts. ");
+    fprintf(stderr, "Incorrect number of arguments. ");
     fprintf(stderr,"Should have ./sudoku mode difficulty\n");
     return 1;
 
@@ -30,12 +30,13 @@ int main(const int argc, const char** argv)
   box_t* sudoku[9][9];
 
   sudoku_new(sudoku, 9);
-  sudoku_print(sudoku, stdout);
-  sudoku_unsolved(sudoku, mode);
+  //sudoku_print(sudoku, stdout);
   printf("\n");
+  sudoku_unsolved(sudoku, difficulty);
   sudoku_print(sudoku, stdout);
-
+  //sudoku_print_formated(sudoku, stdout);
 
 }
+
 
 

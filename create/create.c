@@ -26,7 +26,6 @@
 
 /************************  static helper  functions  prototypes ******************/
 /* that is, not visible outside this file */
-static void valueprint(FILE* fp, int value);
 static char* normalize_word(char* word);
 
 /***************************** global functions *********************************/
@@ -60,7 +59,7 @@ static char* normalize_word(char* word);
 /******************************* sudoku_print() *************************************/
 /* see create.h for description  */
 void
-sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* item)){
+sudoku_print (box_t* sudoku[9][9], FILE* fp){
     // handle NULL sudoku
     if(fp == NULL){ 
         return;
@@ -73,23 +72,124 @@ sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* 
 
     for( int i = 0; i < 9; i++){  // row
         for(int j= 0 ;j < 9; j++){  // column
-           box_value_print(sudoku[i][j],fp, NULL); 
+           box_value_print(sudoku[i][j],fp); 
         }
         printf("\n"); // print next row of sudoku
     }
 
 }
 
+
+
+/******************************* sudoku_print() *************************************/
+/* see create.h for description  */
+void
+sudoku_print_formated (box_t* sudoku[9][9], FILE* fp){
+    // handle NULL sudoku
+    if(fp == NULL){ 
+        return;
+    }
+    // print null if sudoku is null
+    if(sudoku == NULL){
+        printf("(null)");
+        return;
+    }
+
+
+    printf("+-------+-------+-------+\n");
+     
+    // the  3 3X3 sudoku's in the first row
+    for ( int i = 0; i< 3; i++){  //first three rows
+
+        for(int j= 0 ;j < 9; j++){ // all their collumns
+
+            // start of column
+            if(  j == 0 ){
+                printf("| ");
+                box_value_print(sudoku[i][j],fp);
+            }
+
+             // end of sub 3X3 sudoku
+             else if ( j  == 2 || j == 5 || j == 8){
+                 //print vertical bound
+                 box_value_print(sudoku[i][j],fp);
+                 printf("| ");
+             }
+            else{
+                box_value_print(sudoku[i][j],fp); 
+            }
+        }printf("\n"); // print next row of sudoku
+       
+
+    } printf("+-------+-------+-------+\n");
+
+
+    // the  3 3X3 sudoku's in the second row
+    for ( int i = 3; i< 6; i++){
+
+        for(int j= 0 ;j < 9; j++){
+
+            // start of column
+            if(  j == 0 ){
+                printf("| ");
+                box_value_print(sudoku[i][j],fp);
+            }
+
+             // end of sub 3X3 sudoku
+             else if ( j  == 2 || j == 5 || j == 8){
+                 //print vertical bound
+                 box_value_print(sudoku[i][j],fp);
+                 printf("| ");
+             }
+            else{
+                box_value_print(sudoku[i][j],fp); 
+            }
+        }printf("\n"); // print next row of sudoku
+       
+
+    } printf("+-------+-------+-------+\n");
+
+
+
+    // the  3 3X3 sudoku's in the third(last) row
+    for ( int i = 6; i< 9; i++){  // last three rows
+
+        for(int j= 0 ;j < 9; j++){ // all their columns
+
+            // start of column
+            if(  j == 0 ){
+                printf("| ");
+                box_value_print(sudoku[i][j],fp);
+            }
+
+             // end of sub 3X3 sudoku
+             else if ( j  == 2 || j == 5 || j == 8){
+                 //print vertical bound
+                 box_value_print(sudoku[i][j],fp);
+                 printf("| ");
+             }
+            else{
+                box_value_print(sudoku[i][j],fp); 
+            }
+        }printf("\n"); // print next row of sudoku     
+    } printf("+-------+-------+-------+\n"); // of sudoku line
+}
+
+
+
+
 /************************** sudoku_unsolved() **********************/
 /* see create.h for description  */
 
 void
 sudoku_unsolved(box_t* sudoku[9][9], char* level){
-/* see create.h for description */
+   // ensure non- seed randomization here
     srand(time(NULL));
+
     // nomalize level input
     normalize_word(level);
     int num_repeats;
+
     if (strcmp(level, "easy") == 0){
         num_repeats = 37;
        // for 37 times, do the following
@@ -98,7 +198,7 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
         num_repeats = 25;
     }
     else{
-        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD");
+        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD). \n\n");
         return;
     }
 
@@ -111,10 +211,10 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
 
         do{
             // pick a random x
-            random_box_x = rand() % 9; // from 0 to 8 
+            random_box_x = rand() % 9; // from 0 to 8
 
             //pick a random y
-            random_box_y = rand() % 9; // from 0 to 8
+            random_box_y = rand() % 9; // from 0 to 9
                 
         }
         // check if the box at that location has values of zero
@@ -145,18 +245,10 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
             //sudoku[random_box_x][random_box_y]->value = random_key; 
 
             // update relevant coresponding row, cols, and box->ctr possible values affected by choice of key
-            //sudoku_update_rows_cols_box(sudoku[9][9], random_box_x, random_box_y, key_value, level); // Veronica's to do
-    
+            //sudoku_update_rows_cols_box(sudoku[9][9], random_box_x, random_box_y, key_value, level); // Veronica's to do  
     }  
-
-//     // verify that the unsolved sudoku is solvable before returning to user.
-//    if(!isSolvable(box_t* sudoku, char* level)){ //  method not-existent yet
-//         // rebuild if unsolvable
-//         sudoku_unsolved(sudoku, level);    
-//     }
-
 }
-
+/*******************************  sudoku_update_rows_cols_box *****************************/
 void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level){
     // to do
 }
@@ -168,18 +260,6 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int rando
 /******************************************************************************************/
 /* that is, not visible outside this file */
 
-/********************* valueprint() ***********************/
-/* helper method that prints the box value to  given file
- *
- */
-static void valueprint(FILE* fp, int value)
-{  
-    if(value != NULL){
-        fprintf(fp, "%d ", value); 
-  }
-}
-
-
 /*********************** normalize_word() *************************/
 /*Author: Salifyanji J Namwila 
  *
@@ -189,6 +269,7 @@ static void valueprint(FILE* fp, int value)
  * return null toif word is NULL
  * 
  */
+
 static char* normalize_word(char* word)
 {
     for(int i = 0; i <= (strlen(word)); i++) {
@@ -197,6 +278,5 @@ static char* normalize_word(char* word)
 
     return word;
 }
-
 
 
