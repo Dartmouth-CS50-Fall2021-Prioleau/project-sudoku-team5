@@ -33,21 +33,25 @@
  * Caller provides a desired SIZE of sudoku.
  * We create a 2D new sudoku  and initialize each position in the
  * array with a new box structure. 
- *
 */
 void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
 
-
-
 /******************** sudoku_print ***************/
-/*  
- * Prints  given sudoku in grid format to given output file.
+/*  Prints  given sudoku in grid format to given output file.
  * Caller provides an output file 
  * and the sudoku to print
- * 
  */
-void sudoku_print (box_t* sudoku[9][9], FILE *fp );
+void sudoku_print (box_t* sudoku[9][9], FILE *fp);
+
+
+/*************************  sudoku_print_formated () ****************************/
+/* Prints sudoku to console using textual representation with characters "|"and "__ "
+ * to build the grid, white spaces as needed, and integers 0 to 9 to represent numbers
+ * in the puzzle with 0 representing a missing number.  
+ */
+void
+sudoku_print_formated (box_t* sudoku[9][9], FILE *fp);
 
 
 /************************** sudoku_unsolved() **********************/
@@ -56,14 +60,13 @@ void sudoku_print (box_t* sudoku[9][9], FILE *fp );
  * If level is invaalid, we print an error to std and return.
  * If sudoku is invalid we print error message and return.
  * We build a an *inplace* randomized sudoku from scratch.
- * 
  */
 
 void
 sudoku_unsolved(box_t* sudoku[9][9], char* level);
 
 
-/*********************** sudoku_update_rows_cols_box() ******************/
+/**************************** sudoku_update_rows_cols_box() **************************/
 /* description of method here...
  *
  *

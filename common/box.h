@@ -40,19 +40,46 @@ typedef struct box box_t;
  */
 box_t* box_new(void);
 
-counters_t* get_counter(box_t* box);
-void set_value(box_t* box, int val);
-int get_value(box_t* box); 
+
+
 /********************** box_value_print() *****************/
 /* Print the value of a box to file
- * Caller provides box  the file to print to and the the valueprint function
+ * Caller provides box  the file to print to 
  * We do nothing if file pointer is null,
- * do nothing if box is null or valuprint function is null,
+ * do nothing if box is null
  * 
  */ 
+void box_value_print(box_t* box, FILE* fp);
 
-void box_value_print(box_t* box, FILE* fp, void (*valueprint)(FILE* fp, void* item));
 
+/******************** get_counter() *************************/
+/* gets the counter of a given box
+ * We return a counter if the box is not null
+ * Caller provides the box whose counter were to extract 
+ * 
+ */
+counters_t* get_counter(box_t* box);
+
+
+
+/******************** set_value()  ***************************/
+/* Sets a given value to that of the given box 
+ * User provides box and value
+ * return  from fucntion if value is < 0
+ * or box is NULL
+ *
+ */
+void set_value(box_t* box, int val);
+ 
+
+
+/********************get_value() *****************************/
+/* Return the value of a given box
+ * User prvides the box whose value is desired
+ * We return from function if the box is  NULL
+ * 
+ */
+int get_value(box_t* box); 
 
 /********************* box_delete() *********************/
 /* Delete the whole box.
