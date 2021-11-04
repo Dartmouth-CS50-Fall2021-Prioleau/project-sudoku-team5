@@ -130,15 +130,17 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
                 // pick a random key between 1 and 9 
                 random_key = (rand() % 9 )+ 1; // from 1 to 9
 
+                
                 //gey key value form box's counterset
-                counters_t* curr = get_counter(sudoku[random_box_x][random_box_y]);
-                key_value = counters_get(curr, random_key);
+                //counters_t* curr = get_counter(sudoku[random_box_x][random_box_y]);
+                //key_value = counters_get(curr, random_key);
+                ;
 
             }
 
             // check if value of key in that box's counterset is 1
             // while its not, keep picking keys
-            while(key_value !=1);
+            while(((is_val_in_cross_sect(sudoku, random_box_x, random_box_y, random_key) == random_key)));
 
             // set the key's value as value of the box
             set_value(sudoku[random_box_x][random_box_y], random_key);
@@ -156,9 +158,90 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
 //     }
 
 }
+// return the value if the value is in the row, column, or 3x3, return 0 otherwise
+int is_val_in_cross_sect(box_t* sudoku[9][9], int curr_x, int curr_y, int value)
+{
+    for (int i = 0; i < 9; i++) {  // iterate over column
+        if (get_value(sudoku[curr_x][i]) == value) {
+            return value;
+        }
+    }
 
-void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level){
+    for (int j = 0; j < 9; j++) {  // iterate over row
+        if (get_value(sudoku[j][curr_y]) == value) {
+            return value;
+        }
+    }
+
+    // with this modulus division, we will always start in the top left corner of any given box on the grid
+    int m, n;
+
+    if (curr_x % 3 == 1) { m = -1; } // (if curr_x = 1, 4, or 7, start one to the left of the x coordinate because the coordinate is in the middle of the 3x3)
+    else if (curr_x % 3 == 2) { m = -2; }  // if curr_x = 2, 5, or 8, start two to the left of the x-coord because the coordinate is in the right column of the 3x3)
+    else { m = 0; }  // if curr_x = 0, 3, or 6, start at the x coord (left column) and iterate right in the for loop
+
+    // same math applied for curr_y
+    if (curr_y % 3 == 1) { n = -1; }
+    else if (curr_y % 3 == 2) { n = -2; }
+    else { n = 0; }    
+
+    for ( ; m < (3 - (curr_x % 3)); m++) {
+        for ( ; n < (3 - (curr_y % 3)); n++) {
+            if (((curr_x + m) != curr_x) || ((curr_y + n) != curr_y)) {
+                int check_x = curr_x + m;
+                int check_y = curr_y + n;
+                if (get_value(sudoku[check_x][check_y]) == value) {
+                    return value;
+                }
+            }
+        }
+        n = n - 2; // reset the n for next iteration of m (m++)
+    }
+    return 0;  // value not found in cross section of boxes
+
+}
+
+void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int x, int y, int value){
     // to do
+    for (int i = 0; i < 9; i++) { // for column of current box
+        counters_t* column_count = get_counter(sudoku[x][i]);
+        int availability = counters_get(column_count, value);
+        if (availability == 1) {
+            counters_set(column_count, value, 0);
+        }
+    }
+
+    for (int j = 0; j < 9; j++) {
+        counters_t* row_count = get_counter(sudoku[j][y]);
+        int availability = counters_get(row_count, value);
+        if (availability == 1) {
+            counters_set(row_count, value, 0);
+        }
+    }
+
+    int m, n;
+
+    if (x % 3 == 1) { m = -1; }
+    else if (x % 3 == 2) { m = -2; }
+    else { m = 0; }
+
+    if (y % 3 == 1) { n = -1; }
+    else if (y % 3 == 2) { n = -2; }
+    else { n = 0; }
+
+    for ( ; m < 3 - (x%3); m++) {
+        for ( ; n < 3 - (y%3); n++) {
+            if ((x + m != x) || (y + n != y)) {
+                int neighbor_x = x + m;
+                int neighbor_y = y + n;
+                counters_t* three_three_count = get_counter(sudoku[neighbor_x][neighbor_y]);
+                int availability = counters_get(three_three_count, value);
+                if (availability == 1) {
+                    counters_set(three_three_count, value, 0);
+                }
+            }
+        }
+    }
 }
 
 /******************************************************************************************/
@@ -174,7 +257,7 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int rando
  */
 static void valueprint(FILE* fp, int value)
 {  
-    if(value != NULL){
+    if(&value != NULL){
         fprintf(fp, "%d ", value); 
   }
 }

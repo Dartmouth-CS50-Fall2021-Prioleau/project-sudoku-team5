@@ -85,7 +85,7 @@ void box_available(int x, int y, counters_t* main)
   }
 
   for( ; i < 3 - (x%3); i ++ ) {
-    for( ; j < 3 - (j%3); j ++ ) {
+    for( ; j < 3 - (y%3); j ++ ) {
 
       //Allows us to ignore points already reached by horizonal and vertical check
       // logic on adding x or y? 
