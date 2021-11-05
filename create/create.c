@@ -28,13 +28,26 @@
 /************************  static helper  functions  prototypes ******************/
 /* that is, not visible outside this file */
 static char* normalize_word(char* word);
+static int count_num_solutions_helper(box_t* sudoku[9][9], char*level, int num_solutions, int init_row, int init_column);
 
 static void hor_shift(box_t* sudoku[9][9]) ;
 static void vert_shift(box_t* sudoku[9][9]) ;
 /***************************** global functions *********************************/
 /* that is, visible outside this file */
+<<<<<<< HEAD
 void sudoku_populate(box_t* sudoku[9][9]);
 void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
+=======
+
+void sudoku_new(box_t* sudoku[9][9], const int SIZE);
+void sudoku_print (box_t* sudoku[9][9], FILE* fp);
+void sudoku_print_formated (box_t* sudoku[9][9], FILE* fp);
+void sudoku_unsolved(box_t* sudoku[9][9], char* level);
+void sudoku_create_puzzle(box_t* sudoku[9][9], char* level);
+int count_num_solutions(box_t* sudoku[9][9], char* level) ;
+bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level);
+
+>>>>>>> main
 /******************************* sudoku_create() ********************************/
 /* see create.h for description */
 
@@ -298,6 +311,255 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
             //sudoku_update_rows_cols_box(sudoku[9][9], random_box_x, random_box_y, key_value, level); // Veronica's to do  
     }  
 }
+
+/*************************************** create_sudoku_puzzle() ****************************************/
+void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
+
+    // initialize non- seed randomization
+    srand(time(NULL));
+    
+    // nomalize dificulty level 
+    normalize_word(level);
+    int num_to_delete;
+
+    //  if easy dificulty,  delete 44 slots
+    if (strcmp(level, "easy") == 0){
+        num_to_delete = 44;
+    
+    }
+     //  if hard  dificulty for, delete 56 slots
+    else if(strcmp(level, "hard") == 0){
+        num_to_delete = 56 ;
+    }
+    // print error and return if level is invalid
+    else{
+        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD). \n\n");
+        return;
+    }
+
+    ///////////////////////////////////////////////
+    // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56
+    for(int i = 0; i <  num_to_delete; i++){
+        int x_todelete; // x postion of random box to delete
+        int y_todelete; // y postion of random box to delete
+
+        // check if solution of puzzle would be unique if val at x_todelete, y_todelete is actually deleted
+        bool is_unique_solution = true;
+    do{
+        
+
+        do{
+            // pick a random x to delete
+            x_todelete = rand() % 9; // from 0 to 8
+
+            //pick a random y
+            y_todelete = rand() % 9; // from 0 to 8
+                
+        }
+        // check if the box at that location has already been deleted
+        // while we haven't found one that has  already been deleted , keep picking random x,y locations until we find one not yet deleted
+        while(get_value(sudoku[ x_todelete][ y_todelete]) == 0);
+
+        // once we find one, remember it and see if solution the sudoku would have while that value is deleted is unique
+        int to_delete_value = get_value(sudoku[ x_todelete][ y_todelete]);
+
+        // delete value 
+        set_value(sudoku[ x_todelete][ y_todelete], 0);
+
+        //and check that solution produced is unique
+        is_unique_solution = (count_num_solutions(sudoku,level) == 1);
+
+         // if solution is not unique, put it back
+        if(!is_unique_solution){
+            //sudoku_print(sudoku, stdout);
+            printf("putting back %d\n", to_delete_value);
+            set_value(sudoku[ x_todelete][ y_todelete], to_delete_value);
+ 
+        }
+        // if solution is unique
+        else{
+            is_unique_solution = true; // continue to next deletion
+        }
+    }
+    while(!is_unique_solution);
+   }
+   //sudoku_print(sudoku, stdout);
+   //return sudoku;
+} 
+
+
+
+/********************** count_num_solutions() *************************/
+/*
+ *
+ *
+ * 
+ * 
+ * 
+ */
+int count_num_solutions(box_t* sudoku[9][9], char* level) 
+{   
+    // call solution counter
+    return count_num_solutions_helper(sudoku,level, 0, 0, 0);
+}
+
+
+
+/********************** count_num_solutions_helper() *************************/
+/*
+ *
+ *
+ * 
+ * 
+ * 
+ */
+static int count_num_solutions_helper(box_t* sudoku[9][9], char*level, int num_solutions, int init_row, int init_column)
+{
+    // bases case
+    //check what rows boxs have been seen
+    
+    // if  init_row init_columns are at the end, we've visited all.
+    if(init_row == 9 && init_column == 9)
+    {
+        return num_solutions+1;
+    }
+
+    // visit all boxes not yet seen left to right top to bottom
+    for(int i= init_row; i < 9; i++)
+    {
+        int j = (i == init_row) ? init_column : 0;
+
+        for( ; j < 9; j++)
+        {
+            // check if the value of the box  at that location is empty
+            if(get_value(sudoku[i][j]) == 0)
+            {    
+                for(int value=1; value<=9; value++)
+                {
+                    // check that value of sudoku is a valid possible value of box 
+                    if(val_not_in_cross_section(sudoku, i, j, value, level))
+                    {    
+                        
+                        set_value(sudoku[i][j], value);
+
+                        // count_num of solution of that sub sudoku with new value
+                        if(j == 8){
+                            num_solutions = count_num_solutions_helper(sudoku, level, num_solutions, i+1, 0);
+                        }else
+                        {
+                             num_solutions = count_num_solutions_helper(sudoku, level, num_solutions, i, j+1);
+                        }
+                        set_value(sudoku[i][j], 0);
+                    }
+
+                }// some entries did not work so unsolvable
+                return num_solutions;
+            }
+        }
+
+    }return num_solutions +1;
+
+}
+
+
+
+/**************************************   val_not_in_cross_section() ************************************/
+bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level)
+{
+
+    // iterate over rows to check their columns
+
+    for(int r = 0; r < 9; r++){
+        if((get_value(sudoku[r][column]) == value ) && r !=row){
+            return false;
+        }
+    }
+
+    // iterate over columns to check their rows
+    for(int c = 0; c < 9; c++){
+        if((get_value(sudoku[row][c]) == value) && c != column){
+            return false;
+        }
+    }
+
+    // check box
+
+    // Check box
+    int rbox = row/3;
+    int cbox = column/3;
+    for (int i = rbox*3; i < (rbox*3)+3; i++) {
+        for (int j = cbox*3; j < (cbox*3)+3; j++) {
+            if (   (get_value(sudoku[i][j]) == value) && i != row && j != column   ) {
+                return false;
+            }
+        }
+    }
+
+    // diagonal sudoku
+    if (strcmp(level, "easy") == 0) {
+        // the negative sloped diagonal
+        if (row == column) {
+            for (int i = 0; i < 9; i++) {
+                // check if it's in the value
+                if (i != row && (get_value(sudoku[i][i]) == value)    ) {
+                    return false;
+                }
+            }
+        }
+        // the positive sloped diagonal
+        if (8-row == column) {
+            for (int i = 0; i < 9; i++) {
+                // check if it's in the value
+                if (8-i != row && column != i && (get_value(sudoku[8-i][i]) == value)) {
+                    return false;
+                }
+            }
+        }
+    }
+
+
+
+    // diagonal sudoku
+    if (strcmp(level, "hard")  == 0){
+        // the negative sloped diagonal
+        if (row == column) {
+            for (int i = 0; i < 9; i++) {
+                // check if it's in the value
+                if (i != row && (get_value(sudoku[i][i]) == value)) {
+                    return false;
+                }
+            }
+        }
+        // the positive sloped diagonal
+        if (8-row == column) {
+            for (int i = 0; i < 9; i++) {
+                // check if it's in the value
+                if (8-i != row && column != i && (get_value(sudoku[8-i][i]) == value)) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return true;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*******************************  sudoku_update_rows_cols_box *****************************/
 void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level){
     // to do
