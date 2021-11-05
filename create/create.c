@@ -34,10 +34,8 @@ static void hor_shift(box_t* sudoku[9][9]) ;
 static void vert_shift(box_t* sudoku[9][9]) ;
 /***************************** global functions *********************************/
 /* that is, visible outside this file */
-<<<<<<< HEAD
 void sudoku_populate(box_t* sudoku[9][9]);
 void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
-=======
 
 void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 void sudoku_print (box_t* sudoku[9][9], FILE* fp);
@@ -47,7 +45,6 @@ void sudoku_create_puzzle(box_t* sudoku[9][9], char* level);
 int count_num_solutions(box_t* sudoku[9][9], char* level) ;
 bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level);
 
->>>>>>> main
 /******************************* sudoku_create() ********************************/
 /* see create.h for description */
 

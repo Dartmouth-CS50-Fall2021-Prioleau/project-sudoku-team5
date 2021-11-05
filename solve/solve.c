@@ -38,9 +38,7 @@ void solve_sudoku(box_t* sudoku[9][9])
             horizontal_update(i,j,count_size,sudoku);
             box_update(i,j,count_size,sudoku);
 
-
           }
-
           
         }
 
@@ -49,7 +47,6 @@ void solve_sudoku(box_t* sudoku[9][9])
   }
 
   if(repeat) {
-    //printf("hi");
     solve_sudoku(sudoku);
   }
 

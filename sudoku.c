@@ -65,8 +65,4 @@ int main(const int argc, const char** argv)
 
   sudoku_print(sudoku, stdout);
 
-<<<<<<< HEAD:sudoku.c
 }
-=======
-
->>>>>>> main:sudoku/sudoku.c
