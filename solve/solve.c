@@ -1,3 +1,4 @@
+
 //global types and constant definitions
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,17 +7,13 @@
 #include <ctype.h>
 
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 #include "../create/create.h"
 
 static void boxiterate(void *arg, const int key, const int count);
 void vertical_update(int x, int y, int value, box_t* sudoku[9][9]);
 void horizontal_update(int x, int y, int value, box_t* sudoku[9][9]);
 void box_update(int x, int y, int value, box_t* sudoku[9][9]) ;
-void solve_sudoku(box_t* sudoku[9][9]);
-
-
-
 
 void solve_sudoku(box_t* sudoku[9][9])
 {   bool repeat = false;
@@ -147,4 +144,3 @@ void box_update(int x, int y, int value, box_t* sudoku[9][9])
   }
 
 }
-
