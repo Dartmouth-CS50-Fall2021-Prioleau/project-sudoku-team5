@@ -9,7 +9,7 @@
 #include <ctype.h>
 
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 
 void horizontal_available(int x, int y, counters_t* main);
 void vertical_available(int x, int y, counters_t* main);

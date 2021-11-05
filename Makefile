@@ -1,8 +1,8 @@
 #Outside libraries
-L = ../library
-C = ../create
-B = ../common
-S = ../solve
+L = ./library
+C = ./create
+B = ./box
+S = ./solve
 
 
 CFLAGS = -Wall -pedantic -std=c11 -ggdb -I$L -I$C -I$B -I$S

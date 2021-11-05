@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 
 
 void solve_sudoku(box_t* sudoku[9][9]);

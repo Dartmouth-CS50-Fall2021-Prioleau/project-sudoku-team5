@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 
 /*************************** global types ***********************/
 /* none */

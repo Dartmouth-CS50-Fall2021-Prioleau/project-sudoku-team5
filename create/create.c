@@ -17,7 +17,7 @@
 
 #include "../solve/solve.h"
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 
 
 
@@ -85,7 +85,7 @@ int sudoku_valid(box_t* sudoku[9][9])
         { 
           
           sudoku[i][j] = malloc(sizeof(box_t*));
-          sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
+          sudoku[i][j] = box_new(); // put a new box at each position in the 2D array/sudoku 
 
         }
     }

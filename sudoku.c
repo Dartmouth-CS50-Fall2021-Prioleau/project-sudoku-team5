@@ -4,11 +4,11 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
-#include "../create/create.h"
-#include "../common/box.h"
-#include "../library/memory.h"
-#include "../library/counters.h"
-#include "../solve/solve.h"
+#include "./create/create.h"
+#include "./box/box.h"
+#include "./library/memory.h"
+#include "./library/counters.h"
+#include "./solve/solve.h"
 
 int sudoku_valid(box_t* sudoku[9][9]);
 void sudoku_populate(box_t* sudoku[9][9]) ;
@@ -30,6 +30,7 @@ int main(const int argc, const char** argv)
   char* mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
   char* difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
 
+  
   strcpy(mode, argv[1]);
   strcpy(difficulty, argv[2]);
   box_t* sudoku[9][9];
@@ -65,8 +66,3 @@ int main(const int argc, const char** argv)
   sudoku_print(sudoku, stdout);
 
 }
-
-
-
-
-

@@ -7,7 +7,7 @@
 #include <ctype.h>
 
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 #include "../create/create.h"
 
 static void boxiterate(void *arg, const int key, const int count);
