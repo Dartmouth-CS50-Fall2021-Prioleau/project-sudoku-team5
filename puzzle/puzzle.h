@@ -15,7 +15,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
-#include "../common/box.h"
+#include "../box/box.h"
 
 /**************** global types ****************/
 typedef struct puzzle puzzle_t;
@@ -90,4 +90,8 @@ void puzzle_delete(puzzle_t* puzzle);
 
 void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value);
 
+<<<<<<< HEAD
 #endif // PUZZLE_H
+=======
+#endif // PUZZLE_H 
+>>>>>>> main

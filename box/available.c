@@ -9,14 +9,16 @@
 #include <ctype.h>
 
 #include "../library/counters.h"
-#include "../box/box.h"
+#include "box.h"
+#include "../sudoku/sudoku.c"
 
-void horizontal_available(int x, int y, counters_t* main);
-void vertical_available(int x, int y, counters_t* main);
-void box_available(int x, int y, counters_t* main);
+
+void horizontal_available(box_t* sudoku[9][9], int x, int y, counters_t* main);
+void vertical_available(box_t* sudoku[9][9], int x, int y, counters_t* main);
+void box_available(box_t* sudoku[9][9], int x, int y, counters_t* main);
 void A_and_B_merge_helper(void *arg, const int key, const int count);
 
-counters_t* check_availabilty(int x, int y)  {
+counters_t* check_availabilty(box_t* sudoku[9][9], int x, int y)  {
 
   //Initialize the main counter (we can also have a main counter passed in to save time/sapce)
   counters_t* main = counters_new();
@@ -24,15 +26,15 @@ counters_t* check_availabilty(int x, int y)  {
     counters_add(main, t);
   }
 
-  horizonal_available(x,y,main);
-  vertical_available(x,y,main);
-  box_available(x,y,main);
+  horizonal_available(sudoku[9][9], x,y,main);
+  vertical_available(sudoku[9][9], x,y,main);
+  box_available(sudoku[9][9],x,y,main);
 
   return main;
 
 }
 
-void horizontal_available(int x, int y, counters_t* main )
+void horizontal_available( box_t* sudoku[9][9], int x, int y, counters_t* main )
 {
     // i dont like this hardcoded
     for (int i = 0; i < 9; i++) {
@@ -44,7 +46,7 @@ void horizontal_available(int x, int y, counters_t* main )
     }
 }
 
-void vertical_available(int x, int y, counters_t* main)
+void vertical_available(box_t* sudoku[9][9],int x, int y, counters_t* main)
 {
     for (int j = 0; j < 9; j++) {
         if (j != x) {
@@ -57,7 +59,7 @@ void vertical_available(int x, int y, counters_t* main)
 
 
 //Given 3 bags and them
-void box_available(int x, int y, counters_t* main) 
+void box_available(box_t* sudoku[9][9], int x, int y, counters_t* main) 
 {
 
 
@@ -85,7 +87,7 @@ void box_available(int x, int y, counters_t* main)
   }
 
   for( ; i < 3 - (x%3); i ++ ) {
-    for( ; j < 3 - (y%3); j ++ ) {
+    for( ; j < 3 - (j%3); j ++ ) {
 
       //Allows us to ignore points already reached by horizonal and vertical check
       // logic on adding x or y? 

@@ -20,7 +20,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../library/counters.h"
-#include "../common/box.h"
+#include "../box/box.h"
 
 /*************************** global types ***********************/
 /* none */
@@ -33,37 +33,67 @@
  * Caller provides a desired SIZE of sudoku.
  * We create a 2D new sudoku  and initialize each position in the
  * array with a new box structure. 
- *
 */
 void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
 
 
-
+void randomize_sudoku(box_t* sudoku[9][9]);
+void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
-/*  
- * Prints  given sudoku in grid format to given output file.
+/*  Prints  given sudoku in grid format to given output file.
  * Caller provides an output file 
- * and the sudoku to print
+ * and the sudoku to print. For example
  * 
+3 4 0 6 0 0 4 8 7 
+0 0 2 9 0 0 0 0 0 
+0 8 0 0 4 0 8 0 5 
+0 0 7 8 1 0 2 0 4 
+0 0 2 0 9 0 0 0 8 
+0 0 0 3 8 0 0 9 0 
+0 3 8 0 0 6 6 0 0 
+0 0 0 1 3 9 8 9 8 
+6 0 6 0 8 3 0 0 0 
+
  */
-void sudoku_print (box_t* sudoku[9][9], FILE *fp );
+void sudoku_print (box_t* sudoku[9][9], FILE *fp);
 
 
+/*************************  sudoku_print_formated () ****************************/
+/* Prints sudoku to console using textual representation with characters "|"and "__ "
+ * to build the grid, white spaces as needed, and integers 0 to 9 to represent numbers
+ * in the puzzle with 0 representing a missing number. For example
++-------+-------+-------+
+| 3 4 0 | 6 0 0 | 4 8 7 | 
+| 0 0 2 | 9 0 0 | 0 0 0 | 
+| 0 8 0 | 0 4 0 | 8 0 5 | 
++-------+-------+-------+
+| 0 0 7 | 8 1 0 | 2 0 4 | 
+| 0 0 2 | 0 9 0 | 0 0 8 | 
+| 0 0 0 | 3 8 0 | 0 9 0 | 
++-------+-------+-------+
+| 0 3 8 | 0 0 6 | 6 0 0 | 
+| 0 0 0 | 1 3 9 | 8 9 8 | 
+| 6 0 6 | 0 8 3 | 0 0 0 | 
++-------+-------+-------+
+ */
+void
+sudoku_print_formated (box_t* sudoku[9][9], FILE *fp);
+
+void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
 /************************** sudoku_unsolved() **********************/
 /* Buils from scratch  an unsolved but solvable sudoku puzzle
  * User provides a new (init valuues == 0) sudoku, and the level of difficulty desired
  * If level is invaalid, we print an error to std and return.
  * If sudoku is invalid we print error message and return.
  * We build a an *inplace* randomized sudoku from scratch.
- * 
  */
 
 void
 sudoku_unsolved(box_t* sudoku[9][9], char* level);
 
 
-/*********************** sudoku_update_rows_cols_box() ******************/
+/**************************** sudoku_update_rows_cols_box() **************************/
 /* description of method here...
  *
  *
@@ -86,6 +116,13 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int x, int y, int value);
  * 
  */
 int is_val_in_cross_sect(box_t* sudoku[9][9], int curr_x, int curr_y, int value);
+
+/**************************************   val_not_in_cross_section() ************************************/
+bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level);
+
+void sudoku_create_puzzle(box_t* sudoku[9][9], char* level);
+
+int count_num_solutions(box_t* sudoku[9][9], char* level) ;
 
 #endif // __CREATE_H
 

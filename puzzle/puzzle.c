@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <math.h>
-#include "../common/box.h"
+#include "../box/box.h"
 #include "../library/memory.h"
 
 /**************** file-local global variables ****************/
@@ -89,4 +89,48 @@ void puzzle_delete(puzzle_t* puzzle)
     }
 }
 
+void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value) {
+    // to do
+    
+    for (int i = 0; i < 9; i++) { // for column of current box
+        // if cross sectional val is 0, proceed, otherwise skip
+        counters_t* column_count = get_counter(sudoku[x][i]);
+        int availability = counters_get(column_count, value);
+        if (availability == 1) {
+            counters_set(column_count, value, 0);
+        }
+    }
+
+    for (int j = 0; j < 9; j++) {
+        counters_t* row_count = get_counter(sudoku[j][y]);
+        int availability = counters_get(row_count, value);
+        if (availability == 1) {
+            counters_set(row_count, value, 0);
+        }
+    }
+
+    int m, n;
+
+    if (x % 3 == 1) { m = -1; }
+    else if (x % 3 == 2) { m = -2; }
+    else { m = 0; }
+
+    if (y % 3 == 1) { n = -1; }
+    else if (y % 3 == 2) { n = -2; }
+    else { n = 0; }
+
+    for ( ; m < 3 - (x%3); m++) {
+        for ( ; n < 3 - (y%3); n++) {
+            if ((x + m != x) || (y + n != y)) {
+                int neighbor_x = x + m;
+                int neighbor_y = y + n;
+                counters_t* three_three_count = get_counter(sudoku[neighbor_x][neighbor_y]);
+                int availability = counters_get(three_three_count, value);
+                if (availability == 1) {
+                    counters_set(three_three_count, value, 0);
+                }
+            }
+        }
+    }
+}
 
