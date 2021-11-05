@@ -206,14 +206,11 @@ void box_c(int x, int y, int* value, box_t* sudoku[9][9])
 
 void
 sudoku_unsolved(box_t* sudoku[9][9], char* level){
-<<<<<<< HEAD
 /* see create.h for description */
     //srand(time(NULL));
-=======
    // ensure non- seed randomization here
     srand(time(NULL));
 
->>>>>>> main
     // nomalize level input
     normalize_word(level);
     int num_repeats;
@@ -313,7 +310,6 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int rando
 /******************************************************************************************/
 /* that is, not visible outside this file */
 
-<<<<<<< HEAD
 /********************* valueprint() ***********************/
 /* helper method that prints the box value to  given file
  *
@@ -326,8 +322,6 @@ static void valueprint(FILE* fp, int value)
 }
 
 
-=======
->>>>>>> main
 /*********************** normalize_word() *************************/
 /*Author: Salifyanji J Namwila 
  *
@@ -408,7 +402,6 @@ static void hor_shift(box_t* sudoku[9][9])
     else { y_2 = y_1 +2; }
   }
 
-<<<<<<< HEAD
 
   //Swap points
   for(int k = 0; k < 9; k ++) {
@@ -496,5 +489,3 @@ void remove_sudoku(box_t* sudoku[9][9], int num_left)
 
     update_counters(sudoku);
 }
-=======
->>>>>>> main
