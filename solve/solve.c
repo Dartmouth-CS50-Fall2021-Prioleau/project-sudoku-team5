@@ -22,10 +22,11 @@ void solve_sudoku(box_t* sudoku[9][9])
       for(int j = 0; j < 9; j ++) {
 
         if(get_value(sudoku[i][j]) == 0) {
+          
           int count_size = 0;
           counters_iterate(get_counter(sudoku[i][j]), &count_size, boxiterate);
           //If we see a single point set it!
-          printf("%d", count_size);
+          //printf("%d", count_size);
           if(count_size != -1 && count_size != 0) {
             
             repeat = true;
@@ -48,7 +49,7 @@ void solve_sudoku(box_t* sudoku[9][9])
   }
 
   if(repeat) {
-    printf("hi");
+    //printf("hi");
     solve_sudoku(sudoku);
   }
 

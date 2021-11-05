@@ -15,7 +15,6 @@ void sudoku_populate(box_t* sudoku[9][9]) ;
 void hor_shift(box_t* sudoku[9][9]) ;
 void vert_shift(box_t* sudoku[9][9]);
 
-
 int main(const int argc, const char** argv)
 {
 
@@ -33,161 +32,41 @@ int main(const int argc, const char** argv)
 
   strcpy(mode, argv[1]);
   strcpy(difficulty, argv[2]);
-    box_t* sudoku[9][9];
+  box_t* sudoku[9][9];
 
-    sudoku_new(sudoku, 9);
-    sudoku_populate(sudoku);
+  sudoku_new(sudoku, 9);
 
+  sudoku_populate(sudoku);
 
-    srand(time(NULL));
-      sudoku_print(sudoku, stdout);
-    printf("\n");
+   time_t t;
+   
+   srand((unsigned) time(&t));
 
-    for(int i = 0; i < 10; i ++) {
-    hor_shift(sudoku);
-    vert_shift(sudoku);
-    }
-
-
-
-    sudoku_print(sudoku, stdout);
-
-}
-
-void sudoku_populate(box_t* sudoku[9][9]) 
-{
-
-    int p = 0;
-    for(int i = 0; i < 9; i ++) {
-     
-      for(int j = 0; j < 9; j ++) {
-        if(i > 5) {
-          int w = (p + j +3) %9;
-          if (w==0) {
-            set_value(sudoku[i][j],9 );
-          }
-          else{
-            set_value(sudoku[i][j],w );
-          } 
-        }
-        else if(i > 2) {
-          int w = (p + j +2) %9;
-          if (w==0) {
-            set_value(sudoku[i][j],9 );
-          }
-          else{
-            set_value(sudoku[i][j],w );
-          }
-          
-        }
-        else{
-        set_value(sudoku[i][j],(p + j) %9 + 1);
-        }
-        
-    }
-    p = p+3 %9;
-    }
-}
-
-void hor_shift(box_t* sudoku[9][9]) 
-{
-
-      int x = rand() % 9;
-      int x_2;
-      int ip;
-      if(x%3 == 1) { 
-        ip = rand() %2;
-        if(ip == 0){
-          x_2 = x +1;
-        }
-        else {
-          x_2 = x -1; 
-        }
-      }
-      else if(x%3 == 2) { 
-        ip = rand() %2;
-        if(ip == 0){
-          x_2 = x -1;
-        }
-        else {
-          x_2 = x -2; 
-        }
-      }
-      else {
-         ip = rand() %2;
-        if(ip == 0){
-          x_2 = x +1;
-        }
-        else {
-          x_2 = x +2; 
-        }
-      }
-      for(int k = 0; k < 9; k ++) {
-        int a = get_value(sudoku[x][k]);
-        int b = get_value(sudoku[x_2][k]);
-        set_value(sudoku[x][k], b);
-        set_value(sudoku[x_2][k], a);
-      }
+   /* Intializes random number generator */
+   srand((unsigned) time(&t));
     
 
-}
+  sudoku_print(sudoku, stdout);
+  printf("\n");
 
-void vert_shift(box_t* sudoku[9][9]) 
-{
-      int x = rand() % 9;
-      int x_2;
-      int ip;
-      if(x%3 == 1) { 
-        ip = rand() %2;
-        if(ip == 0){
-          x_2 = x +1;
-        }
-        else {
-          x_2 = x -1; 
-        }
-      }
-      else if(x%3 == 2) { 
-        ip = rand() %2;
-        if(ip == 0){
-          x_2 = x -1;
-        }
-        else {
-          x_2 = x -2; 
-        }
-      }
-      else {
-         ip = rand() %2;
-        if(ip == 0){
-          x_2 = x +1;
-        }
-        else {
-          x_2 = x +2; 
-        }
-      }
-      for(int k = 0; k < 9; k ++) {
-        int a = get_value(sudoku[k][x]);
-        int b = get_value(sudoku[k][x_2]);
-        set_value(sudoku[k][x], b);
-        set_value(sudoku[k][x_2], a);
-      }
-    
+  randomize_sudoku(sudoku);
+
+  sudoku_print(sudoku, stdout);
+  printf("\n");
+
+  remove_sudoku(sudoku, 25);
+
+  sudoku_print(sudoku, stdout);
+
+  solve_sudoku(sudoku);
+      
+  printf("\n");
+
+  sudoku_print(sudoku, stdout);
 
 }
 
 
-int sudoku_valid(box_t* sudoku[9][9])
- {
-
-  for(int i = 0; i < 9; i ++) {
-    for(int j = 0; j < 9; j ++) {
-      if(get_value(sudoku[i][j]) == 0) {
-        return 0;
-      }
-    }
-
-  }
-  return 1;
-}
 
 
 

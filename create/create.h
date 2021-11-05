@@ -39,7 +39,8 @@ void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
 
 
-
+void randomize_sudoku(box_t* sudoku[9][9]);
+void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  
  * Prints  given sudoku in grid format to given output file.
@@ -49,7 +50,7 @@ void sudoku_new(box_t* sudoku[9][9], const int SIZE);
  */
 void sudoku_print (box_t* sudoku[9][9], FILE *fp );
 
-
+void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
 /************************** sudoku_unsolved() **********************/
 /* Buils from scratch  an unsolved but solvable sudoku puzzle
  * User provides a new (init valuues == 0) sudoku, and the level of difficulty desired
