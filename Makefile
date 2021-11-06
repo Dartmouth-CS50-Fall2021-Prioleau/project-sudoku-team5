@@ -25,7 +25,7 @@ CC = gcc
 MAKE = make
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
-OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $S/solve.o
+OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $S/solve.o $P/puzzle.o
 
 LIBS =
 

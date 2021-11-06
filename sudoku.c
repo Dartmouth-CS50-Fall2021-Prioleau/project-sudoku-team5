@@ -9,11 +9,8 @@
 #include "./library/memory.h"
 #include "./library/counters.h"
 #include "./solve/solve.h"
+#include "./puzzle/puzzle.h"
 
-int sudoku_valid(box_t* sudoku[9][9]);
-void sudoku_populate(box_t* sudoku[9][9]) ;
-void hor_shift(box_t* sudoku[9][9]) ;
-void vert_shift(box_t* sudoku[9][9]);
 
 int main(const int argc, const char** argv)
 {
@@ -33,36 +30,39 @@ int main(const int argc, const char** argv)
   
   strcpy(mode, argv[1]);
   strcpy(difficulty, argv[2]);
-  box_t* sudoku[9][9];
 
-  sudoku_new(sudoku, 9);
+  //box_t* sudoku[9][9];
+  puzzle_t* puzzle = puzzle_new(9);
 
-  sudoku_populate(sudoku);
+  //sudoku_populate(sudoku);
 
    time_t t;
    
    srand((unsigned) time(&t));
 
-   /* Intializes random number generator */
-   srand((unsigned) time(&t));
     
+  puzzle_print(puzzle, stdout);
 
-  sudoku_print(sudoku, stdout);
   printf("\n");
 
-  randomize_sudoku(sudoku);
+  sudoku_unsolved(puzzle, difficulty);
 
-  sudoku_print(sudoku, stdout);
   printf("\n");
 
-  remove_sudoku(sudoku, 25);
+  puzzle_print(puzzle, stdout);
 
-  sudoku_print(sudoku, stdout);
+  printf("\n");
 
-  solve_sudoku(sudoku);
+
+  update_all_box_counters(puzzle, 1, 2, 3);
+
+  solve_sudoku(puzzle);
+
+  puzzle_print(puzzle, stdout);
+
       
   printf("\n");
 
-  sudoku_print(sudoku, stdout);
+  //sudoku_print(sudoku, stdout);
 
 }
