@@ -40,7 +40,7 @@ typedef struct box box_t;
  */
 box_t* box_new(int size_of_grid);
 
-
+counters_t* get_visited(box_t* box);
 
 /********************** box_value_print() *****************/
 /* Print the value of a box to file
@@ -93,6 +93,11 @@ int get_grid_size_from_box(box_t* box);
  */
 void box_delete(box_t *box);
 
+int get_iteration(box_t* box);
+void reset_box(box_t* box) ;
+int reset_iteration(box_t* box);
+int inc_iteration(box_t* box) ;
+void reset_visited(box_t* box) ;
 
 #endif // __BOX_H
 

@@ -9,15 +9,12 @@
 #include "./library/memory.h"
 #include "./library/counters.h"
 #include "./solve/solve.h"
-#include "./library/file.h"
+#include "./puzzle/puzzle.h"
+#include "./common/build.h"
+#include "./common/unique.h"
 
 
-int sudoku_valid(box_t* sudoku[9][9]);
-void sudoku_populate(box_t* sudoku[9][9]) ;
-void hor_shift(box_t* sudoku[9][9]) ;
-void vert_shift(box_t* sudoku[9][9]);
-bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level);
-static bool is_parsed_sudoku_valid(box_t* sudoku[9][9], char* level);
+
 
 int main(const int argc, const char** argv)
 {
@@ -37,33 +34,36 @@ int main(const int argc, const char** argv)
   
   strcpy(mode, argv[1]);
   strcpy(difficulty, argv[2]);
-  box_t* sudoku[9][9];
 
-  sudoku_new(sudoku, 9);
+  //box_t* sudoku[9][9];
+  puzzle_t* puzzle = puzzle_new(9);
 
-  sudoku_populate(sudoku);
+  //sudoku_populate(sudoku);
 
-   time_t t;
+  time_t t;
    
-   srand((unsigned) time(&t));
+  srand((unsigned) time(&t));
 
-   /* Intializes random number generator */
-   srand((unsigned) time(&t));
     
+  puzzle_print(puzzle, stdout);
 
-  sudoku_print(sudoku, stdout);
   printf("\n");
 
-  randomize_sudoku(sudoku);
+  build_sudoku(puzzle, difficulty);
 
-  sudoku_print(sudoku, stdout);
   printf("\n");
-  printf("removed\n");
-  remove_sudoku(sudoku, 25);
-  //sudoku_create_puzzle(sudoku, difficulty);
-  sudoku_print(sudoku, stdout);
 
-  solve_sudoku(sudoku);
+
+  printf("\n");
+  //set_value(get_box_from_grid(puzzle, 2 ,3),5);
+
+  //update_all_box_counters(puzzle, 1, 2, 3);
+
+  //solve_sudoku(puzzle);
+  puzzle_print(puzzle, stdout);
+
+  //puzzle_print(puzzle, stdout);
+
       
   printf("\n");
 

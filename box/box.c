@@ -25,6 +25,7 @@ typedef struct box {
   int x;    // x location on sudoku grid
   int y;   // y location on sudoku grid
   counters_t* ctr; // counter holding all possible values left 
+  counters_t* visited; // counter holding all possible values left
 } box_t;
 
 /********************************* global functions ********************/
@@ -46,11 +47,13 @@ box_t* box_new(int size_of_grid)
 
     // initialize contents of box structure
     box->value = 0;      // initialize value to zero
+    box->ctr = counters_new();   // hold all possible values 1 through 9 in here
+    box->visited = counters_new();
     box->size_of_grid = size_of_grid; // keep track of overall grid size in individual boz
-    box->ctr = counters_new();   // hold all possible values 1 through grid size in here
 
     for(int i=1; i <= size_of_grid;i++){
         counters_add(box->ctr, i); // add all number 1-9 ass possible values of counters
+        counters_add(box->visited, i); 
     }
     return box;
   }
@@ -83,6 +86,15 @@ counters_t* get_counter(box_t* box) {
   return box->ctr;
 }
 
+counters_t* get_visited(box_t* box)
+ {
+
+  if(box == NULL){ // return if box is NULL
+    return NULL;
+  }
+  // otherwise return counter of given box
+  return box->visited;
+}
 
 
 /***************************** get_value() *******************/
@@ -94,7 +106,6 @@ int get_value(box_t* box){
   }
   return box->value;
 }
-
 
 
 /****************************** set_value() *******************/
@@ -128,3 +139,21 @@ static void box_delete(box_t *box)
     
 }
 
+
+
+
+void reset_box(box_t* box) 
+{
+    for(int i=1; i <= 9;i++){
+      counters_set(box->ctr, i, 1); // add all number 1-9 ass possible values of counters
+    }
+   
+}
+
+void reset_visited(box_t* box) 
+{
+    for(int i=1; i <= 9;i++){
+        counters_set(box->visited, i, 1); // add all number 1-9 ass possible values of counters
+    }
+   
+}

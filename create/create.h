@@ -21,6 +21,7 @@
 #include <stdbool.h>
 #include "../library/counters.h"
 #include "../box/box.h"
+#include "../puzzle/puzzle.h"
 
 /*************************** global types ***********************/
 /* none */
@@ -90,8 +91,8 @@ void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
  * We build a an *inplace* randomized sudoku from scratch.
  */
 
-void
-sudoku_unsolved(box_t* sudoku[9][9], char* level);
+void sudoku_unsolved(puzzle_t* puzzle, char* level);
+
 
 
 /**************************** sudoku_update_rows_cols_box() **************************/
@@ -123,7 +124,7 @@ bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int valu
 
 void sudoku_create_puzzle(box_t* sudoku[9][9], char* level);
 
-int count_num_solutions(box_t* sudoku[9][9], char* level) ;
+//int count_num_solutions(box_t* sudoku[9][9], char* level) ;
 
 #endif // __CREATE_H
 
