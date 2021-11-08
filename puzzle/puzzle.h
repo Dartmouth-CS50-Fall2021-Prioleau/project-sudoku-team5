@@ -119,7 +119,7 @@ void sudoku_populate(box_t* sudoku[9][9]);
 6 0 6 0 8 3 0 0 0 
 
  */
-void sudoku_print (box_t* sudoku[9][9], FILE *fp);
+void puzzle_print_simple (puzzle_t* puzzle, FILE* fp);
 
 
 
@@ -141,9 +141,7 @@ void sudoku_print (box_t* sudoku[9][9], FILE *fp);
 | 6 0 6 | 0 8 3 | 0 0 0 | 
 +-------+-------+-------+
  */
-void
-sudoku_print_formated (box_t* sudoku[9][9], FILE *fp);
 
-
+void puzzle_print_formated (puzzle_t* puzzle, FILE* fp);
 
 #endif // PUZZLE_H 
