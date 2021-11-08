@@ -92,7 +92,6 @@ void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value);
 
 
 
-
 void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  Prints  given sudoku in grid format to given output file.

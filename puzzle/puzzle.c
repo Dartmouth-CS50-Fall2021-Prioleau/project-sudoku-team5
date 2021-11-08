@@ -27,11 +27,11 @@ puzzle_t* puzzle_new(int size, box_t* board[9][9]) {
         if (puzzle->grid != NULL) {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {  // needs to be revised
-
+                    
                     //box_t* box = box_new();
                     box_t* grid[9][9] = puzzle->grid;
                     grid[i][j] = count_malloc(sizeof(box_t*));
-                    grid[i][j] = box_new();
+                    grid[i][j] = box_new(size);
                 }
             }  
             return puzzle;
@@ -42,7 +42,7 @@ puzzle_t* puzzle_new(int size, box_t* board[9][9]) {
 }
 
 box_t** get_grid(puzzle_t* puzzle) {
-
+    
     if (puzzle != NULL && puzzle->grid != NULL) {
         return puzzle->grid;
     }
@@ -72,6 +72,7 @@ int get_grid_size(puzzle_t* puzzle)
     if (puzzle != NULL && puzzle->grid != NULL) {
         return puzzle->size;
     }
+    return NULL;
 }
 
 
@@ -84,9 +85,55 @@ void puzzle_delete(puzzle_t* puzzle)
             box_delete(box);
         }
     }
-
+    
     if (puzzle != NULL) {
         count_free(puzzle);
     }
 }
+
+void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value) {
+    // to do
+    
+    for (int i = 0; i < 9; i++) { // for column of current box
+        // if cross sectional val is 0, proceed, otherwise skip
+        counters_t* column_count = get_counter(sudoku[x][i]);
+        int availability = counters_get(column_count, value);
+        if (availability == 1) {
+            counters_set(column_count, value, 0);
+        }
+    }
+
+    for (int j = 0; j < 9; j++) {
+        counters_t* row_count = get_counter(sudoku[j][y]);
+        int availability = counters_get(row_count, value);
+        if (availability == 1) {
+            counters_set(row_count, value, 0);
+        }
+    }
+
+    int m, n;
+
+    if (x % 3 == 1) { m = -1; }
+    else if (x % 3 == 2) { m = -2; }
+    else { m = 0; }
+
+    if (y % 3 == 1) { n = -1; }
+    else if (y % 3 == 2) { n = -2; }
+    else { n = 0; }
+
+    for ( ; m < 3 - (x%3); m++) {
+        for ( ; n < 3 - (y%3); n++) {
+            if ((x + m != x) || (y + n != y)) {
+                int neighbor_x = x + m;
+                int neighbor_y = y + n;
+                counters_t* three_three_count = get_counter(sudoku[neighbor_x][neighbor_y]);
+                int availability = counters_get(three_three_count, value);
+                if (availability == 1) {
+                    counters_set(three_three_count, value, 0);
+                }
+            }
+        }
+    }
+}
+
 

@@ -38,7 +38,7 @@ typedef struct box box_t;
  * Caller is responsible for:
  *   later calling box_delete();
  */
-box_t* box_new(void);
+box_t* box_new(int size_of_grid);
 
 
 
@@ -80,6 +80,8 @@ void set_value(box_t* box, int val);
  * 
  */
 int get_value(box_t* box); 
+
+int get_grid_size_from_box(box_t* box);
 
 /********************* box_delete() *********************/
 /* Delete the whole box.

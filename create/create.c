@@ -15,7 +15,6 @@
 #include <ctype.h>
 #include <time.h>
 
-#include "../solve/solve.h"
 #include "../library/counters.h"
 #include "../box/box.h"
 
@@ -27,62 +26,14 @@
 
 /************************  static helper  functions  prototypes ******************/
 /* that is, not visible outside this file */
+static void valueprint(FILE* fp, int value);
 static char* normalize_word(char* word);
-static int count_num_solutions_helper(box_t* sudoku[9][9], char*level, int num_solutions, int init_row, int init_column);
 
-static void hor_shift(box_t* sudoku[9][9]) ;
-static void vert_shift(box_t* sudoku[9][9]) ;
 /***************************** global functions *********************************/
 /* that is, visible outside this file */
-void sudoku_populate(box_t* sudoku[9][9]);
-void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
-
-void sudoku_new(box_t* sudoku[9][9], const int SIZE);
-void sudoku_print (box_t* sudoku[9][9], FILE* fp);
-void sudoku_print_formated (box_t* sudoku[9][9], FILE* fp);
-void sudoku_unsolved(box_t* sudoku[9][9], char* level);
-void sudoku_create_puzzle(box_t* sudoku[9][9], char* level);
-int count_num_solutions(box_t* sudoku[9][9], char* level) ;
-bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level);
 
 /******************************* sudoku_create() ********************************/
 /* see create.h for description */
-
-void update_counters(box_t* sudoku[9][9]) {
-    
-    for(int i = 0; i < 9; i ++) {
-      for(int j = 0; j < 9; j ++) {
-
-        int v = get_value(sudoku[i][j]);
-        if( v != 0){
-            vertical_update(i,j,v,sudoku);
-            horizontal_update(i,j,v,sudoku);
-            box_update(i,j,v,sudoku);
-
-
-        }
-      }
-    }
-}
-
-
-
-
-int sudoku_valid(box_t* sudoku[9][9])
- {
-
-  for(int i = 0; i < 9; i ++) {
-    for(int j = 0; j < 9; j ++) {
-      if(get_value(sudoku[i][j]) == 0) {
-        return 0;
-      }
-    }
-
-  }
-  return 1;
-}
-
-
 
 
  void 
@@ -99,7 +50,7 @@ int sudoku_valid(box_t* sudoku[9][9])
         { 
           
           sudoku[i][j] = malloc(sizeof(box_t*));
-          sudoku[i][j] = box_new(); // put a new box at each position in the 2D array/sudoku 
+          sudoku[i][j] =  box_new(); // put a new box at each position in the 2D array/sudoku 
 
         }
     }
@@ -110,7 +61,7 @@ int sudoku_valid(box_t* sudoku[9][9])
 /******************************* sudoku_print() *************************************/
 /* see create.h for description  */
 void
-sudoku_print (box_t* sudoku[9][9], FILE* fp){
+sudoku_print (box_t* sudoku[9][9], FILE* fp,  void (*itemprint)(FILE* fp, void* item)){
     // handle NULL sudoku
     if(fp == NULL){ 
         return;
@@ -123,108 +74,12 @@ sudoku_print (box_t* sudoku[9][9], FILE* fp){
 
     for( int i = 0; i < 9; i++){  // row
         for(int j= 0 ;j < 9; j++){  // column
-           box_value_print(sudoku[i][j],fp); 
+           box_value_print(sudoku[i][j],fp, NULL); 
         }
         printf("\n"); // print next row of sudoku
     }
 
 }
-
-
-
-static void biterate(void *arg, const int key, const int count)
-{
-  int* a = arg;
-
-  if(*a == -1) {
-  }
-  else if(*a != key && count == 1) {
-    (*a) =-1;
-  }
-  
-
-}
-
-
-
-void vertical_c(int x, int y, int* value, box_t* sudoku[9][9])
-{
-  for (int j = 0; j < 9; j++) {
-        if (j != x) {
-            //int px = j + x;
-            if(get_value(sudoku[j][y]) == 0) {
-              counters_iterate(get_counter(sudoku[j][y]), value, biterate);
-            }
-        }
-    }
-}
-
-
-
-void horizontal_c(int x, int y, int* value, box_t* sudoku[9][9])
-{
-    // i dont like this hardcoded
-    for (int i = 0; i < 9; i++) {
-        if (i != y) {
-          if(get_value(sudoku[x][i]) == 0) {
-           counters_iterate(get_counter(sudoku[x][i]), value, biterate);
-            }
-        }
-    }
-}
-
-
-
-void box_c(int x, int y, int* value, box_t* sudoku[9][9]) 
-{
-
-
-  int ip;
-  int jp;
-
-  if(x%3 == 1) { 
-    ip = -1;
-  }
-  else if(x%3 == 2) { 
-    ip = -2;
-  }
-  else {
-    ip = 0;
-  }
-
-  if(y%3 == 1) { 
-    jp = -1;
-  }
-  else if(y%3 == 2) { 
-    jp = -2;
-  }
-  else {
-    jp = 0;
-  }
-
-
-
-
-  for(int i = ip ; i < (3 - (x%3)); i ++) {
-    for(int j = jp ; j < (3 - (y%3)); j ++) {
-
-      //Allows us to ignore points already reached by horizonal and vertical check
-      // logic on adding x or y? 
-      if(i != x || j != y) {
-          if(get_value(sudoku[x+ i][y+j]) == 0) {
-        counters_iterate(get_counter(sudoku[x + i][y+ j]), value, biterate);
-          }
-      }
-      
-
-    }
-    
-  }
-
-}
-
-
-
 
 /************************** sudoku_unsolved() **********************/
 /* see create.h for description  */
@@ -232,14 +87,10 @@ void box_c(int x, int y, int* value, box_t* sudoku[9][9])
 void
 sudoku_unsolved(box_t* sudoku[9][9], char* level){
 /* see create.h for description */
-    //srand(time(NULL));
-   // ensure non- seed randomization here
     srand(time(NULL));
-
     // nomalize level input
     normalize_word(level);
     int num_repeats;
-
     if (strcmp(level, "easy") == 0){
         num_repeats = 37;
        // for 37 times, do the following
@@ -248,7 +99,7 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
         num_repeats = 25;
     }
     else{
-        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD). \n\n");
+        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD");
         return;
     }
 
@@ -261,10 +112,10 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
 
         do{
             // pick a random x
-            random_box_x = rand() % 9; // from 0 to 8
+            random_box_x = rand() % 9; // from 0 to 8 
 
             //pick a random y
-            random_box_y = rand() % 9; // from 0 to 9
+            random_box_y = rand() % 9; // from 0 to 8
                 
         }
         // check if the box at that location has values of zero
@@ -274,52 +125,29 @@ sudoku_unsolved(box_t* sudoku[9][9], char* level){
             // keep cuurent random key and value 
             int random_key;
             int key_value;
-            int h_valid;
-            int v_valid;
-            int b_valid;
-            int valid;
-
+                
             // next pick key from counter until found one whose key value is 1
             do{
                 // pick a random key between 1 and 9 
                 random_key = (rand() % 9 )+ 1; // from 1 to 9
+
+                
                 //gey key value form box's counterset
-                key_value = counters_get(get_counter(sudoku[random_box_x][random_box_y]), random_key);
-
-                h_valid = random_key;
-                v_valid = random_key;
-                b_valid = random_key;
-                valid = random_key;
-
-                if(key_value == 1) {
-                  vertical_c(random_box_x, random_box_y, &v_valid, sudoku);
-                  horizontal_c(random_box_x, random_box_y, &h_valid, sudoku);
-                  box_c(random_box_x, random_box_y, &b_valid, sudoku);
-                  if(h_valid == -1 && b_valid == -1 && v_valid == -1) {
-                    valid = -1;
-                  }
-
-                }
-
-
+                //counters_t* curr = get_counter(sudoku[random_box_x][random_box_y]);
+                //key_value = counters_get(curr, random_key);
 
             }
 
- 
             // check if value of key in that box's counterset is 1
             // while its not, keep picking keys
-            while(key_value !=1 && valid != -1);
-
+            while(((is_val_in_cross_sect(sudoku, random_box_x, random_box_y, random_key) == random_key)));
 
             // set the key's value as value of the box
             set_value(sudoku[random_box_x][random_box_y], random_key);
-             
             //sudoku[random_box_x][random_box_y]->value = random_key; 
-            vertical_update(random_box_x,random_box_y,random_key,sudoku);
-            horizontal_update(random_box_x,random_box_y,random_key,sudoku);
-            box_update(random_box_x,random_box_y,random_key,sudoku);
 
             // update relevant coresponding row, cols, and box->ctr possible values affected by choice of key
+
             //sudoku_update_rows_cols_box(sudoku[9][9], random_box_x, random_box_y, key_value, level); // Veronica's to do  
     }  
 }
@@ -478,87 +306,27 @@ static int count_num_solutions_helper(box_t* sudoku[9][9], char*level, int num_s
             }
         }
 
-    }return num_solutions +1;
+
+//     // verify that the unsolved sudoku is solvable before returning to user.
+//    if(!isSolvable(box_t* sudoku, char* level)){ //  method not-existent yet
+//         // rebuild if unsolvable
+//         sudoku_unsolved(sudoku, level);    
+//     }
 
 }
-
-
-
-/**************************************   val_not_in_cross_section() ************************************/
-bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level)
+// return the value if the value is in the row, column, or 3x3, return 0 otherwise
+int is_val_in_cross_sect(box_t* sudoku[9][9], int curr_x, int curr_y, int value)
 {
-
-    // iterate over rows to check their columns
-
-    for(int r = 0; r < 9; r++){
-        if((get_value(sudoku[r][column]) == value ) && r !=row){
-            return false;
+    for (int i = 0; i < 9; i++) {  // iterate over column
+        if (get_value(sudoku[curr_x][i]) == value) {
+            return value;
         }
     }
 
-    // iterate over columns to check their rows
-    for(int c = 0; c < 9; c++){
-        if((get_value(sudoku[row][c]) == value) && c != column){
-            return false;
-        }
-    }
-
-    // check box
-    int rbox = row/3;
-    int cbox = column/3;
-    for (int i = rbox*3; i < (rbox*3)+3; i++) {
-        for (int j = cbox*3; j < (cbox*3)+3; j++) {
-            if (   (get_value(sudoku[i][j]) == value) && i != row && j != column   ) {
-                return false;
-            }
-        }
-    }
-
-    // main  diagonal 
-    if (strcmp(level, "easy") == 0 || (strcmp(level, "hard")  == 0)) {
-        // main diagonal 
-        if (row == column) {
-            for (int i = 0; i < 9; i++) {
-                // check if it's in the value
-                if (i != row && (get_value(sudoku[i][i]) == value)    ) {
-                    return false;
-                }
-            }
-        }
-        // secondary diagonal
-        if (8-row == column) {
-            for (int i = 0; i < 9; i++) {
-                // check if it's in the value
-                if (8-i != row && column != i && (get_value(sudoku[8-i][i]) == value)) {
-                    return false;
-                }
-            }
-        }
-    }
-    //else printf(stderr, " invalid level parsed.");
-    return true;
 
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*******************************  sudoku_update_rows_cols_box *****************************/
-void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int random_box_y, int key_value, char* level){
-    // to do
-}
 
 /******************************************************************************************/
 /******************************************************************************************/
@@ -567,16 +335,6 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int rando
 /******************************************************************************************/
 /* that is, not visible outside this file */
 
-// /********************* valueprint() ***********************/
-// /* helper method that prints the box value to  given file
-//  *
-//  */
-// static void valueprint(FILE* fp, int value)
-// {  
-//     //if(value != NULL){
-//         fprintf(fp, "%d ", value); 
-//   //}
-// }
 
 
 /*********************** normalize_word() *************************/
@@ -588,7 +346,6 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x,int rando
  * return null toif word is NULL
  * 
  */
-
 static char* normalize_word(char* word)
 {
     for(int i = 0; i <= (strlen(word)); i++) {
@@ -596,158 +353,6 @@ static char* normalize_word(char* word)
     }
 
     return word;
-}
-
-void sudoku_populate(box_t* sudoku[9][9]) 
-{
-
-    int p = 0;
-    for(int i = 0; i < 9; i ++) {
-      for(int j = 0; j < 9; j ++) {
-        if(i > 5) {
-          int w = (p + j +3) %9;
-          if (w==0) { set_value(sudoku[i][j],9 ); }
-          else{ set_value(sudoku[i][j],w );} 
-        }
-        else if(i > 2) {
-          int w = (p + j +2) %9;
-          if (w==0) { set_value(sudoku[i][j],9); }
-          else{ set_value(sudoku[i][j],w );}
-        }
-        else{
-        set_value(sudoku[i][j],(p + j) %9 + 1);
-        }
-        
-    }
-    p = p+3 %9;
-    }
-}
-
-
-void randomize_sudoku(box_t* sudoku[9][9]) 
-{
-  for(int i = 0; i < 10000; i ++) {
-    
-    int r = rand() % 2;
-    if(r == 0) { hor_shift(sudoku); }
-    else { vert_shift(sudoku); }
-    
-  }
-
-} 
-
-static void hor_shift(box_t* sudoku[9][9]) 
-{     
-
-  //pick a random column and random shift
-  int y_1 = rand() % 9;
-  int p = rand() % 2;
-
-
-  int y_2;
-
-  if(y_1%3 == 1) { 
-    if(p == 0){ y_2 = y_1 +1; }
-    else { y_2 = y_1 -1;}
-  }
-  else if(y_1%3 == 2) { 
-    if(p == 0){ y_2 = y_1 -1; }
-    else { y_2 = y_1 -2; }
-  }
-  else {
-    if(p == 0){ y_2 = y_1 +1; }
-    else { y_2 = y_1 +2; }
-  }
-
-
-  //Swap points
-  for(int k = 0; k < 9; k ++) {
-    int a = get_value(sudoku[k][y_1]);
-    int b = get_value(sudoku[k][y_2]);
-    set_value(sudoku[k][y_1], b);
-    set_value(sudoku[k][y_2], a);
-    }
-}
-
-static void vert_shift(box_t* sudoku[9][9]) 
-{     
-      //pick a random column and random shift
-      int x_1 = rand() % 9;
-      int p = rand() %2;
-
-      int x_2;
-      if(x_1%3 == 1) { 
-        if(p == 0){ x_2 = x_1 +1; }
-        else { x_2 = x_1 -1;}
-      }
-      else if(x_1%3 == 2) { 
-        if(p == 0){ x_2 = x_1 -1; }
-        else { x_2 = x_1 -2; }
-      }
-      else {
-        if(p == 0){ x_2 = x_1 +1; }
-        else { x_2 = x_1 +2; }
-      }
-
-
-      //Swap points
-      for(int k = 0; k < 9; k ++) {
-        int a = get_value(sudoku[x_1][k]);
-        int b = get_value(sudoku[x_2][k]);
-        set_value(sudoku[x_1][k], b);
-        set_value(sudoku[x_2][k], a);
-      }
-}
-
-
-
-
-
-void remove_sudoku(box_t* sudoku[9][9], int num_left) 
-{
-    //srand(time(NULL));
-
-    for(int i = 0; i < 81-num_left; i ++) {
-        
-        int random_box_x;
-        int random_box_y;
-        box_t* s[9][9];
-        do{
-            // pick a random x
-            random_box_x = rand() % 9; // from 0 to 8 
-
-            //pick a random y
-            random_box_y = rand() % 9; // from 0 to 8
-
-            if(get_value(sudoku[random_box_x][random_box_y]) != 0) {
-
-              //create new sudoku
-              sudoku_new(s, 9);
-
-              //populate it
-              for(int i = 0; i < 9; i ++) {
-                for(int j = 0; j < 9; j ++) {
-                  set_value(s[i][j], get_value(sudoku[i][j]));
-                }
-              }
-
-              //get rid of random point and see if it can still be solved
-              set_value(s[random_box_x][random_box_y], 0);
-              update_counters(s);
-              solve_sudoku(s);
-            
-
-            }
-                
-        }
-        // check if the box at that location has values of zero
-        // while we haven't found one, keep picking random x,y locations
-        while(sudoku_valid(s) != 1);
-
-         set_value(sudoku[random_box_x][random_box_y], 0);
-    }
-
-    update_counters(sudoku);
 }
 
 
