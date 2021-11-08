@@ -74,6 +74,7 @@ int get_grid_size(puzzle_t* puzzle)
     }
 }
 
+
 void puzzle_delete(puzzle_t* puzzle)
 {
     for (int i = 0; i < puzzle->size; i++) {
@@ -88,3 +89,4 @@ void puzzle_delete(puzzle_t* puzzle)
         count_free(puzzle);
     }
 }
+
