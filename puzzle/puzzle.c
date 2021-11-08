@@ -24,12 +24,14 @@ puzzle_t* puzzle_new(int size) {
     if (puzzle != NULL) {
         puzzle->size = size;
         if (puzzle->grid != NULL) {
-            for (int i = 0; i < 9; i++) {
-                for (int j = 0; j < 9; j++) {  // needs to be revised
-
-                  puzzle->grid[i][j] = malloc(sizeof(box_t*));
-                  puzzle->grid[i][j] = box_new();
-               }
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {  // needs to be revised
+                    
+                    //box_t* box = box_new();
+                    box_t* grid[9][9] = puzzle->grid;
+                    grid[i][j] = count_malloc(sizeof(box_t*));
+                    grid[i][j] = box_new(size);
+                }
             }  
 
             return puzzle;
@@ -62,6 +64,7 @@ int get_grid_size(puzzle_t* puzzle)
     if (puzzle != NULL && puzzle->grid != NULL) {
         return puzzle->size;
     }
+    return NULL;
 }
 
 int get_box_value(puzzle_t* puzzle,int  x, int y)
@@ -94,7 +97,7 @@ void puzzle_delete(puzzle_t* puzzle)
             //box_delete(box);
         }
     }
-
+    
     if (puzzle != NULL) {
         count_free(puzzle);
     }

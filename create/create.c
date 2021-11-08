@@ -15,7 +15,6 @@
 #include <ctype.h>
 #include <time.h>
 
-#include "../solve/solve.h"
 #include "../library/counters.h"
 #include "../box/box.h"
 #include "../puzzle/puzzle.h"
@@ -28,11 +27,9 @@
 
 /************************  static helper  functions  prototypes ******************/
 /* that is, not visible outside this file */
+static void valueprint(FILE* fp, int value);
 static char* normalize_word(char* word);
-static int count_num_solutions_helper(box_t* sudoku[9][9], char*level, int num_solutions, int init_row, int init_column);
 
-static void hor_shift(box_t* sudoku[9][9]) ;
-static void vert_shift(box_t* sudoku[9][9]) ;
 /***************************** global functions *********************************/
 /* that is, visible outside this file */
 void sudoku_populate(box_t* sudoku[9][9]);
@@ -51,6 +48,10 @@ bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int valu
 
 
 
+                
+                //gey key value form box's counterset
+                //counters_t* curr = get_counter(sudoku[random_box_x][random_box_y]);
+                //key_value = counters_get(curr, random_key);
 
 /*************************************** create_sudoku_puzzle() ****************************************/
 void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
@@ -76,6 +77,8 @@ void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
         fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD). \n\n");
         return;
     }
+
+
 
     ///////////////////////////////////////////////
     // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56
@@ -151,7 +154,6 @@ void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
  * return null toif word is NULL
  * 
  */
-
 static char* normalize_word(char* word)
 {
     for(int i = 0; i <= (strlen(word)); i++) {

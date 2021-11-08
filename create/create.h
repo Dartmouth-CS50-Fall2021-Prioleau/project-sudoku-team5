@@ -40,6 +40,7 @@ void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
 
 void randomize_sudoku(box_t* sudoku[9][9]);
+
 void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  Prints  given sudoku in grid format to given output file.
@@ -103,9 +104,20 @@ void sudoku_unsolved(puzzle_t* puzzle, char* level);
  * 
  * 
  */
-void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int random_box_x, int random_box_y, int key_value, char* level);
+void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int x, int y, int value);
 
 
+/******************** is_val_in_cross_sect() ********************/
+/*
+ * 
+ *
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
+int is_val_in_cross_sect(box_t* sudoku[9][9], int curr_x, int curr_y, int value);
 
 /**************************************   val_not_in_cross_section() ************************************/
 bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level);

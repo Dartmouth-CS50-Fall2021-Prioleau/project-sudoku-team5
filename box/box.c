@@ -21,7 +21,7 @@
 /**************** global types ****************/
 typedef struct box {
   int value;
-  int iteration;
+  int size_of_grid;
   int x;    // x location on sudoku grid
   int y;   // y location on sudoku grid
   counters_t* ctr; // counter holding all possible values left 
@@ -35,7 +35,7 @@ typedef struct box {
 /*********************** box_new() *******************/
 /* see box.h for description*/
 
-box_t* box_new(void)
+box_t* box_new(int size_of_grid)
 {
   box_t* box = malloc(sizeof(box_t));
   
@@ -49,8 +49,9 @@ box_t* box_new(void)
     box->value = 0;      // initialize value to zero
     box->ctr = counters_new();   // hold all possible values 1 through 9 in here
     box->visited = counters_new();
+    box->size_of_grid = size_of_grid; // keep track of overall grid size in individual boz
 
-    for(int i=1; i <= 9;i++){
+    for(int i=1; i <= size_of_grid;i++){
         counters_add(box->ctr, i); // add all number 1-9 ass possible values of counters
         counters_add(box->visited, i); 
     }
@@ -101,7 +102,7 @@ counters_t* get_visited(box_t* box)
 int get_value(box_t* box){
 
   if(box == NULL){ // return if box is NULL
-    return NULL;
+    return -1;
   }
   return box->value;
 }
@@ -111,7 +112,7 @@ int get_value(box_t* box){
 /* see box.h for description*/
 void set_value(box_t* box, int val){
 
-  if(box == NULL || val < 0) // handle NULL and negative cases 
+  if(box == NULL || val < 0 || val > box->size_of_grid) // handle NULL and negative cases 
   {
     return;
   }
@@ -119,15 +120,24 @@ void set_value(box_t* box, int val){
   box->value = val;
 }
 
+int get_grid_size_from_box(box_t* box) 
+{
+  if (box != NULL) {
+    return box->size_of_grid;
+  }
+  return -1;
+}
 
 // /************************* box_delete() ********************/
-// /* see box.h for description*/
-// static void box_delete(box_t *box)
-// {
-//     if (box != NULL){
-//         counters_delete(box->ctr);
-//     }
-// }
+/* see box.h for description*/
+static void box_delete(box_t *box)
+{
+    if (box != NULL){
+        counters_delete(box->ctr);
+        free(box);
+    }
+    
+}
 
 
 
