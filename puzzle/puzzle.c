@@ -75,6 +75,7 @@ int get_grid_size(puzzle_t* puzzle)
     return NULL;
 }
 
+
 void puzzle_delete(puzzle_t* puzzle)
 {
     for (int i = 0; i < puzzle->size; i++) {
@@ -134,4 +135,5 @@ void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value) 
         }
     }
 }
+
 

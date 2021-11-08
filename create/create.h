@@ -39,6 +39,7 @@ void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
 
 void randomize_sudoku(box_t* sudoku[9][9]);
+
 void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  Prints  given sudoku in grid format to given output file.
