@@ -90,4 +90,51 @@ void puzzle_delete(puzzle_t* puzzle);
 
 void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value);
 
+
+
+
+void sudoku_populate(box_t* sudoku[9][9]);
+/******************** sudoku_print ***************/
+/*  Prints  given sudoku in grid format to given output file.
+ * Caller provides an output file 
+ * and the sudoku to print. For example
+ * 
+3 4 0 6 0 0 4 8 7 
+0 0 2 9 0 0 0 0 0 
+0 8 0 0 4 0 8 0 5 
+0 0 7 8 1 0 2 0 4 
+0 0 2 0 9 0 0 0 8 
+0 0 0 3 8 0 0 9 0 
+0 3 8 0 0 6 6 0 0 
+0 0 0 1 3 9 8 9 8 
+6 0 6 0 8 3 0 0 0 
+
+ */
+void sudoku_print (box_t* sudoku[9][9], FILE *fp);
+
+
+
+/*************************  sudoku_print_formated () ****************************/
+/* Prints sudoku to console using textual representation with characters "|"and "__ "
+ * to build the grid, white spaces as needed, and integers 0 to 9 to represent numbers
+ * in the puzzle with 0 representing a missing number. For example
++-------+-------+-------+
+| 3 4 0 | 6 0 0 | 4 8 7 | 
+| 0 0 2 | 9 0 0 | 0 0 0 | 
+| 0 8 0 | 0 4 0 | 8 0 5 | 
++-------+-------+-------+
+| 0 0 7 | 8 1 0 | 2 0 4 | 
+| 0 0 2 | 0 9 0 | 0 0 8 | 
+| 0 0 0 | 3 8 0 | 0 9 0 | 
++-------+-------+-------+
+| 0 3 8 | 0 0 6 | 6 0 0 | 
+| 0 0 0 | 1 3 9 | 8 9 8 | 
+| 6 0 6 | 0 8 3 | 0 0 0 | 
++-------+-------+-------+
+ */
+void
+sudoku_print_formated (box_t* sudoku[9][9], FILE *fp);
+
+
+
 #endif // PUZZLE_H 
