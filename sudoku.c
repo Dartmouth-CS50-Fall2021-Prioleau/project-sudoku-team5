@@ -56,8 +56,7 @@ int main(const int argc, const char** argv)
 
   printf("\n");
   //set_value(get_box_from_grid(puzzle, 2 ,3),5);
-  update_all_box_counters(puzzle);
-  counters_print(get_counter(get_box_from_grid(puzzle, 1 ,5)), stdout);
+
   //update_all_box_counters(puzzle, 1, 2, 3);
 
   //solve_sudoku(puzzle);
