@@ -10,7 +10,7 @@
 
 #include "../library/counters.h"
 #include "box.h"
-#include "../sudoku/sudoku.c"
+#include "../sudoku.c"
 
 
 void horizontal_available(box_t* sudoku[9][9], int x, int y, counters_t* main);

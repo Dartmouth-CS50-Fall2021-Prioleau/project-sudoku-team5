@@ -31,7 +31,7 @@ puzzle_t* puzzle_new(int size, box_t* board[9][9]) {
                     //box_t* box = box_new();
                     box_t* grid[9][9] = puzzle->grid;
                     grid[i][j] = count_malloc(sizeof(box_t*));
-                    grid[i][j] = box_new();
+                    grid[i][j] = box_new(size);
                 }
             }  
             return puzzle;
@@ -72,6 +72,7 @@ int get_grid_size(puzzle_t* puzzle)
     if (puzzle != NULL && puzzle->grid != NULL) {
         return puzzle->size;
     }
+    return NULL;
 }
 
 void puzzle_delete(puzzle_t* puzzle)

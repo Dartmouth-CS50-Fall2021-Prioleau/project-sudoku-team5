@@ -90,8 +90,4 @@ void puzzle_delete(puzzle_t* puzzle);
 
 void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value);
 
-<<<<<<< HEAD
 #endif // PUZZLE_H
-=======
-#endif // PUZZLE_H 
->>>>>>> main
