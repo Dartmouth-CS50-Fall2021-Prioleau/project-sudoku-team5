@@ -26,7 +26,7 @@ CC = gcc
 MAKE = make
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
-OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $S/solve.o $P/puzzle.o $M/build.c $M/unique.c
+OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $L/file.o $S/solve.o $P/puzzle.o $M/build.c $M/unique.c 
 
 LIBS =
 
@@ -35,7 +35,7 @@ sudoku: sudoku.o $(OBJS)
 
 
 # Dependencies: object files depend on header files
-sudoku.o: $L/counters.h $C/create.h $B/box.h $L/memory.h $S/solve.h $P/puzzle.h $M/build.h $M/unique.h
+sudoku.o: $L/counters.h $C/create.h $B/box.h $L/memory.h $L/file.h $S/solve.h $P/puzzle.h $M/build.h $M/unique.h
 
 all: sudoku
 

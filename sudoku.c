@@ -45,7 +45,7 @@ int main(const int argc, const char** argv)
   srand((unsigned) time(&t));
 
     
-  puzzle_print(puzzle, stdout);
+  puzzle_print_formated(puzzle, stdout);
 
   printf("\n");
 
@@ -60,7 +60,7 @@ int main(const int argc, const char** argv)
   //update_all_box_counters(puzzle, 1, 2, 3);
 
   //solve_sudoku(puzzle);
-  puzzle_print(puzzle, stdout);
+  puzzle_print_formated(puzzle, stdout);
 
   //puzzle_print(puzzle, stdout);
 
@@ -68,21 +68,15 @@ int main(const int argc, const char** argv)
   printf("\n");
 
 /// testing parsing of user sudoku
-  sudoku_print(sudoku, stdout);
-  box_t* newSudoku[9][9];
-  sudoku_new(newSudoku, 9);
-  printf("newSudoku\n");
-  sudoku_print(newSudoku, stdout);
 
   //char filename[10];
   //printf(filename,"parse.txt");
-  FILE *fp = fopen("parse.txt", "r"); // open created test file
-  if (fp == NULL  ) printf("its here\n");   
-  bool state = parse_user_sudoku(fp, newSudoku, difficulty);
+  //FILE *fp = fopen("parse.txt", "r"); // open created test file
+  //if (fp == NULL  ) printf("its here\n");   
+  //bool state = parse_user_sudoku(fp, newSudoku, difficulty);
   printf("\n");
-  if(state == true) printf("STATUS == TRUE\n\n");
-  else printf("oh no\n");
-  sudoku_print(newSudoku, stdout);
+  //if(state == true) printf("STATUS == TRUE\n\n");
+  //else printf("oh no\n");
   
 }
 
@@ -110,9 +104,9 @@ bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
       if(value <= 9 && value >= 0)
       {
         //create a new box and set its value to be the scanned value, and put it in the sudoku 
-        box_t*  box = box_new();
-        set_value(box, value);
-        sudoku[r][c] = box;
+        //box_t*  box = box_new();
+        //set_value(box, value);
+        //sudoku[r][c] = box;
       }
       else return false;
     }
@@ -132,9 +126,9 @@ bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
   //   return false;
   // }
   
-  solve_sudoku(sudoku);
-  printf("printing solved sudoku\n");
-  sudoku_print(sudoku, stdout);
+  //solve_sudoku(sudoku);
+  //printf("printing solved sudoku\n");
+  //sudoku_print(sudoku, stdout);
   // if valid sudoku, return  true
   return true; 
 }
