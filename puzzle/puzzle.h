@@ -46,6 +46,8 @@ puzzle_t* puzzle_new(int size);
  */ 
 box_t** get_grid(puzzle_t* puzzle);
 
+void puzzle_print (puzzle_t* puzzle, FILE* fp);
+void valid_add(puzzle_t* puzzle, int x, int y, int* value, int reset) ;
 /********************* get_box_from_grid() *********************/
 /* Return the box struct held at a given coordinate (x,y) on in the 2-D grid of the puzzle_t struct
  * 
@@ -60,6 +62,7 @@ box_t** get_grid(puzzle_t* puzzle);
  * 
  */ 
 box_t* get_box_from_grid(puzzle_t* puzzle, int x, int y);
+
 
 /********************* set_box_in_grid() *********************/
 /* Set the box_t* pointer at a given (x,y) point in the 2-D array of pointers to a provided box object
@@ -88,6 +91,13 @@ void puzzle_iterate(puzzle_t* puzzle);
  */
 void puzzle_delete(puzzle_t* puzzle);
 
-void update_adjacent_box_counters(box_t* sudoku[9][9], int x, int y, int value);
+void update_all_box_counters(puzzle_t* puzzle);
+void update_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value);
+int get_box_value(puzzle_t* puzzle,int  x, int y);
+int get_box_count(puzzle_t* puzzle,int  x, int y, int value);
+int get_visit_count(puzzle_t* puzzle,int  x, int y, int value);
+
+void reset_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value) ;
+void reset_all(puzzle_t* puzzle) ;
 
 #endif // PUZZLE_H 

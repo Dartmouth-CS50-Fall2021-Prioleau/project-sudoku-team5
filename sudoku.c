@@ -10,6 +10,10 @@
 #include "./library/counters.h"
 #include "./solve/solve.h"
 #include "./puzzle/puzzle.h"
+#include "./common/build.h"
+#include "./common/unique.h"
+
+
 
 
 int main(const int argc, const char** argv)
@@ -36,33 +40,33 @@ int main(const int argc, const char** argv)
 
   //sudoku_populate(sudoku);
 
-   time_t t;
+  time_t t;
    
-   srand((unsigned) time(&t));
+  srand((unsigned) time(&t));
 
     
   puzzle_print(puzzle, stdout);
 
   printf("\n");
 
-  sudoku_unsolved(puzzle, difficulty);
-
-  printf("\n");
-
-  puzzle_print(puzzle, stdout);
+  build_sudoku(puzzle, difficulty);
 
   printf("\n");
 
 
-  update_all_box_counters(puzzle, 1, 2, 3);
+  printf("\n");
+  //set_value(get_box_from_grid(puzzle, 2 ,3),5);
+  update_all_box_counters(puzzle);
+  counters_print(get_counter(get_box_from_grid(puzzle, 1 ,5)), stdout);
+  //update_all_box_counters(puzzle, 1, 2, 3);
 
-  solve_sudoku(puzzle);
-
+  //solve_sudoku(puzzle);
   puzzle_print(puzzle, stdout);
+
+  //puzzle_print(puzzle, stdout);
 
       
   printf("\n");
 
-  //sudoku_print(sudoku, stdout);
 
 }
