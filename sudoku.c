@@ -8,12 +8,13 @@
 #include "./box/box.h"
 #include "./library/memory.h"
 #include "./library/counters.h"
+#include "./library/file.h"
 #include "./solve/solve.h"
 #include "./puzzle/puzzle.h"
 #include "./common/build.h"
 #include "./common/unique.h"
 
-
+bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle, char* level);
 
 
 int main(const int argc, const char** argv)
@@ -28,64 +29,69 @@ int main(const int argc, const char** argv)
 
   }
   
+  //allocate space for inputs and copy them to variables
   char* mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
   char* difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
 
   
   strcpy(mode, argv[1]);
   strcpy(difficulty, argv[2]);
-
-  //box_t* sudoku[9][9];
-  puzzle_t* puzzle = puzzle_new(9);
-
-  //sudoku_populate(sudoku);
-
+  
   time_t t;
-   
   srand((unsigned) time(&t));
 
+
+  //check the mode
+  if(strcmp(mode, "create") == 0) {
     
-  puzzle_print_formated(puzzle, stdout);
+    puzzle_t* puzzle = puzzle_new(9);
 
-  printf("\n");
+    //build a fully filled sudoku
+    build_sudoku(puzzle, difficulty);
 
-  build_sudoku(puzzle, difficulty);
+    //create a sudoku, removing points and checking for uniqueness
+    //create_sudoku(puzzle);
 
-  printf("\n");
-
-
-  printf("\n");
-  //set_value(get_box_from_grid(puzzle, 2 ,3),5);
-
-  //update_all_box_counters(puzzle, 1, 2, 3);
-
-  //solve_sudoku(puzzle);
-  puzzle_print_formated(puzzle, stdout);
-
-  //puzzle_print(puzzle, stdout);
+    //print the created sudoku
+    puzzle_print_simple(puzzle, stdout);
 
       
-  printf("\n");
 
-/// testing parsing of user sudoku
+  }
+  else {
+    
+    
+    puzzle_t* parsed = puzzle_new(9);
+    FILE* file = fopen("parse.txt", "r");
 
-  //char filename[10];
-  //printf(filename,"parse.txt");
-  //FILE *fp = fopen("parse.txt", "r"); // open created test file
-  //if (fp == NULL  ) printf("its here\n");   
-  //bool state = parse_user_sudoku(fp, newSudoku, difficulty);
-  printf("\n");
-  //if(state == true) printf("STATUS == TRUE\n\n");
-  //else printf("oh no\n");
+    //take the input and build the puzzle struct from the data
+    parse_user_sudoku(file, parsed, difficulty);
+
+    puzzle_print_simple(parsed, stdout);
+
+    /*
+    bool is_solvable = solve_sudoku(parsed);
+    if(is_solvable == false) {
+      fprintf(stderr, "given Sudoku is not solvable");
+      return 1;
+    }
+    else {
+      puzzle_print_simple(puzzle, stdout);
+      return 0;
+
+    }
+    */
+
+  }
   
 }
 
 /**************************** bool parse_user_sudoku () **********************************/
 /* see sudoku.h for more detail */
-bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
+bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle, char* level)
 { 
   // return NULL if either fp or sudoku is NULL
-  if (fp == NULL || sudoku == NULL ){
+  if (fp == NULL || puzzle == NULL ){
     printf("something is wrong\n");
     return false;
   }
@@ -104,9 +110,9 @@ bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
       if(value <= 9 && value >= 0)
       {
         //create a new box and set its value to be the scanned value, and put it in the sudoku 
-        //box_t*  box = box_new();
-        //set_value(box, value);
-        //sudoku[r][c] = box;
+        box_t*  box = box_new(9);
+        set_value(box, value);
+        set_box_in_grid(puzzle, box, r,c);
       }
       else return false;
     }
@@ -119,38 +125,11 @@ bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
   // verify that the number of lines in fp is 9 -> 9 rows in sudoku
   if (lines_in_file(fp) !=9 ) return false; // not  9x9 sudoku
 
-
-  // // validate sudoku
-  // if (!is_parsed_sudoku_valid(sudoku, level)) {
-  //   printf("not solvable\n");
-  //   return false;
-  // }
-  
-  //solve_sudoku(sudoku);
-  //printf("printing solved sudoku\n");
-  //sudoku_print(sudoku, stdout);
-  // if valid sudoku, return  true
   return true; 
 }
 
 
 
-/*****************************  is_parsed_sudoku_valid() ******************/
-static bool is_parsed_sudoku_valid(box_t* sudoku[9][9], char* level)
- { 
-   // return  false if  NULL sudoku
-   if (sudoku == NULL) return false;
-   // loop through sudoku and check all non empty slots if the do not invalidate the sudoku
-   for (int i = 0; i< 9; i++) 
-   {
-      for (int j = 0; j< 9; j++)
-       {
-         int value = get_value(sudoku[i][j]);
-         if (value != 0 && !val_not_in_cross_section(sudoku, i, j, value, level)) return false;
-        }
-    }
-    return true;
-}
 
 
 
