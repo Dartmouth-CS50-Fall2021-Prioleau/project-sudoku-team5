@@ -120,6 +120,7 @@ void puzzle_delete(puzzle_t* puzzle)
     }
 }
 
+
 void puzzle_print (puzzle_t* puzzle, FILE* fp)
 {
     // handle NULL sudoku
@@ -222,3 +223,123 @@ void reset_all(puzzle_t* puzzle)
       }
     }  
 }
+
+/*****************************************/
+/************Printing Methods*************/
+/*****************************************/
+
+void puzzle_print_simple (puzzle_t* puzzle, FILE* fp)
+{
+    // handle NULL sudoku
+    if(fp == NULL){ 
+        return;
+    }
+    // print null if sudoku is null
+    if(puzzle->grid == NULL){
+        printf("(null)");
+        return;
+    }
+
+    for( int i = 0; i < 9; i++){  // row
+        for(int j= 0 ;j < 9; j++){  // column
+           box_value_print(puzzle->grid[i][j],fp); 
+        }
+        printf("\n"); // print next row of sudoku
+    }
+
+}
+
+
+
+void puzzle_print_formated (puzzle_t* puzzle, FILE* fp)
+{
+    // handle NULL sudoku
+    if(fp == NULL){ 
+        return;
+    }
+    // print null if sudoku is null
+    if(puzzle == NULL){
+        printf("(null)");
+        return;
+    }
+
+
+    printf("+-------+-------+-------+\n");
+     
+    // the  3 3X3 sudoku's in the first row
+    for ( int i = 0; i< 3; i++){  //first three rows
+
+        for(int j= 0 ;j < 9; j++){ // all their collumns
+
+            // start of column
+            if(  j == 0 ){
+                printf("| ");
+                box_value_print(puzzle->grid[i][j],fp);
+            }
+
+             // end of sub 3X3 sudoku
+             else if ( j  == 2 || j == 5 || j == 8){
+                 //print vertical bound
+                 box_value_print(puzzle->grid[i][j],fp);
+                 printf("| ");
+             }
+            else{
+                box_value_print(puzzle->grid[i][j],fp); 
+            }
+        }printf("\n"); // print next row of sudoku
+       
+
+    } printf("+-------+-------+-------+\n");
+
+
+    // the  3 3X3 sudoku's in the second row
+    for ( int i = 3; i< 6; i++){
+
+        for(int j= 0 ;j < 9; j++){
+
+            // start of column
+            if(  j == 0 ){
+                printf("| ");
+                box_value_print(puzzle->grid[i][j],fp);
+            }
+
+             // end of sub 3X3 sudoku
+             else if ( j  == 2 || j == 5 || j == 8){
+                 //print vertical bound
+                 box_value_print(puzzle->grid[i][j],fp);
+                 printf("| ");
+             }
+            else{
+                box_value_print(puzzle->grid[i][j],fp); 
+            }
+        }printf("\n"); // print next row of sudoku
+       
+
+    } printf("+-------+-------+-------+\n");
+
+
+
+    // the  3 3X3 sudoku's in the third(last) row
+    for ( int i = 6; i< 9; i++){  // last three rows
+
+        for(int j= 0 ;j < 9; j++){ // all their columns
+
+            // start of column
+            if(  j == 0 ){
+                printf("| ");
+                box_value_print(puzzle->grid[i][j],fp);
+            }
+
+             // end of sub 3X3 sudoku
+             else if ( j  == 2 || j == 5 || j == 8){
+                 //print vertical bound
+                 box_value_print(puzzle->grid[i][j],fp);
+                 printf("| ");
+             }
+            else{
+                box_value_print(puzzle->grid[i][j],fp); 
+            }
+        }printf("\n"); // print next row of sudoku     
+    } printf("+-------+-------+-------+\n"); // of sudoku line
+}
+
