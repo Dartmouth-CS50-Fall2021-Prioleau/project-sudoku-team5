@@ -16,17 +16,16 @@
 L = ./library
 C = ./create
 B = ./box
-S = ./solve
 P = ./puzzle
 M = ./common
 
 
-CFLAGS = -Wall -pedantic -std=c11 -ggdb -I$L -I$C -I$B -I$S -I$P -I$M
+CFLAGS = -Wall -pedantic -std=c11 -ggdb -I$L -I$C -I$B -I$P -I$M
 CC = gcc
 MAKE = make
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
-OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $L/file.o $S/solve.o $P/puzzle.o $M/build.c $M/unique.c 
+OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $L/file.o $P/puzzle.o $M/build.c $M/unique.c 
 
 LIBS =
 
@@ -35,7 +34,7 @@ sudoku: sudoku.o $(OBJS)
 
 
 # Dependencies: object files depend on header files
-sudoku.o: $L/counters.h $C/create.h $B/box.h $L/memory.h $L/file.h $S/solve.h $P/puzzle.h $M/build.h $M/unique.h
+sudoku.o: $L/counters.h $C/create.h $B/box.h $L/memory.h $L/file.h $P/puzzle.h $M/build.h $M/unique.h
 
 all: sudoku
 
