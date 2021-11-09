@@ -141,8 +141,7 @@ void sudoku_print (box_t* sudoku[9][9], FILE *fp);
 | 6 0 6 | 0 8 3 | 0 0 0 | 
 +-------+-------+-------+
  */
-void
-sudoku_print_formated (box_t* sudoku[9][9], FILE *fp);
+void sudoku_print_formated (box_t* sudoku[9][9], FILE *fp);
 
 
 
