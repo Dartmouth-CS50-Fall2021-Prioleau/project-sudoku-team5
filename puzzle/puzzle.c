@@ -13,28 +13,34 @@
 /**************** global types ****************/
 typedef struct puzzle {
     int size;
-    box_t* grid[9][9];
+    // box_t* grid[9][9];
+    box_t*** grid;
 }  puzzle_t;
 
 
 puzzle_t* puzzle_new(int size) {
 
     // int size_squared = size * size;
-    puzzle_t* puzzle = malloc((sizeof(puzzle_t)));
+    puzzle_t* puzzle = count_malloc((sizeof(puzzle_t)));
     if (puzzle != NULL) {
         puzzle->size = size;
-        if (puzzle->grid != NULL) {
-            for (int i = 0; i < size; i++) {
-                for (int j = 0; j < size; j++) {  // needs to be revised
-                    
-                    //box_t* box = box_new();
-                    puzzle->grid[i][j] = count_malloc(sizeof(box_t*));
-                    puzzle->grid[i][j] = box_new(size);
-                }
-            }  
-
-            return puzzle;
+        double sqrt_size = sqrt(size);
+        if ((ceil(sqrt_size) == floor(sqrt_size)) && size > 0) {  // check for perfect square
+            box_t*** grid = count_calloc_assert(size, sizeof(box_t***), "GRID IS NULL OH NO\n");
+            if (grid != NULL) {
+                puzzle->grid = grid;
+                for (int i = 0; i < size; i++) {
+                    box_t** row_holder = count_calloc_assert(size, sizeof(box_t**), "ROW-HOLDER IS NULL OH NO\n");
+                    grid[i] = row_holder;
+                    for (int j = 0; j < size; j++) {  // needs to be revised
+                        grid[i][j] = count_malloc(sizeof(box_t*));
+                        grid[i][j] = box_new(size);
+                    }
+                }  
+                return puzzle;
+            }
         }
+        
         return NULL;
     }
     return NULL;
@@ -42,11 +48,11 @@ puzzle_t* puzzle_new(int size) {
 
 box_t* get_box_from_grid(puzzle_t* puzzle, int x, int y) {
 
-    //if ((puzzle != NULL && puzzle->grid != NULL) && ((x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size))) {
+    if ((puzzle != NULL && puzzle->grid != NULL) && ((x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size))) {
         //box_t* grid[9][9] = puzzle->grid;
         box_t* box = puzzle->grid[x][y];
         return box;
-    //}
+    }
     return NULL;
 }
 
@@ -63,7 +69,7 @@ int get_grid_size(puzzle_t* puzzle)
     if (puzzle != NULL && puzzle->grid != NULL) {
         return puzzle->size;
     }
-    return NULL;
+    return -1;
 }
 
 int get_box_value(puzzle_t* puzzle,int  x, int y)
@@ -89,17 +95,51 @@ int get_visit_count(puzzle_t* puzzle,int  x, int y, int value){
 
 void puzzle_delete(puzzle_t* puzzle)
 {
-    for (int i = 0; i < puzzle->size; i++) {
-        for (int j = 0; j < puzzle->size; j++) {
-            //box_t* grid[9][9] = puzzle->grid;
-            //box_t* box = puzzle->grid[i][j];
-            //box_delete(box);
+    if (puzzle->grid != NULL) {
+        for (int i = 0; i < puzzle->size; i++) {
+            if (puzzle->grid[i] != NULL) {
+                for (int j = 0; j < puzzle->size; j++) {
+                    if (puzzle->grid[i][j] != NULL) {
+                        box_t* box = puzzle->grid[i][j];
+                        box_delete(box);
+                    }
+                    //box_t* grid[9][9] = puzzle->grid;
+                    //box_t* box = puzzle->grid[i][j];
+                    //box_delete(box);
+                }
+                count_free(puzzle->grid[i]);
+            }
+            
+            
         }
     }
+    
     
     if (puzzle != NULL) {
         count_free(puzzle);
     }
+}
+
+
+void puzzle_print (puzzle_t* puzzle, FILE* fp)
+{
+    // handle NULL sudoku
+    if(fp == NULL){ 
+        return;
+    }
+    // print null if sudoku is null
+    if(puzzle->grid == NULL){
+        printf("(null)");
+        return;
+    }
+
+    for( int i = 0; i < puzzle->size; i++){  // row
+        for(int j= 0 ; j < puzzle->size; j++){  // column
+           box_value_print(puzzle->grid[i][j],fp); 
+        }
+        printf("\n"); // print next row of sudoku
+    }
+
 }
 
 
