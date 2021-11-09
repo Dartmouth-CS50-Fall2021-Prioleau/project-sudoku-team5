@@ -91,18 +91,31 @@ int main(const int argc, const char** argv)
   }
   else {
     
-    
+    char* unsolved;
+
+    //Allow the user to input a sudoku or read in a piped in created sudoku
+    while(!feof(stdin)) {
+
+      unsolved = freadfilep(stdin);
+
+    }
+
     puzzle_t* parsed = puzzle_new(9);
+
+    //For testing
     FILE* file = fopen("parse.txt", "r");
 
+    //***This needs to be updated to handle string instead of file
     //take the input and build the puzzle struct from the data
     parse_user_sudoku(file, parsed);
 
+    //Print the input
     puzzle_print_simple(parsed, stdout);
 
+    //Solve the sudoku
     build_sudoku(parsed, mode);
     
-    
+    //Print the solved sudoku
     puzzle_print_simple(parsed, stdout);
 
 
