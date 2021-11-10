@@ -61,7 +61,7 @@ void valid_add(puzzle_t* puzzle, int x, int y, int* value, int reset) ;
  * 
  * 
  */ 
-box_t* get_box_from_grid(puzzle_t* puzzle, int x, int y);
+int get_box_val_from_grid(puzzle_t* puzzle, int x, int y);
 
 
 /********************* set_box_in_grid() *********************/
@@ -73,9 +73,11 @@ box_t* get_box_from_grid(puzzle_t* puzzle, int x, int y);
  * We return:
  *  nothing, but we set the grid pointer at the given coordinates to the provided box.
  */
-void set_box_in_grid(puzzle_t* puzzle, box_t* box, int x, int y);
+bool set_box_val_in_grid(puzzle_t* puzzle, int box, int x, int y);
 
 int get_grid_size(puzzle_t* puzzle);
+
+bool val_not_in_cross_section(puzzle_t* puzzle, int x, int y, int value, char* level);
 
 void puzzle_iterate(puzzle_t* puzzle);
 

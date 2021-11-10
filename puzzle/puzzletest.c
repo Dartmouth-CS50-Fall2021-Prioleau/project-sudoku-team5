@@ -23,7 +23,7 @@ int main() {
     if (puzzle1 != NULL) {
         printf("memory for puzzle1 successfully allocated!\n\n"); 
         printf("check the initialization of box_t structs within grid indirectly through printing puzzle struct (should be grid of 0s)\n");
-        puzzle_print(puzzle1, stdout);
+        puzzle_print_simple(puzzle1, stdout);
     } else {
         printf("unable to properly allocate memory to puzzle1. UNIT TEST FAILED\n\n");
     }
