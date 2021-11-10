@@ -27,11 +27,15 @@ bool build_sudoku(puzzle_t* puzzle, char* mode)
     
     for(int i = 0; i < 9; i ++) {
       for(int j = 0; j < 9; j ++ ) {
-        set_box_in_grid(copy, get_box_from_grid(puzzle, i,j), i, j);
+        box_t* temp = box_new(9);
+        set_value(temp, get_box_value(puzzle, i,j));
+        set_box_in_grid(copy, temp, i, j);
       }
     }
 
   }
+
+  puzzle_print_formated(copy, stdout);
 
   //Initialize variables
   int i;
@@ -58,7 +62,6 @@ bool build_sudoku(puzzle_t* puzzle, char* mode)
 
     //If we are in solve mode and at a point set at input, ignore
     while(strcmp(mode, "create") != 0 && k < 81 && get_box_value(copy, i, j) != 0) {
-
         k += 1;
         i = k/9;
         j = k%9;
@@ -82,46 +85,37 @@ bool build_sudoku(puzzle_t* puzzle, char* mode)
 
     counters_iterate(temp, &options, counter_size);  
 
+    counters_delete(temp);
     //If the point has no psosible values, backtrack
     if(options == 0) {
 
-      //get the current value form the previous point
-      prev_i = (k-1)/9;
-      prev_j = (k-1)%9;
+      do {
+
+        //get the current value form the previous point
+        prev_i = (k-1)/9;
+        prev_j = (k-1)%9;
+        i = k/9;
+        j = k%9;
+        //printf("%d %d ", prev_i, prev_j);
+        
+
+        
+        reset_visited(get_box_from_grid(puzzle,i,j));
 
 
-      //reset the previous point to 0
-      set_value(get_box_from_grid(puzzle,prev_i,prev_j), 0);
+        if(get_box_value(copy, prev_i, prev_j) == 0) {
+          set_value(get_box_from_grid(puzzle,prev_i,prev_j), 0);
+        }
 
-      //reset visited on current point     
-      reset_visited(get_box_from_grid(puzzle,i,j));
-
-      
-
-      //This works but is chunky as fuck
-      //Still dont handle an unsolvalbe sudoku
-      if(strcmp(mode, "solve") == 0) {
-        k = 0;
-      }
-      else{
         k -= 1;
-      }
+        
 
-
-      //prev_i = (k-1)/9;
-      //prev_j = (k-1)%9;
-      //If we are in solve mode and at a point set at input, ignore
-      //while(strcmp(mode, "create") != 0 && k >= 0 && get_box_value(copy, prev_i, prev_j) != 0) {
+        if(k == 0) {
+          break;
+        }
       
-      //  k -= 1;
-      //  prev_i = (k-1)/9;
-      //  prev_j = (k-1)%9;
-
-      //}
-      //The sudoku is unsolvalbe
-      if(k < 0) {
-        return false;
       }
+      while (get_box_value(copy, prev_i, prev_j) != 0);
 
     }
     else{
@@ -157,6 +151,7 @@ bool build_sudoku(puzzle_t* puzzle, char* mode)
     }
   }
 
+  puzzle_delete(copy);
   //Return true to indicate the puzzle was created or solved successfully
   return true;
 
