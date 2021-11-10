@@ -141,6 +141,7 @@ void box_delete(box_t *box)
 {
     if (box != NULL){
         counters_delete(box->range);
+        counters_delete(box->visited);
         free(box);
     }
     

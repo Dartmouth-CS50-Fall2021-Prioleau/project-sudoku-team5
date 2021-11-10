@@ -76,7 +76,6 @@ int main(const int argc, const char** argv)
   time_t t;
   srand((unsigned) time(&t));
 
-printf("hi");
   //check the mode
   if(strcmp(mode, "create") == 0) {
     
@@ -88,7 +87,7 @@ printf("hi");
 
     build_sudoku(puzzle, mode);
     printf("fully  built sudoku: \n\n");
-    puzzle_print(puzzle, stdout);
+    puzzle_print_formated(puzzle, stdout);
     printf("\n\n");
  
 
@@ -97,20 +96,21 @@ printf("hi");
     // delete num  from fully built  sudoku
     printf("removing entries from puzzle: \n\n");
     create_sudoku(puzzle, difficulty);
-    puzzle_print(puzzle, stdout);
+    puzzle_print_formated(puzzle, stdout);
     printf("\n\n");
 
     // try solving 
     printf("solving sudoku: ... \n");
     build_sudoku(puzzle, "solve");
-    puzzle_print(puzzle, stdout);
+    puzzle_print_formated(puzzle, stdout);
     printf("\n\n");
- 
-//   //testing parsing of user puzzle
-//   FILE *fp = fopen("parse.txt", "r"); // open created test file
-//   if (fp == NULL  ) printf("failed to open file\n");   
-//   parse_user_puzzle(fp, puzzle, difficulty);
-//   printf("\n");
+
+    puzzle_delete(puzzle);
+    free(mode);
+    if(argc == 3 ) {
+      free(difficulty);
+    }
+
   
 }  
 
@@ -119,11 +119,11 @@ printf("hi");
     char* unsolved;
 
     //Allow the user to input a sudoku or read in a piped in created sudoku
-    while(!feof(stdin)) {
+    //while(!feof(stdin)) {
 
-      unsolved = freadfilep(stdin);
+    //  unsolved = freadfilep(stdin);
 
-    }
+    //}
 
     puzzle_t* parsed = puzzle_new(9);
 
@@ -144,18 +144,9 @@ printf("hi");
     puzzle_print_simple(parsed, stdout);
 
 
-    /*
-    bool is_solvable = solve_sudoku(parsed);
-    if(is_solvable == false) {
-      fprintf(stderr, "given Sudoku is not solvable");
-      return 1;
-    }
-    else {
-      puzzle_print_simple(puzzle, stdout);
-      return 0;
 
-    }
-    */
+    
+
 
   }
   
