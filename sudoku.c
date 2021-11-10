@@ -182,7 +182,7 @@ bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle)
       if(scan_status != 1) return false; 
 
       // ensure that value is between 0 andf 9 strictly
-      if(value <= 9 && value >= 0)
+      if(value <= get_grid_size(puzzle) && value >= 0)
       {
         //create a new box and set its value to be the scanned value, and put it in the sudoku 
         box_t*  box = box_new(9);
