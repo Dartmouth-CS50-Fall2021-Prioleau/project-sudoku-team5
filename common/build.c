@@ -125,3 +125,5 @@ build_sudoku(puzzle_t* puzzle, char* level)
   }
 
 }
+
+

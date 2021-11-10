@@ -11,8 +11,11 @@
 #include "../box/box.h"
 #include "../puzzle/puzzle.h"
 
-
+/******************* static helper methods **********************/
 static int count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int init_row, int init_column);
+
+/************************ global fucntions *********************/
+int count_num_solutions(puzzle_t* puzzle, char* level);
 bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, char* level);
 
 
@@ -42,14 +45,9 @@ int count_num_solutions(puzzle_t* puzzle, char* level)
  */
 static int count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int init_row, int init_column)
 {
-    // bases case
-    //check what rows boxs have been seen
+    //check what rows boxs have been seen already -> bases case
     
-    // if  init_row init_columns are at the end, we've visited all.
-    if(init_row == 9 && init_column == 9)
-    {
-        return num_solutions+1;
-    }
+    if(init_row == 9 && init_column == 9) return num_solutions+1; // if  init_row init_columns are at the end, we've visited all.
 
     // visit all boxes not yet seen left to right top to bottom
     for(int i= init_row; i < 9; i++)
@@ -123,7 +121,7 @@ bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, 
     }
 
     // diagonal sudoku
-    if (strcmp(level, "easy") == 0) {
+    if (strcmp(level, "easy") == 0 || strcmp(level, "hard")  == 0) {
         // the negative sloped diagonal
         if (row == column) {
             for (int i = 0; i < 9; i++) {
@@ -143,45 +141,7 @@ bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, 
             }
         }
     }
-
-
-
-    // diagonal sudoku
-    if (strcmp(level, "hard")  == 0){
-        // the negative sloped diagonal
-        if (row == column) {
-            for (int i = 0; i < 9; i++) {
-                // check if it's in the value
-                if (i != row && (get_box_value(puzzle, i, i) == value)) {
-                    return false;
-                }
-            }
-        }
-        // the positive sloped diagonal
-        if (8-row == column) {
-            for (int i = 0; i < 9; i++) {
-                // check if it's in the value
-                if (8-i != row && column != i && (get_box_value(puzzle, 8-i, i) == value)) {
-                    return false;
-                }
-            }
-        }
-    }
-
     return true;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

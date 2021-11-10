@@ -11,11 +11,15 @@
 
 
 /**************** global types ****************/
-typedef struct puzzle {
+typedef struct puzzle 
+{
     int size;
-    // box_t* grid[9][9];
     box_t*** grid;
-}  puzzle_t;
+}puzzle_t;
+
+
+
+
 
 
 puzzle_t* puzzle_new(int size) {
@@ -46,6 +50,10 @@ puzzle_t* puzzle_new(int size) {
     return NULL;
 }
 
+
+
+
+
 box_t* get_box_from_grid(puzzle_t* puzzle, int x, int y) {
 
     if ((puzzle != NULL && puzzle->grid != NULL) && ((x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size))) {
@@ -56,6 +64,10 @@ box_t* get_box_from_grid(puzzle_t* puzzle, int x, int y) {
     return NULL;
 }
 
+
+
+
+
 void set_box_in_grid(puzzle_t* puzzle, box_t* box, int x, int y)
 {
     if (puzzle != NULL && puzzle->grid != NULL && box != NULL && (x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size)) {
@@ -63,6 +75,11 @@ void set_box_in_grid(puzzle_t* puzzle, box_t* box, int x, int y)
         puzzle->grid[x][y] = box;
     }
 }
+
+
+
+
+
 
 int get_grid_size(puzzle_t* puzzle)
 {
@@ -72,12 +89,19 @@ int get_grid_size(puzzle_t* puzzle)
     return -1;
 }
 
+
+
+
+
 int get_box_value(puzzle_t* puzzle,int  x, int y)
 {   
   
   return get_value(puzzle->grid[x][y]);
 
 }
+
+
+
 
 int get_box_count(puzzle_t* puzzle,int x, int y, int value)
 {   
@@ -86,12 +110,17 @@ int get_box_count(puzzle_t* puzzle,int x, int y, int value)
 
 }
 
+
+
 int get_visit_count(puzzle_t* puzzle,int  x, int y, int value){
 
   return counters_get(get_visited(puzzle->grid[x][y]), value );
 
 
 }
+
+
+
 
 void puzzle_delete(puzzle_t* puzzle)
 {
@@ -121,6 +150,10 @@ void puzzle_delete(puzzle_t* puzzle)
 }
 
 
+
+
+
+
 void puzzle_print (puzzle_t* puzzle, FILE* fp)
 {
     // handle NULL sudoku
@@ -141,6 +174,9 @@ void puzzle_print (puzzle_t* puzzle, FILE* fp)
     }
 
 }
+
+
+
 
 
 void update_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value) 
@@ -195,6 +231,10 @@ void update_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value)
     }
 }
 
+
+
+
+
 void update_all_box_counters(puzzle_t* puzzle) 
 {
 
@@ -214,6 +254,10 @@ void update_all_box_counters(puzzle_t* puzzle)
     }
 }
 
+
+
+
+
 void reset_all(puzzle_t* puzzle) 
 {
 
@@ -223,6 +267,10 @@ void reset_all(puzzle_t* puzzle)
       }
     }  
 }
+
+
+
+
 
 /*****************************************/
 /************Printing Methods*************/
@@ -342,4 +390,7 @@ void puzzle_print_formated (puzzle_t* puzzle, FILE* fp)
         }printf("\n"); // print next row of sudoku     
     } printf("+-------+-------+-------+\n"); // of sudoku line
 }
+
+
+
 
