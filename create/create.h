@@ -37,7 +37,7 @@
 */
 void sudoku_new(box_t* sudoku[9][9], const int SIZE);
 
-
+void create_sudoku(puzzle_t* puzzle, char* level);
 
 void randomize_sudoku(box_t* sudoku[9][9]);
 
@@ -117,6 +117,7 @@ void sudoku_update_rows_cols_box(box_t* sudoku[9][9], int x, int y, int value);
  * 
  * 
  */
+void create_sudoku(puzzle_t* puzzle, char* level);
 int is_val_in_cross_sect(box_t* sudoku[9][9], int curr_x, int curr_y, int value);
 
 /**************************************   val_not_in_cross_section() ************************************/
