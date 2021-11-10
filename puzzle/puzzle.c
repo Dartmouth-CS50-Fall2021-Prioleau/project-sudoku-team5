@@ -331,6 +331,11 @@ void puzzle_print_formated (puzzle_t* puzzle, FILE* fp)
                  box_value_print(puzzle->grid[i][j],fp);
                  printf("| ");
              }
+             else if ( j == 8){
+                 //print vertical bound
+                 box_value_print(puzzle->grid[i][j],fp);
+                 printf("|");
+             }
             else{
                 box_value_print(puzzle->grid[i][j],fp); 
             }

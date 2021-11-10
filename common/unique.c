@@ -49,8 +49,10 @@ static int count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solu
 
     // visit all boxes not yet seen left to right top to bottom
     for(int i= init_row; i < get_grid_size(puzzle); i++)
-    {
-        int j = (i == init_row) ? init_column : 0;
+    {    
+        int j ;
+        if(i == init_row) j = init_column;
+        else{ j = 0;}
 
         for( ; j < get_grid_size(puzzle); j++)
         {
@@ -86,6 +88,7 @@ static int count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solu
 
 
 
+
 /**************************************   val_not_in_cross_section() ************************************/
 bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, char* level)
 {
@@ -103,8 +106,6 @@ bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, 
             return false;
         }
     }
-
-    // check box
 
     // Check box
     int rbox = row/sqrt((double)get_grid_size(puzzle));

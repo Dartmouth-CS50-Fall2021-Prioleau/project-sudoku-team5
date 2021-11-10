@@ -37,7 +37,7 @@
  * array with a new box structure. 
 */
 void create_sudoku(puzzle_t* puzzle, char* level);
-
+bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);
 
 #endif // __CREATE_H
 
