@@ -12,6 +12,7 @@
 
 static void solve_iterate(void *arg, const int key, const int count);
 
+
 void solve_sudoku(puzzle_t* puzzle)
 {   
   bool repeat = false;

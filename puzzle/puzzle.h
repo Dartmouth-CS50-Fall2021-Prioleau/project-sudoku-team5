@@ -102,7 +102,7 @@ void reset_all(puzzle_t* puzzle) ;
 
 
 
-void sudoku_populate(box_t* sudoku[9][9]);
+// void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  Prints  given sudoku in grid format to given output file.
  * Caller provides an output file 
