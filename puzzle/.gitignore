@@ -1,5 +1,5 @@
 # ignore the following 
 *.dSYM  
 *~ *.o
-box
-boxtest
+puzzle
+puzzletest

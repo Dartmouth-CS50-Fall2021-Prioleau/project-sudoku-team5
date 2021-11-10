@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
+
 #include "./create/create.h"
 #include "./box/box.h"
 #include "./library/memory.h"
@@ -15,6 +16,10 @@
 
 bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle);
 
+/*********** protoptypes ***************/
+bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle, char* level);
+
+
 
 int main(const int argc, const char** argv)
 {
@@ -23,7 +28,7 @@ int main(const int argc, const char** argv)
   if (argc != 3 && argc != 2) {
 
     fprintf(stderr, "Incorrect number of arguments. ");
-    fprintf(stderr,"Should have ./sudoku mode difficulty\n");
+    fprintf(stderr,"Usage: ./sudoku mode difficulty\n");
     return 1;
 
   }
@@ -71,24 +76,44 @@ int main(const int argc, const char** argv)
   time_t t;
   srand((unsigned) time(&t));
 
-
+printf("hi");
   //check the mode
   if(strcmp(mode, "create") == 0) {
     
-    puzzle_t* puzzle = puzzle_new(9);
+      puzzle_t* puzzle = puzzle_new(9);
 
-    //build a fully filled sudoku
+    printf("empty puzzle: \n\n");
+    puzzle_print_formated(puzzle, stdout);
+    printf("\n");
+
     build_sudoku(puzzle, mode);
+    printf("fully  built sudoku: \n\n");
+    puzzle_print(puzzle, stdout);
+    printf("\n\n");
+ 
 
-    //create a sudoku, removing points and checking for uniqueness
-    //create_sudoku(puzzle);
+  
 
-    //print the created sudoku
-    puzzle_print_simple(puzzle, stdout);
+    // delete num  from fully built  sudoku
+    printf("removing entries from puzzle: \n\n");
+    create_sudoku(puzzle, difficulty);
+    puzzle_print(puzzle, stdout);
+    printf("\n\n");
 
-      
+    // try solving 
+    printf("solving sudoku: ... \n");
+    build_sudoku(puzzle, "solve");
+    puzzle_print(puzzle, stdout);
+    printf("\n\n");
+ 
+//   //testing parsing of user puzzle
+//   FILE *fp = fopen("parse.txt", "r"); // open created test file
+//   if (fp == NULL  ) printf("failed to open file\n");   
+//   parse_user_puzzle(fp, puzzle, difficulty);
+//   printf("\n");
+  
+}  
 
-  }
   else {
     
     char* unsolved;
@@ -156,7 +181,7 @@ bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle)
       int scan_status = fscanf(fp, "%d", &value);
       if(scan_status != 1) return false; 
 
-      // ensure that cvalue is between 0 andf 9 strictly
+      // ensure that value is between 0 andf 9 strictly
       if(value <= 9 && value >= 0)
       {
         //create a new box and set its value to be the scanned value, and put it in the sudoku 

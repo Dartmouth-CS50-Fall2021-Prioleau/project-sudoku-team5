@@ -18,7 +18,7 @@
 #include "../library/counters.h"
 #include "../box/box.h"
 #include "../puzzle/puzzle.h"
-
+#include "../common/unique.h"
 
 
 /************************** file-local global variables   ***********************/
@@ -27,34 +27,18 @@
 
 /************************  static helper  functions  prototypes ******************/
 /* that is, not visible outside this file */
-static void valueprint(FILE* fp, int value);
 static char* normalize_word(char* word);
 
 /***************************** global functions *********************************/
 /* that is, visible outside this file */
-void sudoku_populate(box_t* sudoku[9][9]);
-void remove_sudoku(box_t* sudoku[9][9], int num_left) ;
 
-void sudoku_new(box_t* sudoku[9][9], const int SIZE);
-void sudoku_print (box_t* sudoku[9][9], FILE* fp);
-void sudoku_print_formated (box_t* sudoku[9][9], FILE* fp);
-void sudoku_unsolved(puzzle_t* puzzle, char* level);
-void sudoku_create_puzzle(box_t* sudoku[9][9], char* level);
-int count_num_solutions(box_t* sudoku[9][9], char* level) ;
-bool val_not_in_cross_section(box_t* sudoku[9][9], int row, int column, int value, char* level);
+void create_sudoku(puzzle_t* puzzle, char* level);
 
 /******************************* sudoku_create() ********************************/
 /* see create.h for description */
 
-
-
-                
-                //gey key value form box's counterset
-                //counters_t* curr = get_counter(sudoku[random_box_x][random_box_y]);
-                //key_value = counters_get(curr, random_key);
-
 /*************************************** create_sudoku_puzzle() ****************************************/
-void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
+void create_sudoku(puzzle_t* puzzle, char* level){
 
     // initialize non- seed randomization
     srand(time(NULL));
@@ -78,8 +62,6 @@ void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
         return;
     }
 
-
-
     ///////////////////////////////////////////////
     // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56
     for(int i = 0; i <  num_to_delete; i++){
@@ -89,44 +71,42 @@ void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
 
         // check if solution of puzzle would be unique if val at x_todelete, y_todelete is actually deleted
         bool is_unique_solution = true;
-    do{
-        
-
         do{
-            // pick a random x to delete
-            x_todelete = rand() % 9; // from 0 to 8
+            
+            do{
+                // pick a random x to delete
+                x_todelete = rand() % 9; // from 0 to 8
 
-            //pick a random y
-            y_todelete = rand() % 9; // from 0 to 8
-                
+                //pick a random y
+                y_todelete = rand() % 9; // from 0 to 8      
+            }
+            // check if the box at that location has already been deleted
+            // while we haven't found one that has  not been deleted already , keep picking random x,y.
+            while(get_box_value(puzzle, x_todelete, y_todelete) == 0);
+
+            // once we find one(not deleted), remember it and see if solution the sudoku would have while that value is deleted is unique
+            int to_delete_value = get_box_value(puzzle, x_todelete, y_todelete);
+
+            // delete value 
+            set_value(get_box_from_grid(puzzle, x_todelete, y_todelete), 0);
+
+            //and check that solution produced is unique
+            is_unique_solution = (count_num_solutions(puzzle, level) == 1);
+
+            // if solution is not unique, put it back
+            if(!is_unique_solution){
+                //sudoku_print(sudoku, stdout);
+                printf("putting back %d\n", to_delete_value);
+                set_value(get_box_from_grid(puzzle, x_todelete, y_todelete), to_delete_value);
+            }
+            // if solution is unique
+            else{
+                is_unique_solution = true; // continue to next deletion
+            }
         }
-        // check if the box at that location has already been deleted
-        // while we haven't found one that has  already been deleted , keep picking random x,y locations until we find one not yet deleted
-        while(get_value(sudoku[ x_todelete][ y_todelete]) == 0);
-
-        // once we find one, remember it and see if solution the sudoku would have while that value is deleted is unique
-        int to_delete_value = get_value(sudoku[ x_todelete][ y_todelete]);
-
-        // delete value 
-        set_value(sudoku[ x_todelete][ y_todelete], 0);
-
-        //and check that solution produced is unique
-        is_unique_solution = (count_num_solutions(sudoku,level) == 1);
-
-         // if solution is not unique, put it back
-        if(!is_unique_solution){
-            //sudoku_print(sudoku, stdout);
-            printf("putting back %d\n", to_delete_value);
-            set_value(sudoku[ x_todelete][ y_todelete], to_delete_value);
- 
-        }
-        // if solution is unique
-        else{
-            is_unique_solution = true; // continue to next deletion
-        }
-    }
-    while(!is_unique_solution);
+        while(!is_unique_solution);
    }
+   //
    //sudoku_print(sudoku, stdout);
    //return sudoku;
 } 
@@ -134,12 +114,8 @@ void sudoku_create_puzzle(box_t* sudoku[9][9], char* level){
 
 
 
-
-
-/******************************************************************************************/
 /******************************************************************************************/
 /***************** static    helper   methods   defined   here   **************************/
-/******************************************************************************************/
 /******************************************************************************************/
 /* that is, not visible outside this file */
 

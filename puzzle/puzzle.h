@@ -44,7 +44,7 @@ puzzle_t* puzzle_new(int size);
  * We return: the 2-D grid of the puzzle struct
  * 
  */ 
-box_t** get_grid(puzzle_t* puzzle);
+box_t*** get_grid(puzzle_t* puzzle);
 
 void puzzle_print (puzzle_t* puzzle, FILE* fp);
 void valid_add(puzzle_t* puzzle, int x, int y, int* value, int reset) ;
@@ -102,7 +102,7 @@ void reset_all(puzzle_t* puzzle) ;
 
 
 
-void sudoku_populate(box_t* sudoku[9][9]);
+// void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  Prints  given sudoku in grid format to given output file.
  * Caller provides an output file 
@@ -141,6 +141,7 @@ void puzzle_print_simple (puzzle_t* puzzle, FILE* fp);
 | 6 0 6 | 0 8 3 | 0 0 0 | 
 +-------+-------+-------+
  */
+
 
 void puzzle_print_formated (puzzle_t* puzzle, FILE* fp);
 

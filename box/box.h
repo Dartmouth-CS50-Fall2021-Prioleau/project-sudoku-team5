@@ -19,6 +19,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdbool.h>
+#include <math.h>
 #include "../library/counters.h"
 
 
@@ -93,11 +95,11 @@ int get_grid_size_from_box(box_t* box);
  */
 void box_delete(box_t *box);
 
-int get_iteration(box_t* box);
-void reset_box(box_t* box) ;
-int reset_iteration(box_t* box);
-int inc_iteration(box_t* box) ;
-void reset_visited(box_t* box) ;
+//int get_iteration(box_t* box);
+void reset_box(box_t* box);
+//int reset_iteration(box_t* box);
+//int inc_iteration(box_t* box) ;
+void reset_visited(box_t* box);
 
 #endif // __BOX_H
 
