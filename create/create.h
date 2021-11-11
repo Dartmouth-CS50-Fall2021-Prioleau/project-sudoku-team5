@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../library/counters.h"
-#include "../box/box.h"
 #include "../puzzle/puzzle.h"
 
 /*************************** global types ***********************/

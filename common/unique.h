@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -7,7 +8,6 @@
 #include <time.h>
 
 #include "../library/counters.h"
-#include "../box/box.h"
 #include "../puzzle/puzzle.h"
 
 #ifndef __UNQIUE_H

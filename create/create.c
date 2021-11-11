@@ -16,7 +16,6 @@
 #include <time.h>
 
 #include "../library/counters.h"
-#include "../box/box.h"
 #include "../puzzle/puzzle.h"
 #include "../common/unique.h"
 
@@ -44,7 +43,7 @@ void create_sudoku(puzzle_t* puzzle, char* level){
     srand(time(NULL));
     
     // nomalize dificulty level 
-    normalize_word(level);
+    //normalize_word(level);
     int num_to_delete;
 
     //  if easy dificulty,  delete 44 slots
@@ -82,13 +81,13 @@ void create_sudoku(puzzle_t* puzzle, char* level){
             }
             // check if the box at that location has already been deleted
             // while we haven't found one that has  not been deleted already , keep picking random x,y.
-            while(get_box_value(puzzle, x_todelete, y_todelete) == 0);
+            while(get_box_val_from_grid(puzzle, x_todelete, y_todelete) == 0);
 
             // once we find one(not deleted), remember it and see if solution the sudoku would have while that value is deleted is unique
-            int to_delete_value = get_box_value(puzzle, x_todelete, y_todelete);
+            int to_delete_value = get_box_val_from_grid(puzzle, x_todelete, y_todelete);
 
             // delete value 
-            set_value(get_box_from_grid(puzzle, x_todelete, y_todelete), 0);
+            set_box_val_in_grid(puzzle, x_todelete, y_todelete, 0);
 
             //and check that solution produced is unique
             is_unique_solution = (count_num_solutions(puzzle, level) == 1);
@@ -96,7 +95,7 @@ void create_sudoku(puzzle_t* puzzle, char* level){
             // if solution is not unique, put it back
             if(!is_unique_solution){
                 
-                set_value(get_box_from_grid(puzzle, x_todelete, y_todelete), to_delete_value);
+                set_box_val_in_grid(puzzle, x_todelete, y_todelete, to_delete_value);
             }
             // if solution is unique
             else{
@@ -123,7 +122,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
         
         for ( ; j<9; j++) {
             // check if entry is empty
-            if (get_box_value(puzzle, i, j) == 0) {
+            if (get_box_val_from_grid(puzzle, i, j) == 0) {
                 // Try every valid number for this entry
                 int possibilities[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 
                 int count = 0; 
@@ -132,7 +131,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
                     int rand_num = (rand() % 9) + 1; 
                     if (possibilities[rand_num - 1] != 0 ) {
                         if (val_not_in_cross_section(puzzle, i, j, rand_num, level)) {
-                            set_value(get_box_from_grid(puzzle, i, j), rand_num);
+                            set_box_val_in_grid(puzzle, i, j, rand_num);
 
                             // recurse with new sudoku -> move to next entry
                             bool is_sub_solvable;
@@ -147,7 +146,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
                                 return true;
                             }
                             else {                  // solution didn't work
-                                set_value(get_box_from_grid(puzzle, i, j), 0);
+                                set_box_val_in_grid(puzzle, i, j, 0);
                             }
                         }
                         possibilities[rand_num - 1] = 0; 
@@ -162,34 +161,3 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
     return true;
 }
 
-
-
-
-
-
-
-
-/******************************************************************************************/
-/***************** static    helper   methods   defined   here   **************************/
-/******************************************************************************************/
-/* that is, not visible outside this file */
-
-
-
-/*********************** normalize_word() *************************/
-/*Author: Salifyanji J Namwila 
- *
- * Coverts a given word to all-lower case and returns the  word to caller
- * Input: a string , char*, word 
- * Output: lower-case version of the  same word
- * return null toif word is NULL
- * 
- */
-static char* normalize_word(char* word)
-{
-    for(int i = 0; i <= (strlen(word)); i++) {
-        word[i] = tolower(word[i]);
-    }
-
-    return word;
-}

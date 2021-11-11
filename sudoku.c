@@ -5,12 +5,11 @@
 #include <ctype.h>
 #include <time.h>
 
-#include "./create/create.h"
-#include "./box/box.h"
 #include "./library/memory.h"
 #include "./library/counters.h"
 #include "./library/file.h"
 #include "./puzzle/puzzle.h"
+#include "./create/create.h"
 
 #include "./common/unique.h"
 
@@ -80,10 +79,15 @@ int main(const int argc, const char** argv)
   if(strcmp(mode, "create") == 0) {
     
 
-    
+    printf("empty puzzle: \n\n");
     puzzle_t* puzzle = puzzle_new(9);
 
-    printf("empty puzzle: \n\n");
+    puzzle_print_simple(puzzle, stdout);
+
+    printf("full puzzle: \n\n");
+
+    solve_sudoku(puzzle,0 ,0,difficulty);
+
     puzzle_print_simple(puzzle, stdout);
     printf("\n");
 
@@ -95,7 +99,7 @@ int main(const int argc, const char** argv)
 
     printf("fully  built sudoku: \n\n");
     puzzle_print_simple(puzzle, stdout);
-    printf("\n\n");
+    //printf("\n\n");
 
   
 }  
@@ -109,19 +113,20 @@ int main(const int argc, const char** argv)
 
     puzzle_t* parsed = puzzle_new(9);
 
+    puzzle_print_simple(parsed, stdout);
+
     //For testing
-    FILE* file = fopen("parse.txt", "r");
+    //FILE* file = fopen("parse.txt", "r");
     int k = 0;
     int current;
     while(scanf("%d", &current) == 1) {   
       int i = k/9;
       int j = k%9;
-      //set_value(get_box_from_grid(parsed, i,j), current);
+      set_box_val_in_grid(parsed, current, i,j );
       k++;
 
-
     }
-  printf("\n");
+    printf("\n");
     //parse_user_sudoku(unsolved, parsed, i);
    // i ++;
 
@@ -130,7 +135,7 @@ int main(const int argc, const char** argv)
     //take the input and build the puzzle struct from the data
 
     //Print the input
-    //puzzle_print_simple(parsed, stdout);
+    puzzle_print_simple(parsed, stdout);
 
     //Solve the sudoku
     //build_sudoku(parsed, mode);
