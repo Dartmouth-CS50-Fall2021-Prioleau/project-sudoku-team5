@@ -15,6 +15,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <math.h>
 #include "../box/box.h"
 
 /**************** global types ****************/
@@ -44,10 +45,10 @@ puzzle_t* puzzle_new(int size);
  * We return: the 2-D grid of the puzzle struct
  * 
  */ 
-box_t*** get_grid(puzzle_t* puzzle);
+// box_t*** get_grid(puzzle_t* puzzle);
 
-void puzzle_print (puzzle_t* puzzle, FILE* fp);
-void valid_add(puzzle_t* puzzle, int x, int y, int* value, int reset) ;
+// void puzzle_print (puzzle_t* puzzle, FILE* fp);
+// void valid_add(puzzle_t* puzzle, int x, int y, int* value, int reset) ;
 /********************* get_box_from_grid() *********************/
 /* Return the box struct held at a given coordinate (x,y) on in the 2-D grid of the puzzle_t struct
  * 
@@ -77,9 +78,9 @@ bool set_box_val_in_grid(puzzle_t* puzzle, int box, int x, int y);
 
 int get_grid_size(puzzle_t* puzzle);
 
-bool val_not_in_cross_section(puzzle_t* puzzle, int x, int y, int value, char* level);
+bool val_not_in_cross_section(puzzle_t* puzzle, int x, int y, int value);
 
-void puzzle_iterate(puzzle_t* puzzle);
+// void puzzle_iterate(puzzle_t* puzzle);
 
 /********************* puzzle_delete() *********************/
 /* Delete a non-null puzzle struct by calling the box_delete function to free its boxes in the grid 
@@ -93,18 +94,18 @@ void puzzle_iterate(puzzle_t* puzzle);
  */
 void puzzle_delete(puzzle_t* puzzle);
 
-void update_all_box_counters(puzzle_t* puzzle);
-void update_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value);
-int get_box_value(puzzle_t* puzzle,int  x, int y);
-int get_box_count(puzzle_t* puzzle,int  x, int y, int value);
-int get_visit_count(puzzle_t* puzzle,int  x, int y, int value);
+// void update_all_box_counters(puzzle_t* puzzle);
+// void update_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value);
+// int get_box_value(puzzle_t* puzzle,int  x, int y);
+// int get_box_count(puzzle_t* puzzle,int  x, int y, int value);
+// int get_visit_count(puzzle_t* puzzle,int  x, int y, int value);
 
-void reset_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value) ;
-void reset_all(puzzle_t* puzzle) ;
+// void reset_adjacent_box_counters(puzzle_t* puzzle, int x, int y, int value) ;
+// void reset_all(puzzle_t* puzzle) ;
 
 
 
-void sudoku_populate(box_t* sudoku[9][9]);
+// void sudoku_populate(box_t* sudoku[9][9]);
 /******************** sudoku_print ***************/
 /*  Prints  given sudoku in grid format to given output file.
  * Caller provides an output file 

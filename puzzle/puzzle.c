@@ -52,7 +52,6 @@ int get_grid_size(puzzle_t* puzzle)
 int get_box_val_from_grid(puzzle_t* puzzle, int x, int y) {
 
     if ((puzzle != NULL && puzzle->grid != NULL) && ((x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size))) {
-        //box_t* grid[9][9] = puzzle->grid;
         int box = puzzle->grid[x][y];
         return box;
     }
@@ -61,7 +60,7 @@ int get_box_val_from_grid(puzzle_t* puzzle, int x, int y) {
 
 bool set_box_val_in_grid(puzzle_t* puzzle, int box, int x, int y)
 {
-    if (puzzle != NULL && puzzle->grid != NULL && (box > 0 && box <= puzzle->size) && (x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size)) {
+    if (puzzle != NULL && puzzle->grid != NULL && (box > -1 && box <= puzzle->size) && (x > -1 && x < puzzle->size) && (y > -1 && y < puzzle->size)) {
         puzzle->grid[x][y] = box;
         return true;
     }
@@ -69,7 +68,7 @@ bool set_box_val_in_grid(puzzle_t* puzzle, int box, int x, int y)
 }
 
 /**************************************   val_not_in_cross_section() ************************************/
-bool val_not_in_cross_section(puzzle_t* puzzle, int x, int y, int value, char* level)
+bool val_not_in_cross_section(puzzle_t* puzzle, int x, int y, int value)
 {
     // iterate over rows to check their columns
     for(int r = 0; r < puzzle->size; r++){
@@ -103,27 +102,27 @@ bool val_not_in_cross_section(puzzle_t* puzzle, int x, int y, int value, char* l
     }
 
     // diagonal sudoku
-    if (strcmp(level, "easy") == 0 || strcmp(level, "hard") == 0) {
+    //if (strcmp(level, "easy") == 0 || strcmp(level, "hard") == 0) {
         // the negative sloped diagonal
-        if (x == y) {
-            for (int i = 0; i < puzzle->size; i++) {
-                // check if it's in the value
-                if (i != x && (get_box_val_from_grid(puzzle, i, i) == value)    ) {
-                    return false;
-                }
-            }
-        }
-        // the positive sloped diagonal
-        int neg_diag = puzzle->size - 1;
-        if ((neg_diag - x) == y) {
-            for (int i = 0; i < puzzle->size; i++) {
-                // check if it's in the value
-                if (((neg_diag - i) != x) && (y != i) && (get_box_val_from_grid(puzzle, (neg_diag - i), i) == value)) {
-                    return false;
-                }
+    if (x == y) {
+        for (int i = 0; i < puzzle->size; i++) {
+            // check if it's in the value
+            if (i != x && (get_box_val_from_grid(puzzle, i, i) == value)    ) {
+                return false;
             }
         }
     }
+    // the positive sloped diagonal
+    int neg_diag = puzzle->size - 1;
+    if ((neg_diag - x) == y) {
+        for (int i = 0; i < puzzle->size; i++) {
+            // check if it's in the value
+            if (((neg_diag - i) != x) && (y != i) && (get_box_val_from_grid(puzzle, (neg_diag - i), i) == value)) {
+                return false;
+            }
+        }
+    }
+    //}
     return true;
 }
 
@@ -153,11 +152,12 @@ void puzzle_print_simple (puzzle_t* puzzle, FILE* fp)
     // handle NULL sudoku
     if(fp != NULL) { 
         if(puzzle == NULL || puzzle->grid == NULL){
-            printf("(null)\n");
+            printf("\n(null)\n");
         } else {
+            printf("\n");
             for( int i = 0; i < puzzle->size; i++) {  // row
                 for(int j= 0; j < puzzle->size; j++) {  // column
-                    fprintf("%d\t", puzzle->grid[i][j], fp);
+                    fprintf(fp, "%d ", puzzle->grid[i][j]);
                 }
                 printf("\n"); // print next row of sudoku
             }
@@ -171,18 +171,10 @@ void puzzle_print_formated(puzzle_t* puzzle, FILE* fp)
         if (puzzle != NULL && puzzle->grid != NULL) {
             
             
-            fprintf("+", fp);
+            fprintf(fp, "+");
         } else {
-            fprintf("(null)\n", fp);
+            fprintf(fp, "(null)\n");
             
         }
     }
 }
-
-
-
-
-
-
-
-
