@@ -211,6 +211,12 @@ puzzle_delete(puzzle_t* puzzle)
     if (puzzle->grid != NULL) {
         for (int i = 0; i < puzzle->size; i++) {
             if (puzzle->grid[i] != NULL) {
+                for (int j = 0; j < puzzle->size; j++) {
+                    if (puzzle->grid[i][j] != NULL) {
+                        box_t* box = puzzle->grid[i][j];
+                        box_delete(box);
+                    }
+                }
                 count_free(puzzle->grid[i]);
             }
         }
