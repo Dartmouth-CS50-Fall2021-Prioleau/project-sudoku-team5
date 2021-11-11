@@ -132,15 +132,13 @@ void puzzle_delete(puzzle_t* puzzle)
                         box_t* box = puzzle->grid[i][j];
                         box_delete(box);
                     }
-                    //box_t* grid[9][9] = puzzle->grid;
-                    //box_t* box = puzzle->grid[i][j];
-                    //box_delete(box);
                 }
                 count_free(puzzle->grid[i]);
             }
             
             
         }
+        count_free(puzzle->grid);
     }
     
     

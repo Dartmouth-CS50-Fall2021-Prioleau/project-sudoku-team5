@@ -75,10 +75,10 @@ void create_sudoku(puzzle_t* puzzle, char* level){
             
             do{
                 // pick a random x to delete
-                x_todelete = rand() % 9; // from 0 to 8
+                x_todelete = rand() % get_grid_size(puzzle); // from 0 to 8
 
                 //pick a random y
-                y_todelete = rand() % 9; // from 0 to 8      
+                y_todelete = rand() % get_grid_size(puzzle); // from 0 to 8      
             }
             // check if the box at that location has already been deleted
             // while we haven't found one that has  not been deleted already , keep picking random x,y.

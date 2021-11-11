@@ -7,7 +7,6 @@
 #include <ctype.h>
 #include <time.h>
 
-#include "../solve/solve.h"
 #include "../library/counters.h"
 #include "../box/box.h"
 #include "../puzzle/puzzle.h"
