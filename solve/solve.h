@@ -9,7 +9,7 @@
 #include "../puzzle/puzzle.h"
 
 
-void solve_sudoku(puzzle_t* puzzle);
+//void solve_sudoku(puzzle_t* puzzle);
 
 
 #endif // __CREATE_H
