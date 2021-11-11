@@ -117,7 +117,6 @@ void reset_all(puzzle_t* puzzle) ;
 0 3 8 0 0 6 6 0 0 
 0 0 0 1 3 9 8 9 8 
 6 0 6 0 8 3 0 0 0 
-
  */
 void puzzle_print_simple (puzzle_t* puzzle, FILE* fp);
 

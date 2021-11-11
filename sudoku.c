@@ -11,10 +11,10 @@
 #include "./library/counters.h"
 #include "./library/file.h"
 #include "./puzzle/puzzle.h"
-#include "./common/build.h"
+
 #include "./common/unique.h"
 
-bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle);
+bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle, int c);
 
 /*********** protoptypes ***************/
 bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle, char* level);
@@ -79,37 +79,23 @@ int main(const int argc, const char** argv)
   //check the mode
   if(strcmp(mode, "create") == 0) {
     
-      puzzle_t* puzzle = puzzle_new(9);
+
+    
+    puzzle_t* puzzle = puzzle_new(9);
 
     printf("empty puzzle: \n\n");
-    puzzle_print_formated(puzzle, stdout);
+    puzzle_print_simple(puzzle, stdout);
     printf("\n");
 
-    build_sudoku(puzzle, mode);
-    printf("fully  built sudoku: \n\n");
-    puzzle_print_formated(puzzle, stdout);
-    printf("\n\n");
- 
-
-  
-
-    // delete num  from fully built  sudoku
-    printf("removing entries from puzzle: \n\n");
     create_sudoku(puzzle, difficulty);
-    puzzle_print_formated(puzzle, stdout);
-    printf("\n\n");
+      
+    puzzle_print_simple(puzzle, stdout);
 
-    // try solving 
-    printf("solving sudoku: ... \n");
-    build_sudoku(puzzle, "solve");
-    puzzle_print_formated(puzzle, stdout);
-    printf("\n\n");
+    solve_sudoku(puzzle,0 ,0,difficulty);
 
-    puzzle_delete(puzzle);
-    free(mode);
-    if(argc == 3 ) {
-      free(difficulty);
-    }
+    printf("fully  built sudoku: \n\n");
+    puzzle_print_simple(puzzle, stdout);
+    printf("\n\n");
 
   
 }  
@@ -119,42 +105,49 @@ int main(const int argc, const char** argv)
     char* unsolved;
 
     //Allow the user to input a sudoku or read in a piped in created sudoku
-    //while(!feof(stdin)) {
 
-    //  unsolved = freadfilep(stdin);
-
-    //}
 
     puzzle_t* parsed = puzzle_new(9);
 
     //For testing
     FILE* file = fopen("parse.txt", "r");
+    int k = 0;
+    int current;
+    while(scanf("%d", &current) == 1) {   
+      int i = k/9;
+      int j = k%9;
+      //set_value(get_box_from_grid(parsed, i,j), current);
+      k++;
 
+
+    }
+  printf("\n");
+    //parse_user_sudoku(unsolved, parsed, i);
+   // i ++;
+
+    //printf("\n\n%s\n\n",parsed );
     //***This needs to be updated to handle string instead of file
     //take the input and build the puzzle struct from the data
-    parse_user_sudoku(file, parsed);
 
     //Print the input
-    puzzle_print_simple(parsed, stdout);
+    //puzzle_print_simple(parsed, stdout);
 
     //Solve the sudoku
-    build_sudoku(parsed, mode);
+    //build_sudoku(parsed, mode);
     
-    //Print the solved sudoku
-    puzzle_print_simple(parsed, stdout);
+    //Print the solved sucdoku
+   // puzzle_print_formated(parsed, stdout);
 
 
 
-    
-
-
+  
   }
   
 }
 
 /**************************** bool parse_user_sudoku () **********************************/
 /* see sudoku.h for more detail */
-bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle)
+bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle, int c)
 { 
   // return NULL if either fp or sudoku is NULL
   if (fp == NULL || puzzle == NULL ){
@@ -165,8 +158,8 @@ bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle)
   // scan all sudoku entries and check if they were successfully mathced and assigned
   for (int r = 0; r < 9; r++) 
   {
-    for (int c = 0; c < 9; c++)
-    {
+    //for (int c = 0; c < 9; c++)
+    //{
       int value; // store scanned value here
       // check value was  successfully matched and assigned
       int scan_status = fscanf(fp, "%d", &value);
@@ -176,20 +169,24 @@ bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle)
       if(value <= 9 && value >= 0)
       {
         //create a new box and set its value to be the scanned value, and put it in the sudoku 
-        box_t*  box = box_new(9);
-        set_value(box, value);
-        set_box_in_grid(puzzle, box, r,c);
+        //box_t*  new_box = box_new(9);
+        //box_t* original_box
+        //set_value(get_box_from_grid(puzzle, r,c), value);
+        
+        //set_value(new_box, value);
+
+        //set_box_in_grid(puzzle, box, r,c);
       }
       else return false;
-    }
+    //}
       
       // verify that sudoku  has 9 columns
-      char chr ;
-      fscanf(fp, "%c", &chr);
-      if (r != 8 && chr != '\n')  return false; // if were in the not in the last row and our last character is not \n, 
+      //char chr ;
+      //fscanf(fp, "%c", &chr);
+      //if (r != 8 && chr != '\n')  return false; // if were in the not in the last row and our last character is not \n, 
   }
   // verify that the number of lines in fp is 9 -> 9 rows in sudoku
-  if (lines_in_file(fp) !=9 ) return false; // not  9x9 sudoku
+  //if (lines_in_file(fp) !=9 ) return false; // not  9x9 sudoku
 
   return true; 
 }

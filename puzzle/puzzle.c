@@ -132,13 +132,15 @@ void puzzle_delete(puzzle_t* puzzle)
                         box_t* box = puzzle->grid[i][j];
                         box_delete(box);
                     }
+                    //box_t* grid[9][9] = puzzle->grid;
+                    //box_t* box = puzzle->grid[i][j];
+                    //box_delete(box);
                 }
                 count_free(puzzle->grid[i]);
             }
             
             
         }
-        count_free(puzzle->grid);
     }
     
     
@@ -329,6 +331,11 @@ void puzzle_print_formated (puzzle_t* puzzle, FILE* fp)
                  box_value_print(puzzle->grid[i][j],fp);
                  printf("| ");
              }
+             else if ( j == 8){
+                 //print vertical bound
+                 box_value_print(puzzle->grid[i][j],fp);
+                 printf("|");
+             }
             else{
                 box_value_print(puzzle->grid[i][j],fp); 
             }
@@ -388,7 +395,3 @@ void puzzle_print_formated (puzzle_t* puzzle, FILE* fp)
         }printf("\n"); // print next row of sudoku     
     } printf("+-------+-------+-------+\n"); // of sudoku line
 }
-
-
-
-
