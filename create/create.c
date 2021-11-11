@@ -96,7 +96,7 @@ void create_sudoku(puzzle_t* puzzle, char* level){
             // if solution is not unique, put it back
             if(!is_unique_solution){
                 //sudoku_print(sudoku, stdout);
-                printf("putting back %d\n", to_delete_value);
+                //printf("putting back %d\n", to_delete_value);
                 set_value(get_box_from_grid(puzzle, x_todelete, y_todelete), to_delete_value);
             }
             // if solution is unique
@@ -110,6 +110,76 @@ void create_sudoku(puzzle_t* puzzle, char* level){
    //sudoku_print(sudoku, stdout);
    //return sudoku;
 } 
+
+
+bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level)
+{
+    // check if all entries have been visited
+    if (row == 9 && column == 0) {
+        return true;
+    }
+    // Visit squares that have not yet been visited, from left to right
+    for (int i=row; i< 9; i++) {
+
+        int j ;
+        if(i == row) j = column;
+        else{ j = 0;}
+
+        
+        for ( ; j<9; j++) {
+            // check if entry is empty
+            if (get_box_value(puzzle, i, j) == 0) {
+                // Try every valid number for this entry
+                int possibilities[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+                int count = 0; 
+
+                while (count < 9) {
+                    int rand_num = (rand() % 9) + 1; 
+                    if (possibilities[rand_num - 1] != 0 ) {
+                        if (val_not_in_cross_section(puzzle, i, j, rand_num, level)) {
+                            set_value(get_box_from_grid(puzzle, i, j), rand_num);
+
+                            // recurse with new sudoku -> move to next entry
+                            bool is_sub_solvable;
+                            if (j == 8) {
+                                is_sub_solvable = solve_sudoku(puzzle, i+1, 0, level);
+                            }
+                            else {
+                                is_sub_solvable = solve_sudoku(puzzle, i, j+1, level);
+                            }
+
+                            if (is_sub_solvable) {              // found a solution that works
+                                return true;
+                            }
+                            else {                  // solution didn't work
+                                set_value(get_box_from_grid(puzzle, i, j), 0);
+                            }
+                        }
+                        possibilities[rand_num - 1] = 0; 
+                        count ++; 
+                    }
+                }
+                // Some entry did not work, so this is unsolvable
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+
+
+
+
+
+
+
+/******************************************************************************************/
+/***************** static    helper   methods   defined   here   **************************/
+/******************************************************************************************/
+/* that is, not visible outside this file */
+
+
 
 
 
