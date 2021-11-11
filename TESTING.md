@@ -16,6 +16,13 @@ Valid testing is run on  `create` in `easy` and `hard` as well as solve takes th
 
 Fuzz testing creates a set number of puzzles, verifying that each puzzlie follows Sudoku rules, is solvable, and has a unique solution
 
+# Run Time:
+
+We tested out our using fuzz testing and recorded the following data:
+
+Individual Times:
+Average Time:
+
 # Unit Testing
 
 Unit testing was done on various methods in the puzzle.c a file. This file includes, but is not limited to, testing on creating a puzzle, setting values, getting values, and checking a value uf a value is in a point's cross sections. This can be run by uncommenting the `#-DUNIT_TEST` flag, running `make unittest` followed by `make unit`. 

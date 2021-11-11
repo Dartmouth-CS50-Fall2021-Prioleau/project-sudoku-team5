@@ -1,4 +1,4 @@
- /* 
+/* 
  * create.c - CS50 Sudoku Project 'create' module
  * see IMPLEMENTATION.md and DESIGN.md for more information.
  *  
@@ -307,12 +307,3 @@ main(const int argc, const char *argv[])
 }
 
 #endif // UNIT_TEST
-
-
-
-
-
-
-
-
-
