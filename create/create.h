@@ -50,6 +50,8 @@ create_sudoku(puzzle_t* puzzle, char* level);
  * We create a 2D sudoku puzzle inplace
  * 
 */
+void build_full_sudoku(puzzle_t* puzzle, char* level);
+
 void create_sudoku(puzzle_t* puzzle, char* level);
 bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);
 

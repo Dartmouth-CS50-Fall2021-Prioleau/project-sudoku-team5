@@ -21,6 +21,8 @@
 #include "./library/memory.h"
 #include "./puzzle/puzzle.h"
 #include "./create/create.h"
+#include "./solve/solve.h"
+
 
 
 
@@ -42,15 +44,27 @@ main(const int argc, char *argv[])
 
   for(int i = 1; i <= numSudokus; i ++){
 
+
   //Create a full sudoku
+  puzzle_t* puzzle = puzzle_new(9);
+
+  char* difficulty = malloc(10 * sizeof(char) + 1);
+  strcpy(difficulty, "easy");
+
+  build_full_sudoku(puzzle, difficulty);
+
 
   //Create an incomplete sudoku
+  create_sudoku(puzzle, difficulty);
+
 
   //Solve (and track time)
+  
   start = clock();
      
   //solve method
-  
+  solve_sudoku(puzzle,0,0,difficulty);
+
   end = clock();
 
   cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
@@ -62,6 +76,6 @@ main(const int argc, char *argv[])
 
   }
 
-  printf("\nAverage run time: seconds\n", total/numSudokus);
+  printf("\nAverage run time %f: seconds\n", total/numSudokus);
 
 }
