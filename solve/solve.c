@@ -1,69 +1,174 @@
-
-//global types and constant definitions
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
-
-#include "../library/counters.h"
-#include "../box/box.h"
+#include <time.h>
+#include "solve.h"
+#include "../puzzle/puzzle.h"
 #include "../create/create.h"
 
-static void solve_iterate(void *arg, const int key, const int count);
 
-void solve_sudoku(puzzle_t* puzzle)
-{   
-  bool repeat = false;
 
-    for(int i = 0; i < 9; i ++) {
-      for(int j = 0; j < 9; j ++) {
-        
-        //Check the box's value is not already set
-        if(get_box_value(puzzle, i, j) == 0) {
-          
-          //iterate through and identify what the value could be 
-          int possible_value = 0;
-          counters_iterate(get_counter(get_box_from_grid(puzzle,i,j)), &possible_value, solve_iterate);
-          
-          //If the point only has one possibility, set it and update adjacent points
-          if(possible_value != -1 && possible_value != 0) {
-            
-            repeat = true;
+/******************* static helper methods **********************/
+static int count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int init_row, int init_column);
+/************************ global functions *********************/
+/* that is, visible outside this file */
+bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);
+int count_num_solutions(puzzle_t* puzzle, char* level);
 
-            //Set point
-            set_value(get_box_from_grid(puzzle,i,j), possible_value);
 
-            //go through and update other points
-            update_adjacent_box_counters(puzzle, i, j, possible_value);
+/*********************** solve_sudoku() ******************************/
+/* see  create.h for description*/
+bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
+    // check if all entries have been visited
+    if (row == 9 && column == 0) {
+        return true;
+    }
+    // Visit squares that have not yet been visited, from left to right
+    for (int i=row; i< 9; i++) {
+        int j =(i == row) ? column : 0;
+         
+        for ( ; j<9; j++) {
+            // check if entry is empty
+            if (get_box_value(puzzle, i, j) == 0) {
+                // Try every valid number for this entry
+                int possibilities[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+                int count = 0; 
 
-          }
+                while (count < 9) {
+                    int random_possibility = (rand() % 9) + 1; 
+                    if (possibilities[random_possibility - 1] != 0 ) {
+                        if (val_not_in_cross_section(puzzle, i, j, random_possibility, level)) {
+                            set_box_value(puzzle, random_possibility, i, j);
+
+                            // recurse with new sudoku -> move to next entry
+                            bool is_sub_solvable;
+                            if (j == 8) {
+                                is_sub_solvable = solve_sudoku(puzzle, i+1, 0, level);
+                            }
+                            else {
+                                is_sub_solvable = solve_sudoku(puzzle, i, j+1, level);
+                            }
+
+                            if (is_sub_solvable) {              // found a solution that works
+                                return true;
+                            }
+                            else {    // solution didn't work
+                                set_box_value(puzzle,0, i, j);
+                            }
+                        }
+                        possibilities[random_possibility - 1] = 0; 
+                        count ++; 
+                    }
+                }
+                // Some entry did not work, so this is unsolvable
+                return false;
+            }
         }
     }
-  }
-
-  if(repeat) {
-    solve_sudoku(puzzle);
-  }
-
-
-
+    return true;
 }
 
 
-//Iterate through each key in the counter. If its the first possible one seen, set it as a possible value
-//If it the second, set the possible_value to -1
-static void solve_iterate(void *arg, const int key, const int count)
+
+
+/********************** count_num_solutions() *************************/
+/* see  create.h for description */
+int count_num_solutions(puzzle_t* puzzle, char* level) {   
+    // call helper solution counter
+    return count_num_solutions_helper(puzzle,level, 0, 0, 0);
+}
+
+
+
+/******************************************************************************************/
+/***************** static    helper   methods   defined   here   **************************/
+/******************************************************************************************/
+/* that is, not visible outside this file */
+
+/********************** count_num_solutions_helper() *************************/
+/* Counts the number of sultions using recursion and backtracking.
+ * Returns number of solutions  for the given puzzle to caller.
+ * Caller provides tvalid puzzle, the level, the rows to start 
+ * recursing from, and the number of solutions so far.
+ * 
+ */
+static int 
+count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int init_row, int init_column)
 {
-  int* a = arg;
+    //check what rows boxs have been seen already -> bases case
+    if(init_row == get_grid_size(puzzle) && init_column == get_grid_size(puzzle)) return num_solutions+1; // if  init_row init_columns are at the end, we've visited all.
 
-  if(*a == -1) {
-  }
-  else if(*a == 0 && count == 1) {
-    (*a) +=key;
-  }
-  else if(*a != 0 && count == 1) {
-    (*a) =-1;
-  }
-  
+    // visit all boxes not yet seen left to right top to bottom
+    for(int i = init_row; i < get_grid_size(puzzle); i++)
+    {    
+        int j = (i == init_row) ? init_column : 0;
+
+        for( ; j < get_grid_size(puzzle); j++)
+        {
+            // check if the value of the box  at that location is empty
+            if(get_box_value(puzzle, i, j) == 0)
+            {    
+                for(int value=1; value<=get_grid_size(puzzle); value++)
+                {
+                    // check that value of sudoku is a valid possible value of box 
+                    if(val_not_in_cross_section(puzzle, i, j, value, level))
+                    {    
+                        
+                        set_box_value(puzzle, value, i ,j);
+
+                        // count_num of solution of that sub sudoku with new value
+                        if(j == get_grid_size(puzzle)-1){
+                            num_solutions = count_num_solutions_helper(puzzle, level, num_solutions, i+1, 0);
+                        }else
+                        {
+                             num_solutions = count_num_solutions_helper(puzzle, level, num_solutions, i, j+1);
+                        }
+                        set_box_value(puzzle, 0,i, j);
+                    }
+
+                }// some entries did not work so unsolvable
+                return num_solutions;
+            }
+        }
+
+    }return num_solutions +1;
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

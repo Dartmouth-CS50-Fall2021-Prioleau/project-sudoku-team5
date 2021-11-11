@@ -1,18 +1,32 @@
+
+/*
+ * sudoku.c - CS50 Project 'sudoku' module
+ *
+ * 
+
+ * 
+ * 
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
+#include <math.h>
+
 #include "./create/create.h"
-#include "./box/box.h"
-#include "./library/memory.h"
-#include "./library/counters.h"
 #include "./solve/solve.h"
 #include "./puzzle/puzzle.h"
-#include "./common/build.h"
-#include "./common/unique.h"
+//#include "./library/file.h"
 
+
+
+//bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle);
+
+/*********** protoptypes ***************/
+//bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle, char* level);
 
 
 
@@ -20,72 +34,154 @@ int main(const int argc, const char** argv)
 {
 
   //check for valid number of parameters
-  if (argc != 3) {
+  if (argc != 3 && argc != 2) {
 
     fprintf(stderr, "Incorrect number of arguments. ");
-    fprintf(stderr,"Should have ./sudoku mode difficulty\n");
+    fprintf(stderr,"Usage: ./sudoku mode difficulty\n");
     return 1;
 
   }
-  
-  char* mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
-  char* difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
 
-  
-  strcpy(mode, argv[1]);
-  strcpy(difficulty, argv[2]);
 
-  //box_t* sudoku[9][9];
-  puzzle_t* puzzle = puzzle_new(9);
+  char* mode;
+  char* difficulty; 
 
-  //sudoku_populate(sudoku);
+  //Allocate space and copy to variable for inputs
+  if(argc == 2) {
+    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
+    strcpy(mode, argv[1]);
+  }
+
+  else {
+    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
+    difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
+    strcpy(mode, argv[1]);
+    strcpy(difficulty, argv[2]);
+  }
+
+
+  //Check mode and difficulty are valid
+  if(strcmp(mode, "create") != 0 && strcmp(mode, "solve") != 0) {
+    fprintf(stderr, "Mode must be 'create' or 'solve'\n");
+    free(mode);
+    return 2;
+  }
+
+  if(argc == 3 ) {
+    if(strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
+    fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
+    free(mode);
+    return 2;
+    }
+  }
+
+  //If 2 arguments are given make sure mode is solve
+  if(argc == 2 && strcmp(mode, "create") == 0 ) {
+    fprintf(stderr, "Create mode requires a third arguemnt for the difficulty\n");
+    free(mode);
+    return 3;
+  } 
+
+
+
+
+
+
+
+
+
 
   time_t t;
-   
   srand((unsigned) time(&t));
 
+<<<<<<< HEAD
+  //printf("hi\n");
+
+=======
+>>>>>>> b6e50b99a825eef91e0b7b148f0374c6d57567f6
+  //check the mode
+  if(strcmp(mode, "create") == 0) {
     
-  puzzle_print_formated(puzzle, stdout);
+    puzzle_t* puzzle = puzzle_new(9);
+    printf("\n%d\n\n", get_grid_size(puzzle));
+    printf("empty puzzle: \n\n");
+    puzzle_print_formated(stdout, puzzle);
+    printf("\n");
 
-  printf("\n");
+    //build_sudoku(puzzle, mode);
+    puzzle_print_formated(stdout,puzzle);
+    build_full_sudoku(puzzle, difficulty);
 
-  build_sudoku(puzzle, difficulty);
+    printf("fully  built sudoku: \n\n");
+    puzzle_print_formated(puzzle, stdout);
+    printf("\n\n");
+ 
 
-  printf("\n");
+    // delete num  from fully built  sudoku
+    printf("removing entries from puzzle: \n\n");
+    create_sudoku(puzzle, difficulty);
+    puzzle_print_formated(puzzle, stdout);
+    printf("\n\n");
+
+    // try solving 
+    printf("solving sudoku: ... \n");
+    build_sudoku(puzzle, "solve");
+    puzzle_print_formated(puzzle, stdout);
+    printf("\n\n");
+
+    puzzle_delete(puzzle);
+    free(mode);
+    if(argc == 3 ) {
+      free(difficulty);
+    }
+
+  
+}  
+
+  else {
+    
+    char* unsolved;
+
+    //Allow the user to input a sudoku or read in a piped in created sudoku
+    //while(!feof(stdin)) {
+
+    //  unsolved = freadfilep(stdin);
+
+    //}
+
+    puzzle_t* parsed = puzzle_new(9);
+
+    //For testing
+    FILE* file = fopen("parse.txt", "r");
+
+    //***This needs to be updated to handle string instead of file
+    //take the input and build the puzzle struct from the data
+    parse_user_sudoku(file, parsed);
+
+    //Print the input
+    puzzle_print_simple(parsed, stdout);
+
+    //Solve the sudoku
+    build_sudoku(parsed, mode);
+    
+    //Print the solved sudoku
+    puzzle_print_simple(parsed, stdout);
 
 
-  printf("\n");
-  //set_value(get_box_from_grid(puzzle, 2 ,3),5);
 
-  //update_all_box_counters(puzzle, 1, 2, 3);
+    
 
-  //solve_sudoku(puzzle);
-  puzzle_print_formated(puzzle, stdout);
 
-  //puzzle_print(puzzle, stdout);
-
-      
-  printf("\n");
-
-/// testing parsing of user sudoku
-
-  //char filename[10];
-  //printf(filename,"parse.txt");
-  //FILE *fp = fopen("parse.txt", "r"); // open created test file
-  //if (fp == NULL  ) printf("its here\n");   
-  //bool state = parse_user_sudoku(fp, newSudoku, difficulty);
-  printf("\n");
-  //if(state == true) printf("STATUS == TRUE\n\n");
-  //else printf("oh no\n");
+  }
   
 }
 
 /**************************** bool parse_user_sudoku () **********************************/
 /* see sudoku.h for more detail */
-bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
+bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle)
 { 
   // return NULL if either fp or sudoku is NULL
-  if (fp == NULL || sudoku == NULL ){
+  if (fp == NULL || puzzle == NULL ){
     printf("something is wrong\n");
     return false;
   }
@@ -100,13 +196,13 @@ bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
       int scan_status = fscanf(fp, "%d", &value);
       if(scan_status != 1) return false; 
 
-      // ensure that cvalue is between 0 andf 9 strictly
-      if(value <= 9 && value >= 0)
+      // ensure that value is between 0 andf 9 strictly
+      if(value <= get_grid_size(puzzle) && value >= 0)
       {
         //create a new box and set its value to be the scanned value, and put it in the sudoku 
-        //box_t*  box = box_new();
-        //set_value(box, value);
-        //sudoku[r][c] = box;
+        box_t*  box = box_new(9);
+        set_value(box, value);
+        set_box_in_grid(puzzle, box, r,c);
       }
       else return false;
     }
@@ -119,40 +215,6 @@ bool parse_user_sudoku(FILE* fp, box_t* sudoku[9][9], char* level)
   // verify that the number of lines in fp is 9 -> 9 rows in sudoku
   if (lines_in_file(fp) !=9 ) return false; // not  9x9 sudoku
 
-
-  // // validate sudoku
-  // if (!is_parsed_sudoku_valid(sudoku, level)) {
-  //   printf("not solvable\n");
-  //   return false;
-  // }
-  
-  //solve_sudoku(sudoku);
-  //printf("printing solved sudoku\n");
-  //sudoku_print(sudoku, stdout);
-  // if valid sudoku, return  true
   return true; 
 }
-
-
-
-/*****************************  is_parsed_sudoku_valid() ******************/
-static bool is_parsed_sudoku_valid(box_t* sudoku[9][9], char* level)
- { 
-   // return  false if  NULL sudoku
-   if (sudoku == NULL) return false;
-   // loop through sudoku and check all non empty slots if the do not invalidate the sudoku
-   for (int i = 0; i< 9; i++) 
-   {
-      for (int j = 0; j< 9; j++)
-       {
-         int value = get_value(sudoku[i][j]);
-         if (value != 0 && !val_not_in_cross_section(sudoku, i, j, value, level)) return false;
-        }
-    }
-    return true;
-}
-
-
-
-
 
