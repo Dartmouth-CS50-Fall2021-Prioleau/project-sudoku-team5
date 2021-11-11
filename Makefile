@@ -13,19 +13,19 @@
 
 
 #Outside libraries
-L = ./library
 C = ./create
-B = ./box
+L = ./library
 P = ./puzzle
-M = ./common
+S = ./solve
 
 
-CFLAGS = -Wall -pedantic -std=c11 -ggdb -I$L -I$C -I$B -I$P -I$M
+CFLAGS = -Wall -pedantic -std=c11 -ggdb -I$C -I$P -I$S -I$L
 CC = gcc
+
 MAKE = make
 VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
-OBJS = $L/counters.o $C/create.o $B/box.o $L/memory.o $L/file.o $P/puzzle.o $M/build.o $M/unique.o
+OBJS =  $C/create.o  $P/puzzle.o  $S/solve.o $L/memory.o
 
 LIBS = -lm
 
@@ -34,7 +34,12 @@ sudoku: sudoku.o $(OBJS)
 
 
 # Dependencies: object files depend on header files
-sudoku.o: $L/counters.h $C/create.h $B/box.h $L/memory.h $L/file.h $P/puzzle.h $M/build.h $M/unique.h
+sudoku.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h
+
+create.o: create.h
+puzzle.o: puzzle.h
+solve.o: solve.h
+memory.o: memory.h
 
 all: sudoku
 
@@ -47,6 +52,5 @@ clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -f *~ *.o
 	rm -f ../common/*.o
-	rm -f ../libcs50/*.o
 	rm -f corecd c
 	rm -f sudoku
