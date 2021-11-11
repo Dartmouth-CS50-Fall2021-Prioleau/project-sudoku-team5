@@ -66,7 +66,7 @@ int main(const int argc, const char** argv)
 
   // try solving 
   printf("solving sudoku: ... \n");
-  solve_sudoku(puzzle);
+  build_sudoku(puzzle, difficulty);
   puzzle_print(puzzle, stdout);
   printf("\n\n");
  

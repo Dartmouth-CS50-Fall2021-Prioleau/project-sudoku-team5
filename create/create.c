@@ -96,7 +96,7 @@ void create_sudoku(puzzle_t* puzzle, char* level){
             // if solution is not unique, put it back
             if(!is_unique_solution){
                 //sudoku_print(sudoku, stdout);
-                printf("putting back %d\n", to_delete_value);
+                //printf("putting back %d\n", to_delete_value);
                 set_value(get_box_from_grid(puzzle, x_todelete, y_todelete), to_delete_value);
             }
             // if solution is unique
