@@ -134,7 +134,7 @@ bool
 is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level);
 
 /********************* puzzle_delete() *********************/
-/* Delete a non-null puzzle struct by calling the box_delete function to free its boxes in the grid 
+/* Deletes a puzzle struct by first freeing the grid pointer and finally freeing the puzzlt struct.
  * and count_free to free the grid 2-D array of pointers and the puzzle_t struct memory allocated
  * 
  * User provides:
@@ -190,10 +190,9 @@ puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
 
 
 /*********************** parse_user_puzzle() *****************************/
-/*
- *
- *
- * 
+/* Parses the user sudoku, by checking if it has valid format.
+ * Returns true if the user sudoku wwas successfully parsed.
+ * Returns false otherwise.
  */
 bool
 parse_user_puzzle(FILE* fp, puzzle_t* puzzle);

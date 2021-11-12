@@ -54,5 +54,6 @@ void build_full_sudoku(puzzle_t* puzzle, char* level);
 
 void create_sudoku(puzzle_t* puzzle, char* level);
 bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);
+void build_full_sudoku(puzzle_t* puzzle, char* level);
 
 #endif // __CREATE_H

@@ -88,7 +88,7 @@ int main(const int argc, const char** argv)
   //check the mode
   if(strcmp(mode, "create") == 0) {
     
-    puzzle_t* puzzle = puzzle_new(25);
+    puzzle_t* puzzle = puzzle_new(16);
     printf("\n%d\n\n", get_grid_size(puzzle));
     printf("empty puzzle: \n\n");
     puzzle_print_simple(stdout, puzzle);

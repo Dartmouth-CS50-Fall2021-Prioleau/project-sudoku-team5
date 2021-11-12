@@ -156,12 +156,12 @@ int get_num_todelete(puzzle_t* puzzle, char*level){
         else{ 
             if (strcmp(level, "easy") == 0) {
                  int num = 0.2* pow(puzzle-> size,2);
-                 printf("dddddddddddd %d\n", num);
+                 //printf("dddddddddddd %d\n", num);
                  return num ;
             }
             else if(strcmp(level, "hard") == 0){
                int num = 0.25* pow(puzzle-> size,2) ;
-               printf("dddddddddddd2 %d\n", num);
+               //printf("dddddddddddd2 %d\n", num);
                return num;
             } 
 
