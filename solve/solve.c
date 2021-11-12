@@ -13,6 +13,7 @@
 
 /******************* static helper methods **********************/
 static int count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int init_row, int init_column);
+
 /************************ global functions *********************/
 /* that is, visible outside this file */
 bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);

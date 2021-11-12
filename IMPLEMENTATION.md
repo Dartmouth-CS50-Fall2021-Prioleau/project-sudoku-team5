@@ -75,7 +75,7 @@ A. `solve sudoku`
                 1. Call `solve sudoku ` on the next box.
                 2. If `solve sudoku ` returns true, return true to caller
                 3. Otherwise, reset that box to empty.
-        2. If we get here, all tired values could not find a solution. Return flase to caller.
+        2. If we get here, all tired values could not find a solution. Return false to caller.
 3. Return true.
 
 Output: Boolean-> true if solution found, false otherwise.
