@@ -23,29 +23,31 @@ int count_num_solutions(puzzle_t* puzzle, char* level);
 /* see  create.h for description*/
 bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
     // check if all entries have been visited
-    if (row == 9 && column == 0) {
+    if (row == get_grid_size(puzzle) && column == 0) {
         return true;
     }
     // Visit squares that have not yet been visited, from left to right
-    for (int i=row; i< 9; i++) {
+    for (int i=row; i< get_grid_size(puzzle); i++) {
         int j =(i == row) ? column : 0;
          
-        for ( ; j<9; j++) {
+        for ( ; j<get_grid_size(puzzle); j++) {
             // check if entry is empty
             if (get_box_value(puzzle, i, j) == 0) {
+
                 // Try every valid number for this entry
-                int possibilities[9] = {1, 2, 3, 4, 5, 6, 7, 8, 9}; 
+                int possibilities[get_grid_size(puzzle)] ; //{1, 2, 3, 4, 5, 6, 7, 8, 9};
+                for(int i=1 ; i<get_grid_size(puzzle);i++) possibilities[i-1] = i;
                 int count = 0; 
 
-                while (count < 9) {
-                    int random_possibility = (rand() % 9) + 1; 
+                while (count < get_grid_size(puzzle)) {
+                    int random_possibility = (rand() % get_grid_size(puzzle)) + 1; 
                     if (possibilities[random_possibility - 1] != 0 ) {
                         if (val_not_in_cross_section(puzzle, i, j, random_possibility, level)) {
                             set_box_value(puzzle, random_possibility, i, j);
 
                             // recurse with new sudoku -> move to next entry
                             bool is_sub_solvable;
-                            if (j == 8) {
+                            if (j == get_grid_size(puzzle)-1) {
                                 is_sub_solvable = solve_sudoku(puzzle, i+1, 0, level);
                             }
                             else {

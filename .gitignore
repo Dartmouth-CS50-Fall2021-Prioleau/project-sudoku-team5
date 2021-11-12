@@ -1,2 +1,5 @@
-*.o
+# to ignore
+*.dSYM  
+*~ *.o
 sudoku
+

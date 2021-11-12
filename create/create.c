@@ -13,6 +13,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include <ctype.h>
+#include <math.h>
 #include <time.h>
 #include "../puzzle/puzzle.h"
 #include "../solve/solve.h"
@@ -41,18 +42,18 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
     int random_num;
 
     // en sures we with empty entries -> 0
-    for (int i = 0; i < 9; i++) {       
-        for (int j = 0; j < 9; j++) {   
+    for (int i = 0; i < get_grid_size(puzzle); i++) {       
+        for (int j = 0; j < get_grid_size(puzzle); j++) {   
             set_box_value(puzzle, 0,i,j);
         } 
     } 
     
     if (strcmp(level, "hard")==0 || strcmp(level, "easy")==0) {
         // the min_main_diagonal line boxes is independent, fill it first
-        for (int i = 0; i < 9; i++) {       // rows
+        for (int i = 0; i < get_grid_size(puzzle); i++) {       // rows
             do { 
                 
-                random_num = (rand() % 9) + 1; //from (1-9)
+                random_num = (rand() % get_grid_size(puzzle)) + 1; //from (1-9)
             } 
             // while you can't add that value in, change the number
             while (!val_not_in_cross_section(puzzle, i, i, random_num, level));
@@ -63,14 +64,14 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
     }
     
     // fill 3x3 boxes  in main duagonal (min 27 entries)
-    for (int min_main_diag = 0; min_main_diag < 9; min_main_diag += 3) {
+    for (int min_main_diag = 0; min_main_diag < get_grid_size(puzzle); min_main_diag += sqrt((double)get_grid_size(puzzle))) {
     
-        for (int i = 0; i < 3; i++) {       // rows
-            for (int j = 0; j < 3; j++) {   // columns 
+        for (int i = 0; i < sqrt((double)get_grid_size(puzzle)); i++) {       // rows
+            for (int j = 0; j < sqrt((double)get_grid_size(puzzle)); j++) {   // columns 
                 if (get_grid(puzzle)[min_main_diag + i][min_main_diag + j] == 0) {
                     do { 
                         
-                        random_num = (rand() % 9) + 1; //from (1-9)
+                        random_num = (rand() % get_grid_size(puzzle)) + 1; //from (1-9)
                     } 
                     // change number if can't be aded in specific box
                     while (!is_val_in_box(puzzle, min_main_diag, min_main_diag + i, min_main_diag + j, random_num, level));
@@ -82,7 +83,7 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
         } 
     }
 
-    // re build if not solvable
+    // re-build if not solvable
     if (!solve_sudoku(puzzle,0,0, level)) {
         build_full_sudoku(puzzle, level);
     }
@@ -102,26 +103,11 @@ create_sudoku(puzzle_t* puzzle, char* level){
     
     // nomalize dificulty level 
     normalize_word(level);
-    int num_to_delete;
-
-    //  if easy dificulty,  delete 44 slots
-    if (strcmp(level, "easy") == 0){
-        num_to_delete = 44;
-    
-    }
-     //  if hard  dificulty for, delete 56 slots
-    else if(strcmp(level, "hard") == 0){
-        num_to_delete = 56 ;
-    }
-    // print error and return if level is invalid
-    else{
-        fprintf(stderr, "Invalid level: Enter easy(or EASY) or hard(or HARD). \n\n");
-        return ;
-    }
+    printf("mmmmmmmmmmm   %d\n", get_num_todelete(puzzle, level));
 
     ///////////////////////////////////////////////
     // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56
-    for(int i = 0; i <  num_to_delete; i++){
+    for(int i = 0; i <  get_num_todelete(puzzle, level); i++){
       
         int x_todelete; // x postion of random box to delete
         int y_todelete; // y postion of random box to delete
@@ -307,3 +293,6 @@ main(const int argc, const char *argv[])
 }
 
 #endif // UNIT_TEST
+
+
+
