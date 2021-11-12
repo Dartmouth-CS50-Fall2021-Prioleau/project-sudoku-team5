@@ -1,4 +1,3 @@
-*.dSYM  
-*~ *.o
-sudoku
 *.o
+sudoku
+fuzztesting
