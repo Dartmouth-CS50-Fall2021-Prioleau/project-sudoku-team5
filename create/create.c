@@ -103,7 +103,7 @@ create_sudoku(puzzle_t* puzzle, char* level){
     
     // nomalize dificulty level 
     normalize_word(level);
-    printf("mmmmmmmmmmm   %d\n", get_num_todelete(puzzle, level));
+    //printf("mmmmmmmmmmm   %d\n", get_num_todelete(puzzle, level));
 
     ///////////////////////////////////////////////
     // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56
