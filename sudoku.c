@@ -89,35 +89,20 @@ int main(const int argc, const char** argv)
   if(strcmp(mode, "create") == 0) {
     
     puzzle_t* puzzle = puzzle_new(9);
-    printf("\n%d\n\n", get_grid_size(puzzle));
-    printf("empty puzzle: \n\n");
-    puzzle_print_formated(stdout, puzzle);
-    printf("\n");
 
-    //build_sudoku(puzzle, mode);
-    puzzle_print_formated(stdout,puzzle);
+
+    //build a full, complete sudoku
     build_full_sudoku(puzzle, difficulty);
 
-    printf("fully  built sudoku: \n\n");
-    puzzle_print_formated(stdout, puzzle);
-    puzzle_print_simple(stdout,puzzle);
-    printf("\n\n");
- 
 
-    // delete num  from fully built  sudoku
-    printf("removing entries from puzzle: \n\n");
+    // delete num from fully built sudoku
     create_sudoku(puzzle, difficulty);
-    puzzle_print_simple(stdout, puzzle);
-    solve_sudoku(puzzle,0,0,difficulty);
-    printf("solved recursively\n\n");
-    puzzle_print_simple(stdout, puzzle);
-    printf("\n\n");
 
-    // try solving 
-    //printf("solving sudoku: ... \n");
-    //build_sudoku(puzzle, "solve");
-    //puzzle_print_formated(puzzle, stdout);
-    //printf("\n\n");
+    //solve_sudoku(puzzle,0,0,difficulty);
+    
+    puzzle_print_formated(stdout, puzzle);
+
+
 }  
    else { 
          // initialize sudoku to new one
@@ -130,20 +115,15 @@ int main(const int argc, const char** argv)
 
          if (!status)
          {
-             fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
-             return 3;
+            fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
+            return 3;
 
-         } else{
-            printf("\nPrinting parsed puzzle\n\n");
-            puzzle_print_simple(stdout, parsed);
-            puzzle_print_formated(stdout, parsed);
+         } 
+         else{
 
-            printf("\n\n");
-            // solve
-            solve_sudoku(parsed,0 ,0 ,"easy");
-            printf("\nPrinting solved ..... puzzle\n\n");
-            puzzle_print_simple(stdout, parsed);
-            printf("\n\n");
+          solve_sudoku(parsed,0 ,0 ,"easy");
+
+          puzzle_print_formated(stdout, parsed);
         }
    }
 }

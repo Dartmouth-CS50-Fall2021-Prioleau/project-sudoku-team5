@@ -1,0 +1,127 @@
+bash -v testing.sh
+# Testing script for sudoku.c
+# Authors: Dylan Beinstock, Salifyanji J. Namwila, and Veronica Quidore
+# Date: November 11 2021
+#
+# usage: bash -v testing.sh
+
+############################################
+### Tests with invalid arguements ###
+
+# 1 argument
+./sudoku 
+Incorrect number of arguments. Usage: ./sudoku mode difficulty
+
+# 2 argument
+./sudoku create
+Create mode requires a third arguemnt for the difficulty
+
+# 2 argument with invalid mode
+./sudoku invalid_mode
+Mode must be 'create' or 'solve'
+
+# 3 argument with invalid mode
+./sudoku invalid_mode easy
+Mode must be 'create' or 'solve'
+
+# 3 argument with invalid difficulty
+./sudoku create invalid_difficulty
+Difficulty must be 'easy' or 'hard'
+
+############################################
+### Tests with invalid solve arguements ###
+
+# solve that breaks sudoku rules
+cat testing_files/invalid_sudoku.txt | ./sudoku solve
++-------+-------+-------+
+| 9 0 3 | 0 4 8 | 0 0 0 | 
+| 5 1 0 | 3 2 6 | 0 0 0 | 
+| 0 4 0 | 5 9 7 | 0 2 0 | 
++-------+-------+-------+
+| 0 0 0 | 0 0 1 | 0 4 5 | 
+| 0 8 0 | 0 5 0 | 9 1 0 | 
+| 4 5 1 | 0 3 0 | 0 0 7 | 
++-------+-------+-------+
+| 0 0 5 | 0 7 0 | 0 0 0 | 
+| 0 7 5 | 4 6 0 | 0 3 0 | 
+| 0 0 9 | 0 1 3 | 5 7 0 | 
++-------+-------+-------+
+
+# solve with too few numbers
+cat testing_files/too_few_numbers.txt | ./sudoku solve
+Format Error: Could not parsed puzzle.
+
+# solve with too many numbers
+cat testing_files/too_many_numbers.txt | ./sudoku solve
+Format Error: Could not parsed puzzle.
+
+
+############################################
+#####   Tests with Valid arguements   #######
+
+# Create and Solve easy
+./sudoku create easy | ./sudoku solve easy
++-------+-------+-------+
+| 2 4 9 | 5 6 1 | 3 7 8 | 
+| 8 7 5 | 3 4 9 | 1 6 2 | 
+| 6 3 1 | 8 7 2 | 4 9 5 | 
++-------+-------+-------+
+| 7 9 2 | 4 8 3 | 5 1 6 | 
+| 4 1 6 | 2 5 7 | 8 3 9 | 
+| 5 8 3 | 9 1 6 | 2 4 7 | 
++-------+-------+-------+
+| 3 6 7 | 1 2 8 | 9 5 4 | 
+| 9 2 4 | 7 3 5 | 6 8 1 | 
+| 1 5 8 | 6 9 4 | 7 2 3 | 
++-------+-------+-------+
+
+sleep 2
+
+# Create and Solve hard
+./sudoku create easy | ./sudoku solve easy
++-------+-------+-------+
+| 5 8 9 | 4 7 6 | 2 1 3 | 
+| 3 7 1 | 8 9 2 | 4 6 5 | 
+| 6 2 4 | 1 3 5 | 8 9 7 | 
++-------+-------+-------+
+| 2 5 7 | 6 8 4 | 1 3 9 | 
+| 4 3 6 | 9 2 1 | 7 5 8 | 
+| 1 9 8 | 7 5 3 | 6 4 2 | 
++-------+-------+-------+
+| 8 4 5 | 3 1 7 | 9 2 6 | 
+| 7 1 3 | 2 6 9 | 5 8 4 | 
+| 9 6 2 | 5 4 8 | 3 7 1 | 
++-------+-------+-------+
+
+sleep 2
+
+#Solve with 2 arguments 
+./sudoku create easy | ./sudoku solve
++-------+-------+-------+
+| 8 7 5 | 6 2 9 | 1 4 3 | 
+| 9 1 3 | 4 8 7 | 6 2 5 | 
+| 2 6 4 | 1 5 3 | 7 8 9 | 
++-------+-------+-------+
+| 5 4 2 | 7 3 1 | 9 6 8 | 
+| 1 3 9 | 2 6 8 | 5 7 4 | 
+| 7 8 6 | 9 4 5 | 2 3 1 | 
++-------+-------+-------+
+| 6 2 8 | 5 9 4 | 3 1 7 | 
+| 3 5 7 | 8 1 2 | 4 9 6 | 
+| 4 9 1 | 3 7 6 | 8 5 2 | 
++-------+-------+-------+
+
+sleep 2
+
+#Solve a known solution and compare to the solution
+cat testing_files/sudoku_1_input.txt | ./sudoku solve > testing_files/sudoku_1_output.txt
+
+if diff testing_files/sudoku_1_output.txt testing_files/sudoku_1_solution.txt
+then 
+    echo "Sudoku files are the same"
+else 
+    echo "Sudoku files are different"
+fi
+Sudoku files are the same
+
+

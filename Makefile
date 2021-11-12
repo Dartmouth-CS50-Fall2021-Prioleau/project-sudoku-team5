@@ -54,6 +54,9 @@ all: sudoku
 valgrind: all
 	valgrind ./sudoku
 
+test:
+	bash -v testing.sh
+
 clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -f *~ *.o
