@@ -1,5 +1,4 @@
 *.dSYM  
 *~ *.o
 sudoku
-fuzztesting
 *.o
