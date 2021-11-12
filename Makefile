@@ -52,7 +52,7 @@ all: sudoku
 .PHONY: valgrind clean
 
 valgrind: all
-	valgrind ./sudoku
+	valgrind ./sudoku create easy
 
 clean:
 	rm -rf *.dSYM  # MacOS debugger info

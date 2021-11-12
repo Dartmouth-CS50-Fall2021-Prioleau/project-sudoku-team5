@@ -88,14 +88,13 @@ int main(const int argc, const char** argv)
   //check the mode
   if(strcmp(mode, "create") == 0) {
     
-    puzzle_t* puzzle = puzzle_new(16);
+    puzzle_t* puzzle = puzzle_new(4);
     printf("\n%d\n\n", get_grid_size(puzzle));
     printf("empty puzzle: \n\n");
     puzzle_print_simple(stdout, puzzle);
     printf("\n");
 
     //build_sudoku(puzzle, mode);
-    puzzle_print_simple(stdout,puzzle);
     build_full_sudoku(puzzle, difficulty);
 
     printf("fully  built sudoku: \n\n");
@@ -121,7 +120,7 @@ int main(const int argc, const char** argv)
 }  
    else { 
          // initialize sudoku to new one
-         puzzle_t* parsed = puzzle_new(9);
+         puzzle_t* parsed = puzzle_new(4);
          printf(" GRID SIZE : %d\n", get_grid_size(parsed));
          // read from stdin
          FILE* file  = stdin;
