@@ -12,9 +12,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <ctype.h>
+
 #include <math.h>
 #include "puzzle.h"
 #include "../library/memory.h"
+#include "../library/file.h"
 #include "../solve/solve.h"
 #include "../create/create.h"
 
@@ -417,9 +420,22 @@ bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle)
     for (int c = 0; c < get_grid_size(puzzle); c++)
     {
       int value; // store scanned value here
-      // check value was  successfully matched and assigned
-      int scan_status = fscanf(fp, "%d", &value);
-      if(scan_status != 1) return false; 
+
+      // check value was successfully matched and assigned
+      int scan_status;
+      do {
+        char* num = freadwordp(fp);
+
+        //Check if the user input less than 81 numbers
+        if (num == NULL) {
+          return false;
+        }
+        scan_status = sscanf(num, "%d", &value);
+
+        free(num);
+      }  
+       
+      while(scan_status != 1); 
 
       // ensure that value is between 0 andf 9 strictly
       if(value <= get_grid_size(puzzle) && value >= 0)
@@ -430,7 +446,17 @@ bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle)
       else return false;
     }
       
-  } return true; 
+  } 
+  
+  // check the user didn't input more than 81 numbers
+    char* num;
+    
+    while ((num = freadwordp(fp)) != NULL ) {
+      if(isdigit(num[0])) {
+          return false;
+      }
+      free(num);
+    }
+    
+  return true; 
 }
-
-

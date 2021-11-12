@@ -1,9 +1,7 @@
-
 /*
  * sudoku.c - CS50 Project 'sudoku' module
  *
  * 
-
  * 
  * 
  */
@@ -82,15 +80,6 @@ int main(const int argc, const char** argv)
     return 3;
   } 
 
-
-
-
-
-
-
-
-
-
   time_t t;
   srand((unsigned) time(&t));
 
@@ -147,6 +136,8 @@ int main(const int argc, const char** argv)
          } else{
             printf("\nPrinting parsed puzzle\n\n");
             puzzle_print_simple(stdout, parsed);
+            puzzle_print_formated(stdout, parsed);
+
             printf("\n\n");
             // solve
             solve_sudoku(parsed,0 ,0 ,"easy");
@@ -156,4 +147,3 @@ int main(const int argc, const char** argv)
         }
    }
 }
-
