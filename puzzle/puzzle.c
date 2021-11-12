@@ -45,6 +45,7 @@ int get_box_value(puzzle_t* puzzle, int x, int y);
 bool set_box_value(puzzle_t* puzzle, int value, int x, int y);
 bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, char* level);
 void puzzle_delete(puzzle_t* puzzle);
+int get_num_todelete(puzzle_t* puzzle, char*level);
 void puzzle_print_simple (FILE* fp, puzzle_t* puzzle);
 void puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
 bool is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level);
@@ -131,7 +132,7 @@ set_box_value(puzzle_t* puzzle, int value, int x, int y)
     return false;
 }
 
-
+/************************* print_box_value() **********************/
 void print_box_value( FILE* fp, int box_value){
 
     if (fp != NULL){
@@ -140,6 +141,32 @@ void print_box_value( FILE* fp, int box_value){
 }
 
 
+/************************* get_num_todelete()  *********************/
+int get_num_todelete(puzzle_t* puzzle, char*level){
+    if (puzzle != NULL){
+
+        if(puzzle-> size == 9)
+        {
+            if (strcmp(level, "easy") == 0) return 44;
+            else if(strcmp(level, "hard") == 0) return 56;
+        }
+        else{ 
+            if (strcmp(level, "easy") == 0) {
+                 int num = 0.2* pow(puzzle-> size,2);
+                 printf("dddddddddddd %d\n", num);
+                 return num ;
+            }
+            else if(strcmp(level, "hard") == 0){
+               int num = 0.25* pow(puzzle-> size,2) ;
+               printf("dddddddddddd2 %d\n", num);
+               return num;
+            } 
+
+        }
+
+        
+    }return -1;
+}
 
 /**************************************  val_not_in_cross_section() ************************************/
 /* see  puzzle.h for description*/
@@ -149,7 +176,7 @@ bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, 
 {
     // iterate over rows to check their columns
 
-    for(int r = 0; r <get_grid_size(puzzle); r++){
+    for(int r = 0; r < get_grid_size(puzzle); r++){
         if((get_box_value(puzzle, r, column) == value) && r !=row){
             return false;
         }
@@ -251,28 +278,6 @@ puzzle_print_simple(FILE* fp, puzzle_t* puzzle)
 
 
 
-
-
-
-// void
-// puzzle_print_simple (FILE* fp, puzzle_t* puzzle)
-// {
-//     // handle NULL sudoku
-//     if(fp != NULL) { 
-//         if(puzzle == NULL || puzzle->grid == NULL){
-//             printf("(null)\n");
-//         } else {
-//             for( int i = 0; i < puzzle->size; i++) {  // row
-//                 for(int j= 0; j < puzzle->size; j++) {  // column
-//                     fprintf("%d\t", puzzle->grid[i][j], fp);
-//                 }
-//                 printf("\n"); // print next row of sudoku
-//             }
-//         }
-//     }
-// }
-
-
 /*************************  puzzle_print_formated() ********************/
 /* see  puzzle.h for description*/
 void 
@@ -292,9 +297,9 @@ puzzle_print_formated (FILE* fp, puzzle_t* puzzle)
     printf("+-------+-------+-------+\n");
      
     // the  3 3X3 sudoku's in the first row
-    for ( int i = 0; i< 3; i++){  //first three rows
+    for ( int i = 0; i< sqrt((double)get_grid_size(puzzle)); i++){  //first three rows
 
-        for(int j= 0 ;j < 9; j++){ // all their collumns
+        for(int j = 0 ; j < 9; j++){ // all their columns
 
             // start of column
             if(  j == 0 ){
@@ -379,32 +384,16 @@ puzzle_print_formated (FILE* fp, puzzle_t* puzzle)
 /* see puzzle.h for description */
 bool 
 is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level) {
-    // // check if that box is not already filled
-    // if (get_grid(puzzle)[row][column] != 0) {
-    //     return false; 
-    // }
-    
     // if the entry is already in the 3x3 box 
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 3; j++) {
+    for (int i = 0; i < sqrt((double)get_grid_size(puzzle)); i++) {
+        for (int j = 0; j < sqrt((double)get_grid_size(puzzle)); j++) {
             if (get_grid(puzzle)[diag+i][diag+j] == entry) {
                 return false;
             }
         } 
     }
-    // // diagonal sudoku
-    // if (strcmp(level, "hard")==0 || strcmp(level, "easy")==0) {
-    //     // the negative sloped diagonal
-    //     if (row == column) {
-    //         for (int i = 0; i < 9; i++) {
-    //             // check if it's in the entry
-    //             if (i != row && get_grid(puzzle)[i][i] == entry) {
-    //                 return false;
-    //             }
-    //         }
-    //     }
-    // }
-    // if it was not in the box
+    
+    // if not in the box
     return true;
 }
 
@@ -423,9 +412,9 @@ bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle)
   }
   
   // scan all sudoku entries and check if they were successfully mathced and assigned
-  for (int r = 0; r < 9; r++) 
+  for (int r = 0; r < get_grid_size(puzzle); r++) 
   {
-    for (int c = 0; c < 9; c++)
+    for (int c = 0; c < get_grid_size(puzzle); c++)
     {
       int value; // store scanned value here
       // check value was  successfully matched and assigned
