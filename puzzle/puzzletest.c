@@ -190,6 +190,12 @@ int main() {
     }
 
     printf("Test a 4x4 puzzle!!\n\n");
+    puzzle_t* puzzle2 = puzzle_new(4);
+    if (puzzle2 != NULL) {
+        puzzle_print_simple(stdout, puzzle2);
+    }
+
+    
 
     return 0;
 }

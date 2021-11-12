@@ -141,7 +141,7 @@ void print_box_value( FILE* fp, puzzle_t* puzzle, int box_value){
         if (puzzle->size <= 9) {
             fprintf(fp, "%d ", box_value); //print  box's value
         } else {
-
+            fprintf(fp, "%02d ", box_value);
         }
             
     }
