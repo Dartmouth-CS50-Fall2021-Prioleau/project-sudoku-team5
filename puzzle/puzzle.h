@@ -179,5 +179,9 @@ bool
 parse_user_puzzle(FILE* fp, puzzle_t* puzzle);
 
 
+bool is_valid_unsolved(puzzle_t* puzzle);
+
+bool is_valid_solved(puzzle_t* puzzle);
+
 
 #endif // __PUZZLE_H 

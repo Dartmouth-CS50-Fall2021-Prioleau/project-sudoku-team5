@@ -471,3 +471,54 @@ bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle)
     
   return true; 
 }
+
+
+/***************************  is_valid_unsolved() *****************/
+/* see  puzzle.h for description*/
+bool is_valid_unsolved(puzzle_t* puzzle) {
+
+  int count = 0;
+
+  for(int i = 0; i < puzzle->size; i ++) {
+    for(int j = 0; j < puzzle->size; j ++) {
+      if(puzzle->grid[i][j] != 0) {
+        count += 1; 
+        if(!val_not_in_cross_section(puzzle, i, j, puzzle->grid[i][j], "easy")) {
+          return false;
+        }
+      }
+    }
+
+  }
+
+  if(count >= 25) {
+    return true;
+
+  }
+  else {
+    return false;
+  }
+
+}
+/***************************  is_valid_solved() *****************/
+/* see  puzzle.h for description*/
+bool is_valid_solved(puzzle_t* puzzle) {
+
+
+  for(int i = 0; i < puzzle->size; i ++) {
+    for(int j = 0; j < puzzle->size; j ++) {
+      
+      if(puzzle->grid[i][j] == 0) {
+        return false;
+      }
+
+      if(!val_not_in_cross_section(puzzle, i, j, puzzle->grid[i][j], "easy")) {
+        return false;
+      }
+
+      }
+    }
+
+  return true;
+
+}

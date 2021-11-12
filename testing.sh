@@ -28,15 +28,18 @@
 # solve that breaks sudoku rules
 cat testing_files/invalid_sudoku.txt | ./sudoku solve
 
-# solve with too few numbers
-cat testing_files/too_few_numbers.txt | ./sudoku solve
+# solve less than 25 given numbers 
+cat testing_files/less_25_numbers.txt | ./sudoku solve
 
-# solve with too many numbers
-cat testing_files/too_many_numbers.txt | ./sudoku solve
+# solve with too few inputs
+cat testing_files/too_few_inputs.txt | ./sudoku solve
+
+# solve with too many inputss
+cat testing_files/too_many_inputs.txt | ./sudoku solve
 
 
 ############################################
-#####   Tests with Valid arguements   #######
+#####   Tests with Valid arguements   ######
 
 # Create and Solve easy
 ./sudoku create easy | ./sudoku solve easy
@@ -44,7 +47,7 @@ cat testing_files/too_many_numbers.txt | ./sudoku solve
 sleep 2
 
 # Create and Solve hard
-./sudoku create easy | ./sudoku solve easy
+./sudoku create hard | ./sudoku solve hard
 
 sleep 2
 

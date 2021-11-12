@@ -121,6 +121,11 @@ int main(const int argc, const char** argv)
          } 
          else{
 
+           if(!is_valid_unsolved(parsed)) {
+              fprintf(stderr, "Invalid sudoku provided.\n");
+              return 4;
+           }
+
           solve_sudoku(parsed,0 ,0 ,"easy");
 
           puzzle_print_formated(stdout, parsed);
