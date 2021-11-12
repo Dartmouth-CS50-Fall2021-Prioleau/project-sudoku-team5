@@ -29,12 +29,18 @@ OBJS =  $C/create.o  $P/puzzle.o  $S/solve.o $L/memory.o $L/file.o
 
 LIBS = -lm
 
+all: sudoku fuzztesting
+
 sudoku: sudoku.o $(OBJS)
+	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
+
+fuzztesting: fuzztesting.o $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
 
 # Dependencies: object files depend on header files
 sudoku.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h $L/file.h
+fuzztesting.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h 
 
 create.o: create.h
 puzzle.o: puzzle.h
