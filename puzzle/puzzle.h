@@ -56,7 +56,7 @@ int** get_grid(puzzle_t* puzzle);
 int
 get_grid_size(puzzle_t* puzzle);
 
-void print_box_value( FILE* fp, int box_value);
+void print_box_value( FILE* fp, puzzle_t* puzzle, int box_value);
 
 
 /********************* get_box_value() *********************/
@@ -112,7 +112,7 @@ val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value);
  * 
 */
 bool 
-is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level);
+is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry);
 
 /********************* puzzle_delete() *********************/
 /* Delete a non-null puzzle struct by calling the box_delete function to free its boxes in the grid 
