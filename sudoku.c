@@ -106,8 +106,7 @@ int main(const int argc, const char** argv)
 }  
    else { 
          // initialize sudoku to new one
-         puzzle_t* parsed = puzzle_new(9);
-         //printf("%d", get_grid_size(parsed));
+         puzzle_t* parsed = puzzle_new(4);
          // read from stdin
          FILE* file  = stdin;
          // try parsing puzzle from stdin

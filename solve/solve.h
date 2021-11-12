@@ -23,7 +23,6 @@
 #include <ctype.h>
 #include <time.h>
 #include "../puzzle/puzzle.h"
-//#include "../create/create.h"
 
 
 /*************************** global types ***********************/
@@ -42,7 +41,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);
 
 
 /********************** count_num_solutions() *************************/
-/* Countes the number of solutions for a given puzzle and returns count to user.
+/* Counts the number of solutions for a given puzzle and returns count to user.
  * Calls helper method that actually does the counting
  *
 */

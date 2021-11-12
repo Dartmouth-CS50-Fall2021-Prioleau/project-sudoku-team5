@@ -23,7 +23,6 @@
 #include <ctype.h>
 #include <time.h>
 #include "../puzzle/puzzle.h"
-//#include "../solve/solve.h"
 
 
 /*************************** global types ***********************/
@@ -51,8 +50,5 @@ create_sudoku(puzzle_t* puzzle, char* level);
  * 
 */
 void build_full_sudoku(puzzle_t* puzzle, char* level);
-
-void create_sudoku(puzzle_t* puzzle, char* level);
-bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level);
 
 #endif // __CREATE_H

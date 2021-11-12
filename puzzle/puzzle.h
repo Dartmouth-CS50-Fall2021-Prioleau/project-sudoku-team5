@@ -16,7 +16,6 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../library/memory.h"
-//#include "../create/create.h"
 
 /**************** global types ****************/
 typedef struct puzzle puzzle_t;
@@ -38,6 +37,7 @@ typedef struct puzzle puzzle_t;
 puzzle_t* puzzle_new(int size);
 
 
+
 /********************* get_grid() *********************/
 /* Return the 2-D grid integer array of boxes from a given puzzle_t struct if the puzzle struct is not null. 
  * Otherwise, return null.
@@ -48,6 +48,7 @@ puzzle_t* puzzle_new(int size);
 int** get_grid(puzzle_t* puzzle);
 
 
+
 /***************************  get_grid_size() *****************/
 /* Return size of grid for a given puzzle
  * Return NULL if  puzzle is NULL
@@ -56,7 +57,15 @@ int** get_grid(puzzle_t* puzzle);
 int
 get_grid_size(puzzle_t* puzzle);
 
+
+
+/**************************** print_box_value() *********************/
+/* Prints the given value to the given file
+ * User provies file pointer and value to print
+ *
+ */
 void print_box_value( FILE* fp, int box_value);
+
 
 
 /********************* get_box_value() *********************/
@@ -74,6 +83,7 @@ int
  get_box_value(puzzle_t* puzzle, int x, int y);
 
 
+
 /********************* set_box_value() *********************/
 /* Set the box_t* pointer at a given (x,y) point in the 2-D array of pointers to a provided box object
  * User provides: 
@@ -85,6 +95,15 @@ int
  */
 bool
 set_box_value(puzzle_t* puzzle, int value, int x, int y);
+
+
+
+/************************* get_num_todelete() ********************/
+/* Returns the number of box values to delrte from complet sudoku
+ * User provides difficulty level and the puzzle
+ */
+int
+get_num_todelete(puzzle_t* puzzle, char*level);
 
 
 
@@ -115,7 +134,7 @@ bool
 is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level);
 
 /********************* puzzle_delete() *********************/
-/* Delete a non-null puzzle struct by calling the box_delete function to free its boxes in the grid 
+/* Deletes a puzzle struct by first freeing the grid pointer and finally freeing the puzzlt struct.
  * and count_free to free the grid 2-D array of pointers and the puzzle_t struct memory allocated
  * 
  * User provides:
@@ -169,11 +188,11 @@ void
 puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
 
 
+
 /*********************** parse_user_puzzle() *****************************/
-/*
- *
- *
- * 
+/* Parses the user sudoku, by checking if it has valid format.
+ * Returns true if the user sudoku wwas successfully parsed.
+ * Returns false otherwise.
  */
 bool
 parse_user_puzzle(FILE* fp, puzzle_t* puzzle);
