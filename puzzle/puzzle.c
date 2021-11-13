@@ -461,7 +461,6 @@ bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle)
   return true; 
 }
 
-
 /***************************  is_valid_unsolved() *****************/
 /* see  puzzle.h for description*/
 bool is_valid_unsolved(puzzle_t* puzzle) {
