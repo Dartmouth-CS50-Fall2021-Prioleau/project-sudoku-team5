@@ -42,17 +42,14 @@ fuzztesting: fuzztesting.o $(OBJS)
 sudoku.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h $L/file.h
 fuzztesting.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h 
 
-create.o: create.h
-puzzle.o: puzzle.h
-solve.o: solve.h
-memory.o: memory.h
-
-all: sudoku
 
 .PHONY: valgrind clean
 
 valgrind: all
 	valgrind ./sudoku create easy
+
+test:
+	bash -v testing.sh
 
 clean:
 	rm -rf *.dSYM  # MacOS debugger info

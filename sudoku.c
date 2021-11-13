@@ -88,40 +88,25 @@ int main(const int argc, const char** argv)
   //check the mode
   if(strcmp(mode, "create") == 0) {
     
-    puzzle_t* puzzle = puzzle_new(4);
-    printf("\n%d\n\n", get_grid_size(puzzle));
-    printf("empty puzzle: \n\n");
-    puzzle_print_simple(stdout, puzzle);
-    printf("\n");
+    puzzle_t* puzzle = puzzle_new(9);
 
-    //build_sudoku(puzzle, mode);
+
+    //build a full, complete sudoku
     build_full_sudoku(puzzle, difficulty);
 
-    printf("fully  built sudoku: \n\n");
-    puzzle_print_simple(stdout, puzzle);
-    //puzzle_print_simple(stdout,puzzle);
-    printf("\n\n");
- 
 
-    // delete num  from fully built  sudoku
-    printf("removing entries from puzzle: \n\n");
+    // delete num from fully built sudoku
     create_sudoku(puzzle, difficulty);
-    puzzle_print_simple(stdout, puzzle);
-    solve_sudoku(puzzle,0,0,difficulty);
-    printf("solved recursively\n\n");
-    puzzle_print_simple(stdout, puzzle);
-    printf("\n\n");
 
-    // try solving 
-    //printf("solving sudoku: ... \n");
-    //build_sudoku(puzzle, "solve");
-    //puzzle_print_formated(puzzle, stdout);
-    //printf("\n\n");
+    //solve_sudoku(puzzle,0,0,difficulty);
+    
+    puzzle_print_formated(stdout, puzzle);
+
+
 }  
    else { 
          // initialize sudoku to new one
-         puzzle_t* parsed = puzzle_new(4);
-         printf(" GRID SIZE : %d\n", get_grid_size(parsed));
+         puzzle_t* parsed = puzzle_new(9);
          // read from stdin
          FILE* file  = stdin;
          // try parsing puzzle from stdin
@@ -129,20 +114,20 @@ int main(const int argc, const char** argv)
 
          if (!status)
          {
-             fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
-             return 3;
+            fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
+            return 3;
 
-         } else{
-            printf("\nPrinting parsed puzzle\n\n");
-            puzzle_print_simple(stdout, parsed);
-            puzzle_print_formated(stdout, parsed);
+         } 
+         else{
 
-            printf("\n\n");
-            // solve
-            solve_sudoku(parsed,0 ,0 ,"easy");
-            printf("\nPrinting solved ..... puzzle\n\n");
-            puzzle_print_simple(stdout, parsed);
-            printf("\n\n");
+           if(!is_valid_unsolved(parsed)) {
+              fprintf(stderr, "Invalid sudoku provided.\n");
+              return 4;
+           }
+
+          solve_sudoku(parsed,0 ,0 ,"easy");
+
+          puzzle_print_formated(stdout, parsed);
         }
    }
 }

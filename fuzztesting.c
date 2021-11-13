@@ -17,6 +17,7 @@
 #include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
+#include <unistd.h>
 
 #include "./library/memory.h"
 #include "./puzzle/puzzle.h"
@@ -33,7 +34,7 @@ int
 main(const int argc, char *argv[])
 {
 
-     
+  
   clock_t start, end;
   double cpu_time_used;
   double total = 0;
@@ -42,9 +43,13 @@ main(const int argc, char *argv[])
   int numSudokus;
   sscanf(argv[1], "%d", &numSudokus);
 
+  time_t t;
+  srand((unsigned) time(&t));
+
   for(int i = 1; i <= numSudokus; i ++){
-
-
+  
+  sleep(1);
+  
   //Create a full sudoku
   puzzle_t* puzzle = puzzle_new(9);
 
@@ -72,7 +77,7 @@ main(const int argc, char *argv[])
   
   total += cpu_time_used;
 
-  printf("Run %d: %f seconds\n", i, cpu_time_used);
+  printf("Run %d- valid: %s, solve time: %f seconds, # of solutions: %d\n", i, (is_valid_solved(puzzle)) ? "true" : "false", cpu_time_used, count_num_solutions(puzzle, difficulty));
 
   }
 
