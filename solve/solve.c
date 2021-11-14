@@ -2,13 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
+
 #include "solve.h"
 #include "../puzzle/puzzle.h"
 #include "../create/create.h"
-
 
 
 /******************* static helper methods **********************/
@@ -21,7 +20,7 @@ int count_num_solutions(puzzle_t* puzzle, char* level);
 
 
 /*********************** solve_sudoku() ******************************/
-/* see  create.h for description*/
+/* see  solve.h for description*/
 bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
     // check if all entries have been visited
     if (row == get_grid_size(puzzle) && column == 0) {
@@ -81,12 +80,11 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
 
 
 /********************** count_num_solutions() *************************/
-/* see  create.h for description */
+/* see  solve.h for description */
 int count_num_solutions(puzzle_t* puzzle, char* level) {   
     // call helper solution counter
     return count_num_solutions_helper(puzzle,level, 0, 0, 0);
 }
-
 
 
 /******************************************************************************************/
