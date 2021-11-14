@@ -46,13 +46,13 @@ int main(const int argc, const char** argv)
 
   //Allocate space and copy to variable for inputs
   if(argc == 2) {
-    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
+    mode = count_calloc_assert(strlen(argv[1]), sizeof(char) + 1, "mode");
     strcpy(mode, argv[1]);
   }
 
   else {
-    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
-    difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
+    mode = count_calloc_assert(strlen(argv[1]), sizeof(char) + 1, "mode");
+    difficulty = count_calloc_assert(strlen(argv[2]), sizeof(char) + 1, "difficulty");
     strcpy(mode, argv[1]);
     strcpy(difficulty, argv[2]);
   }

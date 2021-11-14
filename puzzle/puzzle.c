@@ -59,7 +59,7 @@ void print_box_value( FILE* fp, int box_value);
 /* see  puzzle.h for description*/
 puzzle_t* puzzle_new(int size) {
 
-    puzzle_t* puzzle = count_malloc((sizeof(puzzle_t))); // allocate memory for puzzle on heap
+    puzzle_t* puzzle = count_malloc_assert((sizeof(puzzle_t)), "PUZZLE"); // allocate memory for puzzle on heap
 
     if (puzzle != NULL)
      {
