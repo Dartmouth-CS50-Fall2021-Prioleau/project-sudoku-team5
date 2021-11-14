@@ -5,11 +5,13 @@
 
 Interactions with the sudoku program shall happen on the command line as follows:
 
-$ ./sudoku mode difficulty
+$ ./sudoku mode difficulty [size]
 
 In which `mode` is set to `create` or `solve`
 
-and `difficulty` is set to `easy` (36 boxes already filled) or `hard` (25 boxes already filled).
+`difficulty` is set to `easy` (36 boxes already filled) or `hard` (25 boxes already filled).
+
+and `size` is the number of boxes comprising of a side of one sudoku square (0 < size < 100).
 
 ### Inputs and Outputs
 
@@ -19,7 +21,8 @@ As per the User Interface, the only inputs are those from the commandline and `s
 
 #### outputs
 
-If in `create` mode, a valid, formatted sudoku puzzle to be solved with either 36 (`easy`) or 25 (`hard`) boxes assigned a random value of [1,9] printed to `stdout`.
+If in `create` mode, if the `size` is 9, a valid, formatted sudoku puzzle to be solved with either 37 (`easy`) or 25 (`hard`) boxes assigned a random value of [1,9] printed to `stdout`.
+  - If the `size` is a different number, the number of items deleted is determined by a 
 
 If in `solve` mode, a formatted sudoku puzzle fully and correctly solved printed to `stdout`.
 
@@ -29,17 +32,15 @@ If in `solve` mode, a formatted sudoku puzzle fully and correctly solved printed
 1. `sudoku`, which parses arguments, determines the difficulty level, and calls either create mode or solve mode.
 2. `create`, which builds a valid sudoku game and prints out the product. 
 3. `solve`, which, given a valid sudoku game, solves the game and prints out the filled grid.
-4. `box`, the data structure which comprises each individual square on the whole board. 
-  - A sudoku board is a 2-D array of boxes.
-5. `common`, which holds methods and functions necessary to both create and solve modes. 
+
 
 ### Pseudo code for logic/algorithmic flow
 
 The `sudoku` module shall execute as follows:
 
 1. Determine if the arguments are the correct number and valid.
-2. Call the correct mode (and difficulty if the mode is `create`).
-3. Initialize a sudoku grid of `boxes` of a given SIZE.
+2. Call the correct mode (and difficulty if the mode is `create`) (`size` is optional).
+3. Initialize a sudoku `puzzle` grid of a given SIZE.
 4. Print the created or solved sudoku puzzle in the proper format.
 
 The `create` mode shall execute as follows:
