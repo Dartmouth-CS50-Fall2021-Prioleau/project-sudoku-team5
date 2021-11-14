@@ -27,9 +27,11 @@ VALGRIND = valgrind --leak-check=full --show-leak-kinds=all
 
 OBJS =  $C/create.o  $P/puzzle.o  $S/solve.o $L/memory.o $L/file.o
 
+UNIT_OBJS = $P/puzzletest.o $P/puzzle.o $L/memory.o $L/file.o
+
 LIBS = -lm
 
-all: sudoku fuzztesting
+all: sudoku fuzztesting puzzletest
 
 sudoku: sudoku.o $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
@@ -37,10 +39,13 @@ sudoku: sudoku.o $(OBJS)
 fuzztesting: fuzztesting.o $(OBJS)
 	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
+puzzletest: $(UNIT_OBJS)
+	$(CC) $(CFLAGS) $^ $(LIBS) -o $@
 
 # Dependencies: object files depend on header files
 sudoku.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h $L/file.h
 fuzztesting.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h 
+puzzletest.o: $P/puzzle.h $L/memory.h $L/file.h
 
 
 .PHONY: valgrind clean
@@ -51,9 +56,17 @@ valgrind: all
 test:
 	bash -v testing.sh
 
+unittesting:
+	bash -v unittesting.sh
+
 clean:
 	rm -rf *.dSYM  # MacOS debugger info
 	rm -f *~ *.o
-	rm -f ../common/*.o
+	rm -f ./library/*.o
+	rm -f ./create/*.o
+	rm -f ./puzzle/*.o
+	rm -f ./solve/*.o
 	rm -f corecd c
 	rm -f sudoku
+	rm -f fuzztesting
+	rm -f puzzletest
