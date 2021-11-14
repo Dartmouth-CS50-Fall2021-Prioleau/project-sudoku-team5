@@ -34,9 +34,8 @@ static char* normalize_word(char* word);
 void create_sudoku(puzzle_t* puzzle, char* level);
 void build_full_sudoku(puzzle_t* puzzle, char* level);
 
-/******************************* sudoku_create() ********************************/
+/******************************* build_full_sudoku() ********************************/
 /* see create.h for description */
-
 void build_full_sudoku(puzzle_t* puzzle, char* level) {
     srand (time(NULL));
     int random_num;
@@ -90,12 +89,9 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
 }
 
 
-
-
-
 /*********************** create_sudoku() ******************************/
-void
-create_sudoku(puzzle_t* puzzle, char* level){
+/* see create.h for description */
+void create_sudoku(puzzle_t* puzzle, char* level){
     
     if(puzzle == NULL) return ;
     // initialize non- seed randomization
@@ -103,7 +99,6 @@ create_sudoku(puzzle_t* puzzle, char* level){
     
     // nomalize dificulty level 
     normalize_word(level);
-    //printf("mmmmmmmmmmm   %d\n", get_num_todelete(puzzle, level));
 
     ///////////////////////////////////////////////
     // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56
