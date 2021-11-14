@@ -1,7 +1,7 @@
 /*
  * puzzle.h - a header file for the CS50 Sudoku Final Project "puzzle" module
  * 
- * Authors: Dylan Beinstock, Salifyanji J. Namwila, and Veronica Quidore
+ * Authors: Dylan Bienstock, Salifyanji J. Namwila, and Veronica Quidore
  *
  * a puzzle holds a 2-D array of box_t pointers and the integer size of that array. 
  *  -> size is the length of a row or column for a given square grid puzzle.
@@ -43,14 +43,14 @@ puzzle_t* puzzle_new(int size);
  * Otherwise, return null.
  * 
  * The user provides: a valid puzzle struct
- * We return: the 2-D grid of the puzzle struct
+ * We return: the 2-D grid of the puzzle struct or NULL if puzzle is NULL
  */ 
 int** get_grid(puzzle_t* puzzle);
 
 
 /***************************  get_grid_size() *****************/
 /* Return size of grid for a given puzzle
- * Return NULL if  puzzle is NULL
+ * Return -1 if  puzzle is NULL
  * User provides puzzle 
 */
 int
@@ -65,7 +65,8 @@ void
 print_box_value( FILE* fp, puzzle_t* puzzle, int box_value);
 
 /************************* get_num_todelete() ********************/
-/* Returns the number of box values to delrte from complet sudoku
+/* Returns the number of box values to delete from complete sudoku
+ * Returns -1 if NULL puzzle argument or incorrect level is entered
  * User provides difficulty level and the puzzle
  */
 int
@@ -153,6 +154,8 @@ puzzle_delete(puzzle_t* puzzle);
 0 3 8 0 0 6 6 0 0 
 0 0 0 1 3 9 8 9 8 
 6 0 6 0 8 3 0 0 0 
+ *
+ * Requires a valid FILE pointer and non-null PUZZLE, otherwise error message or '(null)' is printed
  */
 void
 puzzle_print_simple (FILE* fp, puzzle_t* puzzle);
@@ -175,6 +178,7 @@ puzzle_print_simple (FILE* fp, puzzle_t* puzzle);
 | 0 0 0 | 1 3 9 | 8 9 8 | 
 | 6 0 6 | 0 8 3 | 0 0 0 | 
 +-------+-------+-------+
+ * Requires a valid FILE pointer and non-null PUZZLE, otherwise error message or '(null)' is printed
  */
 
 void 
@@ -182,10 +186,9 @@ puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
 
 
 /*********************** parse_user_puzzle() *****************************/
-/*
- *
- *
- * 
+/* Parses the user sudoku, by checking if it has valid format.
+ * Returns true if the user sudoku wwas successfully parsed.
+ * Returns false otherwise.
  */
 bool
 parse_user_puzzle(FILE* fp, puzzle_t* puzzle);

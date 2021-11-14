@@ -381,7 +381,7 @@ bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle)
     printf("something is wrong\n");
     return false;
   }
-  int puzzle_size = puzzle->size;
+  int puzzle_size = get_grid_size(puzzle);
   // scan all sudoku entries and check if they were successfully mathced and assigned
   for (int r = 0; r < puzzle_size; r++) 
   {
