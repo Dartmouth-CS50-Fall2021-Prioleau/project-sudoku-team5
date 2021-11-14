@@ -61,23 +61,29 @@ int main(const int argc, const char** argv)
   //Check mode and difficulty are valid
   if(strcmp(mode, "create") != 0 && strcmp(mode, "solve") != 0) {
     fprintf(stderr, "Mode must be 'create' or 'solve'\n");
+    
     free(mode);
+    if(argc == 3) { free(difficulty); }
+
+
     return 2;
   }
 
-  if(argc == 3 ) {
-    if(strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
+    if(argc == 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
     fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
+
     free(mode);
+    free(difficulty);
+
     return 2;
-    }
+    
   }
 
   //If 2 arguments are given make sure mode is solve
   if(argc == 2 && strcmp(mode, "create") == 0 ) {
     fprintf(stderr, "Create mode requires a third arguemnt for the difficulty\n");
     free(mode);
-    return 3;
+    return 2;
   } 
 
   time_t t;
@@ -86,7 +92,8 @@ int main(const int argc, const char** argv)
   //printf("hi\n");
 
   //check the mode
-  if(strcmp(mode, "create") == 0) {
+  if(strcmp(mode, "create") == 0) 
+  {
     
     puzzle_t* puzzle = puzzle_new(9);
 
@@ -94,40 +101,72 @@ int main(const int argc, const char** argv)
     //build a full, complete sudoku
     build_full_sudoku(puzzle, difficulty);
 
-
-    // delete num from fully built sudoku
+    // delete points from fully built sudoku
     create_sudoku(puzzle, difficulty);
 
-    //solve_sudoku(puzzle,0,0,difficulty);
-    
+    //Print up the created sudoku
     puzzle_print_formated(stdout, puzzle);
 
+    //Clean up for create:
+    free(mode);
+    if(argc == 3) {free(difficulty);}
+    puzzle_delete(puzzle);
 
-}  
-   else { 
-         // initialize sudoku to new one
-         puzzle_t* parsed = puzzle_new(9);
-         // read from stdin
-         FILE* file  = stdin;
-         // try parsing puzzle from stdin
-         bool status = parse_user_puzzle(file, parsed);
 
-         if (!status)
-         {
-            fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
-            return 3;
+  }  
+  else 
+  { 
+    // initialize sudoku to new one
+    puzzle_t* parsed = puzzle_new(9);
+    
+    // read from stdin
+    FILE* file  = stdin;
+    
+    // try parsing puzzle from stdin
+    bool status = parse_user_puzzle(file, parsed);
 
-         } 
-         else{
+    //If the parsing fails
+    if (!status)
+    {
+      fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
 
-           if(!is_valid_unsolved(parsed)) {
-              fprintf(stderr, "Invalid sudoku provided.\n");
-              return 4;
-           }
+      //Clean up for solve:
+      free(mode);
+      if(argc == 3) {
+        free(difficulty);
+      }
+      puzzle_delete(parsed);
+      fclose(file);
 
-          solve_sudoku(parsed,0 ,0 ,"easy");
+      return 3;
 
-          puzzle_print_formated(stdout, parsed);
-        }
+    } 
+    else{
+
+      //If the given puzzle is not valid (less than 25 numbers or doesn't follow rules)
+      if(!is_valid_unsolved(parsed)) {
+      fprintf(stderr, "Invalid sudoku provided.\n");
+
+      //Clean up for solve:
+      free(mode);
+      if(argc == 3) { free(difficulty); }
+      puzzle_delete(parsed);
+      fclose(file);
+        
+      return 4;
+    }
+
+    solve_sudoku(parsed,0 ,0 ,"easy");
+
+    puzzle_print_formated(stdout, parsed);
+    }
+
+    //Clean up for solve:
+    free(mode);
+    if(argc == 3) { free(difficulty); }
+    puzzle_delete(parsed);
+    fclose(file);
    }
+
+  return 0;
 }
