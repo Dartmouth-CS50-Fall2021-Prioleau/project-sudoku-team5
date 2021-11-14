@@ -56,8 +56,20 @@ int** get_grid(puzzle_t* puzzle);
 int
 get_grid_size(puzzle_t* puzzle);
 
-void print_box_value( FILE* fp, puzzle_t* puzzle, int box_value);
+/**************************** print_box_value() *********************/
+/* Prints the given value to the given file
+ * User provies file pointer and value to print
+ *
+ */
+void 
+print_box_value( FILE* fp, puzzle_t* puzzle, int box_value);
 
+/************************* get_num_todelete() ********************/
+/* Returns the number of box values to delrte from complet sudoku
+ * User provides difficulty level and the puzzle
+ */
+int
+get_num_todelete(puzzle_t* puzzle, char*level);
 
 /********************* get_box_value() *********************/
 /* Return the box struct held at a given coordinate (x,y) on in the 2-D grid of the puzzle_t struct
@@ -93,7 +105,7 @@ set_box_value(puzzle_t* puzzle, int value, int x, int y);
  * particular row, column and sub 3X3 grid within the puzzle
  *
  *User provides a valid puzzle, row, column, and value to check for.
- * We return true if value is not present in given row, column, and 3X3 sub grid
+ * We return true if value is not present in given row, column, and 3X3 sub grid or puzzle is NULL
  * We return false otherwise;
  * 
 */

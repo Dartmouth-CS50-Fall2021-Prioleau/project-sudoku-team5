@@ -1,5 +1,6 @@
 # ignore the following 
 *.dSYM  
-*~ *.o
+*.o
 puzzle
 puzzletest
+core
