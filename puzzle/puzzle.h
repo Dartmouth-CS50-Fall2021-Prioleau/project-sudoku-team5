@@ -1,7 +1,7 @@
 /*
  * puzzle.h - a header file for the CS50 Sudoku Final Project "puzzle" module
  * 
- * Authors: Dylan Beinstock, Salifyanji J. Namwila, and Veronica Quidore
+ * Authors: Dylan Bienstock, Salifyanji J. Namwila, and Veronica Quidore
  *
  * a puzzle holds a 2-D array of box_t pointers and the integer size of that array. 
  *  -> size is the length of a row or column for a given square grid puzzle.
@@ -37,7 +37,6 @@ typedef struct puzzle puzzle_t;
 puzzle_t* puzzle_new(int size);
 
 
-
 /********************* get_grid() *********************/
 /* Return the 2-D grid integer array of boxes from a given puzzle_t struct if the puzzle struct is not null. 
  * Otherwise, return null.
@@ -46,7 +45,6 @@ puzzle_t* puzzle_new(int size);
  * We return: the 2-D grid of the puzzle struct
  */ 
 int** get_grid(puzzle_t* puzzle);
-
 
 
 /***************************  get_grid_size() *****************/
@@ -58,14 +56,12 @@ int
 get_grid_size(puzzle_t* puzzle);
 
 
-
 /**************************** print_box_value() *********************/
 /* Prints the given value to the given file
  * User provies file pointer and value to print
  *
  */
-void print_box_value( FILE* fp, int box_value);
-
+void print_box_value(FILE* fp, int box_value);
 
 
 /********************* get_box_value() *********************/
@@ -79,9 +75,7 @@ void print_box_value( FILE* fp, int box_value);
  *  - NULL, if inputs invalid
  *  - The box at the given coordinates in the grid, if inputs are valid
  */ 
-int
- get_box_value(puzzle_t* puzzle, int x, int y);
-
+int get_box_value(puzzle_t* puzzle, int x, int y);
 
 
 /********************* set_box_value() *********************/
@@ -93,18 +87,14 @@ int
  * We return:
  *  nothing, but we set the grid pointer at the given coordinates to the provided box.
  */
-bool
-set_box_value(puzzle_t* puzzle, int value, int x, int y);
-
+bool set_box_value(puzzle_t* puzzle, int value, int x, int y);
 
 
 /************************* get_num_todelete() ********************/
 /* Returns the number of box values to delrte from complet sudoku
  * User provides difficulty level and the puzzle
  */
-int
-get_num_todelete(puzzle_t* puzzle, char*level);
-
+int get_num_todelete(puzzle_t* puzzle, char*level);
 
 
 /**************************  val_not_in_cross_section() ***************************/
@@ -116,9 +106,7 @@ get_num_todelete(puzzle_t* puzzle, char*level);
  * We return false otherwise;
  * 
 */
-bool
-val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, char* level);
-
+bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, char* level);
 
 
 /**************************  is_val_in_box() ***************************/
@@ -130,8 +118,7 @@ val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, char*
  * We return false otherwise;
  * 
 */
-bool 
-is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level);
+bool is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* level);
 
 /********************* puzzle_delete() *********************/
 /* Deletes a puzzle struct by first freeing the grid pointer and finally freeing the puzzlt struct.
@@ -142,8 +129,7 @@ is_val_in_box(puzzle_t* puzzle, int diag, int row, int column, int entry, char* 
  * We return:
  *  - nothing, but we do free all of the memory. User is responsible for calling this function if they call puzzle_new()
  */
-void
-puzzle_delete(puzzle_t* puzzle);
+void puzzle_delete(puzzle_t* puzzle);
 
 
 /******************** sudoku_print ***************/
@@ -161,8 +147,7 @@ puzzle_delete(puzzle_t* puzzle);
 0 0 0 1 3 9 8 9 8 
 6 0 6 0 8 3 0 0 0 
  */
-void
-puzzle_print_simple (FILE* fp, puzzle_t* puzzle);
+void puzzle_print_simple (FILE* fp, puzzle_t* puzzle);
 
 
 /*************************  sudoku_print_formated () ****************************/
@@ -184,9 +169,7 @@ puzzle_print_simple (FILE* fp, puzzle_t* puzzle);
 +-------+-------+-------+
  */
 
-void 
-puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
-
+void puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
 
 
 /*********************** parse_user_puzzle() *****************************/
@@ -194,12 +177,23 @@ puzzle_print_formated (FILE* fp, puzzle_t* puzzle);
  * Returns true if the user sudoku wwas successfully parsed.
  * Returns false otherwise.
  */
-bool
-parse_user_puzzle(FILE* fp, puzzle_t* puzzle);
+bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle);
 
-
+/*********************** is_valid_unsolved() *****************************/
+/* Returns true if the unsolved puzzle is valid, false otherwise
+ * A valid unsolved puzzle:
+ *  1. Has at least 25 filled in numbers
+ *  2. Follows all the rules of of a sudoku game
+ */
 bool is_valid_unsolved(puzzle_t* puzzle);
 
+
+/*********************** is_valid_solved() *****************************/
+/* Returns true if the solved puzzle is valid, false otherwise
+ * A valid solved puzzle:
+ *  1. Has all boxes filled in with a number thats not 0
+ *  2. Follows all the rules of of a sudoku game
+ */
 bool is_valid_solved(puzzle_t* puzzle);
 
 
