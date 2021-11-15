@@ -85,9 +85,7 @@ int main(const int argc, const char** argv)
     return 2;
   }
 
-    // block entered  if arguments  == 3 and mode is easy
-    if(argc == 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
-
+  if(argc >= 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
 
     fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
 
@@ -109,6 +107,7 @@ int main(const int argc, const char** argv)
   time_t t;
   srand((unsigned) time(&t));
 
+
   //check the mode
   if(strcmp(mode, "create") == 0) 
   {
@@ -116,10 +115,9 @@ int main(const int argc, const char** argv)
     puzzle_t* puzzle = puzzle_new(size); // create new puzzle  w/ entries initialized to zero
 
     if(puzzle == NULL) {
-      printf("Unsuccessful creating puzzle");
+      printf("Unsuccessful creating puzzle\n");
       free(mode);
       if(argc >= 3) {free(difficulty);}
-      puzzle_delete(puzzle);
       return 5;
     }
 
@@ -143,6 +141,13 @@ int main(const int argc, const char** argv)
   { 
     // initialize sudoku to new one
     puzzle_t* parsed = puzzle_new(size);
+
+    if(parsed == NULL) {
+      printf("Unsuccessful creating puzzle");
+      free(mode);
+      if(argc >= 3) {free(difficulty);}
+      return 5;
+    }
     
     // read from stdin
     FILE* file  = stdin;

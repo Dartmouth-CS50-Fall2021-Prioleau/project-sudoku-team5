@@ -23,6 +23,9 @@
 # 3 argument with invalid difficulty
 ./sudoku create invalid_difficulty
 
+# 4 argument with invalid size
+./sudoku create easy 5
+
 ############################################
 ### Tests with invalid solve arguements ###
 
