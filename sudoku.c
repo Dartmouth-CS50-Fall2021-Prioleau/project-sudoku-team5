@@ -79,13 +79,16 @@ int main(const int argc, const char** argv)
     
     // check that number of received arguments is 3
     free(mode);
-    if(argc == 3) { free(difficulty); }
+    if(argc >= 3) { free(difficulty); }
 
 
     return 2;
   }
+
     // block entered  if arguments  == 3 and mode is easy
     if(argc == 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
+
+
     fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
 
     free(mode); // remember to free malloc'd spaced ( on heap)
@@ -112,6 +115,13 @@ int main(const int argc, const char** argv)
     
     puzzle_t* puzzle = puzzle_new(size); // create new puzzle  w/ entries initialized to zero
 
+    if(puzzle == NULL) {
+      printf("Unsuccessful creating puzzle");
+      free(mode);
+      if(argc >= 3) {free(difficulty);}
+      puzzle_delete(puzzle);
+      return 5;
+    }
 
     //build a full, complete sudoku
     build_full_sudoku(puzzle, difficulty);
@@ -147,9 +157,7 @@ int main(const int argc, const char** argv)
 
       //Clean up for solve:
       free(mode);
-      if(argc == 3) {
-        free(difficulty);
-      }
+      if(argc >= 3) {free(difficulty);}
       puzzle_delete(parsed);
       fclose(file);
 
@@ -178,7 +186,7 @@ int main(const int argc, const char** argv)
 
     //Clean up for solve:
     free(mode);
-    if(argc == 3) { free(difficulty); }
+    if(argc >= 3) { free(difficulty); }
     puzzle_delete(parsed);
     fclose(file);
    }

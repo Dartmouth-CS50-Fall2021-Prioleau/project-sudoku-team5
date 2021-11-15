@@ -35,14 +35,14 @@ main(const int argc, char *argv[])
   double total = 0;
      
   //Change the depth string to an integer
+  char* difficulty = count_calloc_assert(strlen(argv[1]), sizeof(char) + 1, "difficulty");
   int numSudokus;
-  sscanf(argv[1], "%d", &numSudokus);
+
+  strcpy(difficulty, argv[1]);
+  sscanf(argv[2], "%d", &numSudokus);
 
   time_t t;
   srand((unsigned) time(&t));
-
-  char* difficulty = count_calloc_assert(10, sizeof(char) + 1, "difficulty");
-  strcpy(difficulty, "easy");
 
   for(int i = 1; i <= numSudokus; i ++){
   
@@ -59,6 +59,7 @@ main(const int argc, char *argv[])
   //Create an incomplete sudoku
   create_sudoku(puzzle, difficulty);
 
+  int num_solutions = count_num_solutions(puzzle, difficulty);
 
   //Solve (and track time)
   
@@ -74,7 +75,7 @@ main(const int argc, char *argv[])
   
   total += cpu_time_used;
 
-  printf("Run %d- valid: %s, solve time: %f seconds, # of solutions: %d\n", i, (is_valid_solved(puzzle)) ? "true" : "false", cpu_time_used, count_num_solutions(puzzle, difficulty));
+  printf("Run %d- valid: %s, solve time: %f seconds, # of solutions: %d\n", i, (is_valid_solved(puzzle)) ? "true" : "false", cpu_time_used, num_solutions);
 
   puzzle_delete(puzzle);
 

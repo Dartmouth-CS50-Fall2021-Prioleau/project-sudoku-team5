@@ -61,6 +61,18 @@ Note:
 * `unittesting.sh` - a bash script run by `make unittesting` to test the puzzle module
 * `unittesting.out` - result of `make unittesting &> unittesting.out`
 
+# GIT
+
+In order to maximize our efficiency and workflow, we regularly pushed our individual work to Github at least once every day and opened up and reviewed each others's pull requests to merge codde updates into our main branch accordingly. 
+
+We did, however, run into some difficulties with merging, and several times had to copy our code onto new branches to more seamlessly pull code from or merge into the main branch. 
+
+Because of this, there are 9 branches for 3 group members. 
+
+We also leveraged our close proximity in person to meet almost daily and discuss our changes and progress. 
+
+Together, we resolved our merge conflicts and avoided any losses of code. 
+
 # Compilation
 
 To compile, simply `make`.
@@ -69,6 +81,26 @@ To compile, simply `make`.
 
 See Implementation.md
 
+# Commentary
+
+## recursion/backtracking
+
+The `sudoku` program uses recursion and backtracking to output both created and solved puzzles. On each coordinate in the grid, the program calls the `solve sudoku` method, which seeks a solvable solution and recurses until one is found (boolean returns `true`). It backtracks when an non-unique sudoku is created until the puzzle can be solved at a prior square.
+
+## uniqueness... a diagonal approach
+
+At each coordinate, the program determines if it can reach more than one solution by checking the row, column, sub-box, and sub-box's diagonals for multiple solutions. If other value besides the value about to be deleted cannot result in a valid solution in the diagonals in the sub-box, the solution must be inherently unique. If multiple solutions can be reached, the program picks another random location to try and delete the value until only one solution can be reached with the correct number of values deleted. 
+
 # Testing
 
-See Testing.md 
+See TESTING.md 
+
+# WARNING: Segfault
+
+The 4x4 sudoku intermittently segfaults (at create.c:87 and 86) which traces back to rand.c:27() (error is `random.c: No such file or directory`)and puzzle.c:190, which traces back to puzzle.c:120 (error is `Cannot access memory at location...`). 
+
+We believe this bug to be the result of the `rand()` function. 
+
+# PRESENTATION LINK
+
+https://docs.google.com/presentation/d/1s4Fb97WfO4MLSmJelNiZvF0o_-3w9XQ98lbBxU_UKzM/edit?usp=sharing 

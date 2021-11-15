@@ -140,7 +140,8 @@ set_box_value(puzzle_t* puzzle, int value, int x, int y)
     return false;
 }
 
-
+/************************* print_box_value()  *********************/
+/* see  puzzle.h for description*/
 void print_box_value( FILE* fp, puzzle_t* puzzle, int box_value){
 
     if (fp != NULL){
@@ -154,6 +155,7 @@ void print_box_value( FILE* fp, puzzle_t* puzzle, int box_value){
 }
 
 /************************* get_num_todelete()  *********************/
+/* see  puzzle.h for description*/
 int get_num_todelete(puzzle_t* puzzle, char*level){
 
     if (puzzle != NULL){
@@ -449,13 +451,17 @@ bool is_valid_unsolved(puzzle_t* puzzle) {
 
         }
 
-        if (count >= 25) {
+        //If its a 9 by 9 check there are 25 points
+        if (puzzle->size == 9 ) {
+          if (count >= 25) {return true;}
+          else {return false;}
+        } 
+        else {
             return true;
-        } else {
-            return false;
         }
-    } else {
-        return false;
+    } 
+    else {
+      return false;
     }
 }
 
@@ -480,6 +486,5 @@ bool is_valid_solved(puzzle_t* puzzle) {
         return true;
     } else {
         return false;
-    }
-    
+    }  
 }

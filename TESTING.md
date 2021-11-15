@@ -14,19 +14,40 @@ Valid testing is run on  `create` in `easy` and `hard` as well as solve takes th
 
 # Fuzz Testing
 
-Fuzz testing creates a set number of puzzles, verifying that each puzzlie follows Sudoku rules, is solvable, and has a unique solution
+**./fuzztesting difficulty numSudoku**
+
+Fuzz testing creates a set number of puzzles, verifying that each puzzle follows Sudoku rules, is solvable, and has a unique solution
+
+Note: fuzz testing does not check for valid arguements as it is assumed the user is aware of its useage and limitations
 
 # Run Time:
 
-We tested out our using fuzz testing and recorded the following data:
+We tested out our fuzz testing, building and solving a range of sudoku boards (3-20) with both difficulties (easy and hard) and found the average time fell un the following ranges:
 
-Individual Times:
-Average Time:
+Easy: 0.0003-0.0004 seconds
+Hard: 0.1-0.4 seconds 
+
+One example is as follows:
+1. Easy
+    1. Run 1: 0.000305 seconds
+    2. Run 2: 0.000272 seconds
+    3. Run 3: 0.000320 seconds
+    4. Run 4: 0.000050 seconds
+    5. Run 5: 0.000707 seconds
+    6. Average: 0.000331 seconds
+
+1. Hard
+    1. Run 1: 0.978169 seconds
+    2. Run 2: 0.359855 seconds
+    3. Run 3: 0.001697 seconds
+    4. Run 4: 0.013216 seconds
+    5. Run 5: 0.081039 seconds
+    6. Average: 0.286795 seconds
 
 # Unit Testing
 
-Unit testing was done on various methods in the puzzle.c a file. This file includes, but is not limited to, testing on creating a puzzle, setting values, getting values, and checking a value uf a value is in a point's cross sections. This can be run by uncommenting the `#-DUNIT_TEST` flag, running `make unittest` followed by `make unit`. 
+Unit testing was done on various methods in the puzzle.c module. This file includes, but is not limited to, testing on creating a puzzle, setting values, getting values, and checking if a value is in a point's cross sections. This can be run by running `make unittesting` after the program is compiled, which then runs the `unittesting.sh` script. The `unittesting.sh` script outputs to `unittesting.out`, a .out file separate from `testing.out`, which contains the output of the integration and fuzz testing, not unit testing. The compiled file is in the larger `project-sudoku-team5` directory.
 
 # Sudoku Visual Testing
 
-Despite the large number of tests preformed above, much of our initial testing was visual. This meant building full sudokus and checking if they followed the rules. We also had our remove method remove points and then re-solve it, ensuring the solved sudoku is valid and is the same as the original sudoku created.
+Despite the large number of tests performed above, much of our initial testing was visual. This meant building full sudokus and checking if they followed the rules. We also had our remove method remove points and then re-solve it, ensuring the solved sudoku is valid and is the same as the original sudoku created.
