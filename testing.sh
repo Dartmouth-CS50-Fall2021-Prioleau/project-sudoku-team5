@@ -1,3 +1,4 @@
+#!/bin/bash 
 # Testing script for sudoku.c
 # Authors: Dylan Beinstock, Salifyanji J. Namwila, and Veronica Quidore
 # Date: November 11 2021

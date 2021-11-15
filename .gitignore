@@ -1,3 +1,4 @@
 *.o
 sudoku
 fuzztesting
+puzzletest
