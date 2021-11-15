@@ -2,24 +2,18 @@
  * create.c - CS50 Sudoku Project 'create' module
  * see IMPLEMENTATION.md and DESIGN.md for more information.
  *  
- * Dylan Beinstock, Salifyanji J Namwila, Veronica Quidore
+ * Dylan Bienstock, Salifyanji J Namwila, Veronica Quidore
  * November 02, 2021.
  *
- * Dylan Beinstock, Salifyanji J Namwila, Veronica Quidore
- * November 02, 2021.
- * 
 */
-
 
 #ifndef __CREATE_H
 #define __CREATE_H
-
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
-#include <stdbool.h>
 #include <ctype.h>
 #include <time.h>
 #include "../puzzle/puzzle.h"
