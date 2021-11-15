@@ -101,3 +101,6 @@ The 4x4 sudoku intermittently segfaults (at create.c:87 and 86) which traces bac
 
 We believe this bug to be the result of the `rand()` function. 
 
+# PRESENTATION LINK
+
+https://docs.google.com/presentation/d/1s4Fb97WfO4MLSmJelNiZvF0o_-3w9XQ98lbBxU_UKzM/edit?usp=sharing 
