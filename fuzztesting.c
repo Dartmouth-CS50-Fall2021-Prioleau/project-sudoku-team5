@@ -41,7 +41,7 @@ main(const int argc, char *argv[])
   time_t t;
   srand((unsigned) time(&t));
 
-  char* difficulty = malloc(10 * sizeof(char) + 1);
+  char* difficulty = count_calloc_assert(10, sizeof(char) + 1, "difficulty");
   strcpy(difficulty, "easy");
 
   for(int i = 1; i <= numSudokus; i ++){
@@ -77,7 +77,7 @@ main(const int argc, char *argv[])
   printf("Run %d- valid: %s, solve time: %f seconds, # of solutions: %d\n", i, (is_valid_solved(puzzle)) ? "true" : "false", cpu_time_used, count_num_solutions(puzzle, difficulty));
 
   puzzle_delete(puzzle);
-  
+
   }
 
   printf("\nAverage run time %f: seconds\n", total/numSudokus);

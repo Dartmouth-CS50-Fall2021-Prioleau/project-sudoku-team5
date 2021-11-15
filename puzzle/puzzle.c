@@ -65,7 +65,7 @@ puzzle_t* puzzle_new(int size) {
 
     if ((ceil(sqrt_size) == floor(sqrt_size)) && size > 0 && size < 100) // check for perfect square and 0 < size < 100
     {
-        puzzle_t* puzzle = count_malloc((sizeof(puzzle_t))); // allocate memory for puzzle on heap
+      puzzle_t* puzzle = count_malloc_assert((sizeof(puzzle_t)), "PUZZLE"); // allocate memory for puzzle on heap
 
         if (puzzle != NULL)
         {

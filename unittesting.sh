@@ -6,4 +6,4 @@
 # usage: bash -v unittesting.sh
 
 # call the compiled puzzletest program in the puzzle subdirectory
-./puzzle/puzzletest
+./puzzletest

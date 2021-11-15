@@ -7,10 +7,11 @@ bash -v unittesting.sh
 # usage: bash -v unittesting.sh
 
 # call the compiled puzzletest program in the puzzle subdirectory
-./puzzle/puzzletest
+./puzzletest
 could not open file to write :( 
 
 FILE POINTER IS NULL
+
 
 Welcome to the Puzzle Module Unit Tests. We have expected you...
 
@@ -48,7 +49,6 @@ check the initialization of box_t structs within grid indirectly through printin
 | 0 0 0 | 0 0 0 | 0 0 0 | 
 | 0 0 0 | 0 0 0 | 0 0 0 | 
 +-------+-------+-------+
-
 
 great! The memory was allocated. we now have puzzle1
 
@@ -116,7 +116,6 @@ great! First round of numbers set for puzzle1!
 | 8 0 0 | 0 0 0 | 0 0 0 | 
 | 9 0 0 | 0 0 0 | 0 0 0 | 
 +-------+-------+-------+
-
 now try getting one of the box values at row 2 column 0
 get_box_value() success!
 
@@ -214,7 +213,6 @@ Make a 25x25 puzzle!!
 | 00 00 00 00 00 | 00 00 00 00 00 | 00 00 00 00 00 | 00 00 00 00 00 | 00 00 00 00 00 | 
 | 00 00 00 00 00 | 00 00 00 00 00 | 00 00 00 00 00 | 00 00 00 00 00 | 00 00 00 00 00 | 
 +----------------+----------------+----------------+----------------+----------------+
-
 set a few numbers.. 
 success! 25 set at (4,4)
 success! 4 set at (24,24)
@@ -317,7 +315,6 @@ Make a 36x36 puzzle!!
 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 
 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 00 00 00 00 00 00 | 
 +-------------------+-------------------+-------------------+-------------------+-------------------+-------------------+
-
 Make a 16x16 puzzle!!
 
 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
@@ -358,7 +355,6 @@ Make a 16x16 puzzle!!
 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 
 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 00 00 00 00 | 
 +-------------+-------------+-------------+-------------+
-
 Make a 4x4 puzzle!!
 
 0 0 0 0 
@@ -373,7 +369,6 @@ Make a 4x4 puzzle!!
 | 0 0 | 0 0 | 
 | 0 0 | 0 0 | 
 +-----+-----+
-
 set a few numbers.. 
 success! 0 set at (3,3)
 success! 4 set at (3,3)
