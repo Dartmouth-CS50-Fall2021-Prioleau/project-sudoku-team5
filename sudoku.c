@@ -1,10 +1,15 @@
-/*
- * sudoku.c - CS50 Project 'sudoku' module
+/* 
+ * create.c - CS50 Sudoku Project 'sudoku ' module
+ * see IMPLEMENTATION.md and DESIGN.md for more information.
+ *  
+ * Dylan Beinstock, Salifyanji J Namwila, Veronica Quidore
+ * November 02, 2021.
  *
+ * Dylan Beinstock, Salifyanji J Namwila, Veronica Quidore
+ * November 02, 2021.
  * 
- * 
- * 
- */
+*/
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,17 +22,17 @@
 #include "./create/create.h"
 #include "./solve/solve.h"
 #include "./puzzle/puzzle.h"
-//#include "./library/file.h"
 
 
 
-//bool parse_user_sudoku(FILE* fp, puzzle_t* puzzle);
 
-/*********** protoptypes ***************/
+
+
+/***************************** protoptypes ***********************/
 //bool parse_user_puzzle(FILE* fp, puzzle_t* puzzle, char* level);
 
 
-
+/**************************** main ****************************/
 int main(const int argc, const char** argv)
 {
 
@@ -72,18 +77,19 @@ int main(const int argc, const char** argv)
   if(strcmp(mode, "create") != 0 && strcmp(mode, "solve") != 0) {
     fprintf(stderr, "Mode must be 'create' or 'solve'\n");
     
+    // check that number of received arguments is 3
     free(mode);
     if(argc == 3) { free(difficulty); }
 
 
     return 2;
   }
-
+    // block entered  if arguments  == 3 and mode is easy
     if(argc == 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
     fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
 
-    free(mode);
-    free(difficulty);
+    free(mode); // remember to free malloc'd spaced ( on heap)
+    free(difficulty); // """
 
     return 2;
     
@@ -96,16 +102,15 @@ int main(const int argc, const char** argv)
     return 2;
   } 
 
+  // seed the randomization for debugging purposes
   time_t t;
   srand((unsigned) time(&t));
-
-  //printf("hi\n");
 
   //check the mode
   if(strcmp(mode, "create") == 0) 
   {
     
-    puzzle_t* puzzle = puzzle_new(size);
+    puzzle_t* puzzle = puzzle_new(size); // create new puzzle  w/ entries initialized to zero
 
 
     //build a full, complete sudoku
@@ -180,3 +185,4 @@ int main(const int argc, const char** argv)
 
   return 0;
 }
+
