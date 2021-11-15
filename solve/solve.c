@@ -27,7 +27,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
         return true;
     }
     // Visit squares that have not yet been visited, from left to right
-    for (int i=row; i< get_grid_size(puzzle); i++) {
+    for (int i=row; i < get_grid_size(puzzle); i++) {
         int j =(i == row) ? column : 0;
          
         for ( ; j<get_grid_size(puzzle); j++) {
@@ -141,38 +141,3 @@ count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int 
     }return num_solutions +1;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
