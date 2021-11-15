@@ -28,7 +28,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
         return true;
     }
     // Visit squares that have not yet been visited, from left to right
-    for (int i=row; i< get_grid_size(puzzle); i++) {
+    for (int i=row; i < get_grid_size(puzzle); i++) {
         int j =(i == row) ? column : 0;
          
         for ( ; j<get_grid_size(puzzle); j++) {
@@ -37,7 +37,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
 
                 // Try every valid number for this entry
                 int possibilities[get_grid_size(puzzle)] ; //{1, 2, 3, 4, 5, 6, 7, 8, 9};
-                for(int i=1 ; i<get_grid_size(puzzle);i++) possibilities[i-1] = i;
+                for(int i=1 ; i <= get_grid_size(puzzle); i++) possibilities[i-1] = i;
                 int count = 0; 
 
                 while (count < get_grid_size(puzzle)) {
@@ -140,38 +140,3 @@ count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int 
     }return num_solutions +1;
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

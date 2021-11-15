@@ -214,7 +214,7 @@ bool val_not_in_cross_section(puzzle_t* puzzle, int row, int column, int value, 
                 }
             }
         }
-        // the positive sloped diagonal
+        // secondary diagonal
         if (get_grid_size(puzzle)-1-row == column) {
             for (int i = 0; i < get_grid_size(puzzle); i++) {
                 // check if it's in the value
