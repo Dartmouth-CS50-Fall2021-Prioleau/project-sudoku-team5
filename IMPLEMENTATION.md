@@ -180,7 +180,11 @@ The primary data structures utilized in this lab are:
 Analysis of the rules of the simple sudoku allowed for the following are the indespensible sustainable logic when implementing unit functions in modules.
 
 `build full sudoku`
+- Sub square grids that lie along major or secondary diagonals indenedepent. This means that they can be filled vaslidly buy simply checking whether the randomly selected value is in the sub grid. Filling at least the minimum number of entries required to build the sudoku allows for a solution to the  generated sudoku to be unique.
+The following are some useful articles worth reading for details on the minimum number of entries t o  ensure uniqueness as well as elaboration on independence of certain square subgrids in sudoku.
+1. MIT Technological Review (2012). Mathematicians Solve Minimum Sudoku Problem. Ref: https://www.technologyreview.com/2012/01/06/188520/mathematicians-solve-minimum-sudoku-problem/
 
+2. Mastering Sudoku.(2021) Does Sudoku Have the Diagonal Rule. Ref: https://masteringsudoku.com/sudoku-diagonal-rule/
 
 
 

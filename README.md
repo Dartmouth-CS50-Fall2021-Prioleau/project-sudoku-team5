@@ -28,13 +28,17 @@ For this lab we used the support of the learning fellows during lab time. We als
 
 # Usage
 
-**./sudoku mode difficulty**
+**./sudoku mode difficulty size**
 
 A valid command line has:
 * mode in {create, solve}
 * difficulty in {easy, hard}
+* size is perfect square
 
-Note: In mode = `solve`, the difficulty argument is optionanl
+
+Note: 
+* In both modes, the size arguement is optional and defaults to 9
+* In mode = `solve`, the difficulty argument is optionanl, unless you are specifying the size
 
 # Safety
 1. Whenever we allocated memory, we called `assertp`. This checks if the pointer is null, and if so, prints an error and exits the code. While we recogize the does not free previously allocated memory, it is better to quit on an error than continue 
@@ -44,16 +48,30 @@ Note: In mode = `solve`, the difficulty argument is optionanl
 * `.gitignore` - specifies intentionally untracked files that Git should ignore
 * `Makefile` - compilation procedure
 * `sudoku.c` - the implementation for sudoku
+* `fuzztesting.c` - testing for sudoku
 * `./library/` - a folder containing support modules for sudoku provided by the course
 * `./puzzle/` - a folder containing the puzzle struct and related methods to create, update, access, and print it
 * `./create/` - a folder containing modules used when creating and a sudoku
 * `./solve/` - a folder containing modules used when solving and a sudoku
-* `./common/` - a folder containing modules used in both creating and solving a sudoku
 * `IMPLEMENTATION.md` - a file to describe the implementation of my querier 
 * `DESIGN.md` - a file to describe the design of my querier
 * `TESTING.md` -  a file to describe the testing of my querier
 * `testing.sh` - a bash script run by `make test` to test my querier
 * `testing.out` - result of `make test &> testing.out`
+* `unittesting.sh` - a bash script run by `make unittesting` to test the puzzle module
+* `unittesting.out` - result of `make unittesting &> unittesting.out`
+
+# GIT
+
+In order to maximize our efficiency and workflow, we regularly pushed our individual work to Github at least once every day and opened up and reviewed each others's pull requests to merge codde updates into our main branch accordingly. 
+
+We did, however, run into some difficulties with merging, and several times had to copy our code onto new branches to more seamlessly pull code from or merge into the main branch. 
+
+Because of this, there are 9 branches for 3 group members. 
+
+We also leveraged our close proximity in person to meet almost daily and discuss our changes and progress. 
+
+Together, we resolved our merge conflicts and avoided any losses of code. 
 
 # Compilation
 
@@ -63,6 +81,23 @@ To compile, simply `make`.
 
 See Implementation.md
 
+# Commentary
+
+## recursion/backtracking
+
+The `sudoku` program uses recursion and backtracking to output both created and solved puzzles. On each coordinate in the grid, the program calls the `solve sudoku` method, which seeks a solvable solution and recurses until one is found (boolean returns `true`). It backtracks when an non-unique sudoku is created until the puzzle can be solved at a prior square.
+
+## uniqueness... a diagonal approach
+
+At each coordinate, the program determines if it can reach more than one solution by checking the row, column, sub-box, and sub-box's diagonals for multiple solutions. If other value besides the value about to be deleted cannot result in a valid solution in the diagonals in the sub-box, the solution must be inherently unique. If multiple solutions can be reached, the program picks another random location to try and delete the value until only one solution can be reached with the correct number of values deleted. 
+
 # Testing
 
-See Testing.md 
+See TESTING.md 
+
+# WARNING: Segfault
+
+The 4x4 sudoku intermittently segfaults (at create.c:87 and 86) which traces back to rand.c:27() (error is `random.c: No such file or directory`)and puzzle.c:190, which traces back to puzzle.c:120 (error is `Cannot access memory at location...`). 
+
+We believe this bug to be the result of the `rand()` function. 
+

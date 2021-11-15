@@ -62,7 +62,7 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
         }
     }
     
-    // fill 3x3 boxes  in main duagonal (min 27 entries)
+    // fill sub-boxes  in main diagonal (min 25 entries)
     for (int min_main_diag = 0; min_main_diag < get_grid_size(puzzle); min_main_diag += sqrt((double)get_grid_size(puzzle))) {
     
         for (int i = 0; i < sqrt((double)get_grid_size(puzzle)); i++) {       // rows
