@@ -49,11 +49,25 @@ Note: In mode = `solve`, the difficulty argument is optionanl
 * `./create/` - a folder containing modules used when creating and a sudoku
 * `./solve/` - a folder containing modules used when solving and a sudoku
 * `./common/` - a folder containing modules used in both creating and solving a sudoku
-* `IMPLEMENTATION.md` - a file to describe the implementation of my querier 
-* `DESIGN.md` - a file to describe the design of my querier
-* `TESTING.md` -  a file to describe the testing of my querier
-* `testing.sh` - a bash script run by `make test` to test my querier
+* `IMPLEMENTATION.md` - a file to describe the implementation of the sudoku program 
+* `DESIGN.md` - a file to describe the design of the sudoku program
+* `TESTING.md` -  a file to describe the testing of the sudoku program
+* `testing.sh` - a bash script run by `make test` to test the sudoku program
 * `testing.out` - result of `make test &> testing.out`
+* `unittesting.sh`  - a bash script run by `make unittesting` to test the sudoku program
+* `unittesting.out` - result of `make unittesting &> unittesting.out`
+
+# GIT
+
+In order to maximize our efficiency and workflow, we regularly pushed our individual work to Github at least once every day and opened up and reviewed each others's pull requests to merge codde updates into our main branch accordingly. 
+
+We did, however, run into some difficulties with merging, and several times had to copy our code onto new branches to more seamlessly pull code from or merge into the main branch. 
+
+Because of this, there are 9 branches for 3 group members. 
+
+We also leveraged our close proximity in person to meet almost daily and discuss our changes and progress. 
+
+Together, we resolved our merge conflicts and avoided any losses of code. 
 
 # Compilation
 
@@ -62,6 +76,15 @@ To compile, simply `make`.
 # Implementation
 
 See Implementation.md
+
+# Commentary
+
+## recursion/backtracking
+
+The `sudoku` program uses recursion and backtracking to output both created and solved puzzles. On each coordinate, the program calls the `solve sudoku` method, which calls the method and inserts values until all 
+
+## uniqueness... a diagonal approach
+
 
 # Testing
 

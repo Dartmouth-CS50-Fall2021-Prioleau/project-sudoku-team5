@@ -56,14 +56,14 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
                 random_num = (rand() % get_grid_size(puzzle)) + 1; //from (1-9)
             } 
             // while you can't add that value in, change the number
-            while (!val_not_in_cross_section(puzzle, i, i, random_num, level));
+            while (!val_not_in_cross_section(puzzle, i, i, random_num));
 
             // add the value to the grid
             set_box_value (puzzle, random_num, i,i);
         }
     }
     
-    // fill 3x3 boxes  in main duagonal (min 27 entries)
+    // fill sub-boxes  in main diagonal (min 25 entries)
     for (int min_main_diag = 0; min_main_diag < get_grid_size(puzzle); min_main_diag += sqrt((double)get_grid_size(puzzle))) {
     
         for (int i = 0; i < sqrt((double)get_grid_size(puzzle)); i++) {       // rows
@@ -74,7 +74,7 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
                         random_num = (rand() % get_grid_size(puzzle)) + 1; //from (1-9)
                     } 
                     // change number if can't be aded in specific box
-                    while (!is_val_in_box(puzzle, min_main_diag, min_main_diag + i, min_main_diag + j, random_num, level));
+                    while (!is_val_in_box(puzzle, min_main_diag, min_main_diag + i, min_main_diag + j, random_num));
 
                     // add the value to the grid
                     get_grid(puzzle)[min_main_diag + i][min_main_diag + j] = random_num;
