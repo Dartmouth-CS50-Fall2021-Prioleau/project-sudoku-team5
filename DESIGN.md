@@ -169,6 +169,7 @@ Output: Boolean-> true if solution found, false otherwise.
 ### Visual Representation 
 The following is the chosen format for printing:
 
+```c
 +-------+-------+-------+
 | 9 0 5 | 2 7 8 | 3 0 0 | 
 | 2 8 0 | 0 0 0 | 6 0 0 | 
@@ -182,6 +183,7 @@ The following is the chosen format for printing:
 | 0 3 8 | 0 0 0 | 2 6 0 | 
 | 4 0 0 | 0 3 0 | 7 0 0 | 
 +-------+-------+-------+
+```
 
 ### Testing plan
 
