@@ -81,11 +81,18 @@ See Implementation.md
 
 ## recursion/backtracking
 
-The `sudoku` program uses recursion and backtracking to output both created and solved puzzles. On each coordinate, the program calls the `solve sudoku` method, which calls the method and inserts values until all 
+The `sudoku` program uses recursion and backtracking to output both created and solved puzzles. On each coordinate in the grid, the program calls the `solve sudoku` method, which seeks a solvable solution and recurses until one is found (boolean returns `true`). It backtracks when an non-unique sudoku is created until the puzzle can be solved at a prior square.
 
 ## uniqueness... a diagonal approach
 
+At each coordinate, the program determines if it can reach more than one solution by checking the row, column, sub-box, and sub-box's diagonals for multiple solutions. If other value besides the value about to be deleted cannot result in a valid solution in the diagonals in the sub-box, the solution must be inherently unique. If multiple solutions can be reached, the program picks another random location to try and delete the value until only one solution can be reached with the correct number of values deleted. 
 
 # Testing
 
-See Testing.md 
+See TESTING.md 
+
+# WARNING: Segfault
+
+The 4x4 sudoku intermittently segfaults (at create.c:87 and 86) which traces back to rand.c:27() (error is `random.c: No such file or directory`)and puzzle.c:190, which traces back to puzzle.c:120 (error is `Cannot access memory at location...`). 
+
+We believe this bug to be the result of the `rand()` function. 
