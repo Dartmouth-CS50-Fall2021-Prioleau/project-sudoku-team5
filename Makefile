@@ -48,7 +48,7 @@ fuzztesting.o: $C/create.h $P/puzzle.h $S/solve.h $L/memory.h
 puzzletest.o: $P/puzzle.h $L/memory.h $L/file.h
 
 
-.PHONY: valgrind clean
+.PHONY: valgrind clean 
 
 valgrind: all
 	valgrind ./sudoku create easy

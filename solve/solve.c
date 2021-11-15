@@ -45,7 +45,7 @@ bool solve_sudoku(puzzle_t* puzzle, int row, int column, char* level){
                 while (count < get_grid_size(puzzle)) {
                     int random_possibility = (rand() % get_grid_size(puzzle)) + 1; 
                     if (possibilities[random_possibility - 1] != 0 ) {
-                        if (val_not_in_cross_section(puzzle, i, j, random_possibility, level)) {
+                        if (val_not_in_cross_section(puzzle, i, j, random_possibility)) {
                             set_box_value(puzzle, random_possibility, i, j);
 
                             // recurse with new sudoku -> move to next entry
@@ -118,7 +118,7 @@ count_num_solutions_helper(puzzle_t* puzzle, char*level, int num_solutions, int 
                 for(int value=1; value<=get_grid_size(puzzle); value++)
                 {
                     // check that value of sudoku is a valid possible value of box 
-                    if(val_not_in_cross_section(puzzle, i, j, value, level))
+                    if(val_not_in_cross_section(puzzle, i, j, value))
                     {    
                         
                         set_box_value(puzzle, value, i ,j);

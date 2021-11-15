@@ -32,10 +32,10 @@ int main(const int argc, const char** argv)
 {
 
   //check for valid number of parameters
-  if (argc != 3 && argc != 2) {
+  if (argc != 3 && argc != 2 && argc != 4) {
 
     fprintf(stderr, "Incorrect number of arguments. ");
-    fprintf(stderr,"Usage: ./sudoku mode difficulty\n");
+    fprintf(stderr,"Usage: ./sudoku mode difficulty size\n");
     return 1;
 
   }
@@ -43,18 +43,28 @@ int main(const int argc, const char** argv)
 
   char* mode;
   char* difficulty; 
+  int size = 9;
 
   //Allocate space and copy to variable for inputs
-  if(argc == 2) {
-    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
+  if(argc >= 2) {
+    mode = count_calloc_assert(strlen(argv[1]), sizeof(char) + 1, "mode");
     strcpy(mode, argv[1]);
   }
 
-  else {
-    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
-    difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
-    strcpy(mode, argv[1]);
+  if (argc >= 3){
+    difficulty = count_calloc_assert(strlen(argv[2]), sizeof(char) + 1, "difficulty");
     strcpy(difficulty, argv[2]);
+  }
+
+  if (argc >= 4){
+    if(sscanf(argv[3], "%d", &size) < 1) {
+      fprintf(stderr, "Error: Please input a valid integer for size\n");
+      
+      free(mode);
+      free(difficulty);
+
+      return 2;
+    }
   }
 
 
@@ -95,7 +105,7 @@ int main(const int argc, const char** argv)
   if(strcmp(mode, "create") == 0) 
   {
     
-    puzzle_t* puzzle = puzzle_new(9);
+    puzzle_t* puzzle = puzzle_new(size);
 
 
     //build a full, complete sudoku
@@ -109,7 +119,7 @@ int main(const int argc, const char** argv)
 
     //Clean up for create:
     free(mode);
-    if(argc == 3) {free(difficulty);}
+    if(argc >= 3) {free(difficulty);}
     puzzle_delete(puzzle);
 
 
@@ -117,7 +127,7 @@ int main(const int argc, const char** argv)
   else 
   { 
     // initialize sudoku to new one
-    puzzle_t* parsed = puzzle_new(9);
+    puzzle_t* parsed = puzzle_new(size);
     
     // read from stdin
     FILE* file  = stdin;
