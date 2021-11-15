@@ -28,13 +28,17 @@ For this lab we used the support of the learning fellows during lab time. We als
 
 # Usage
 
-**./sudoku mode difficulty**
+**./sudoku mode difficulty size**
 
 A valid command line has:
 * mode in {create, solve}
 * difficulty in {easy, hard}
+* size is perfect square
 
-Note: In mode = `solve`, the difficulty argument is optionanl
+
+Note: 
+* In both modes, the size arguement is optional and defaults to 9
+* In mode = `solve`, the difficulty argument is optionanl, unless you are specifying the size
 
 # Safety
 1. Whenever we allocated memory, we called `assertp`. This checks if the pointer is null, and if so, prints an error and exits the code. While we recogize the does not free previously allocated memory, it is better to quit on an error than continue 
@@ -44,16 +48,18 @@ Note: In mode = `solve`, the difficulty argument is optionanl
 * `.gitignore` - specifies intentionally untracked files that Git should ignore
 * `Makefile` - compilation procedure
 * `sudoku.c` - the implementation for sudoku
+* `fuzztesting.c` - testing for sudoku
 * `./library/` - a folder containing support modules for sudoku provided by the course
 * `./puzzle/` - a folder containing the puzzle struct and related methods to create, update, access, and print it
 * `./create/` - a folder containing modules used when creating and a sudoku
 * `./solve/` - a folder containing modules used when solving and a sudoku
-* `./common/` - a folder containing modules used in both creating and solving a sudoku
 * `IMPLEMENTATION.md` - a file to describe the implementation of my querier 
 * `DESIGN.md` - a file to describe the design of my querier
 * `TESTING.md` -  a file to describe the testing of my querier
 * `testing.sh` - a bash script run by `make test` to test my querier
 * `testing.out` - result of `make test &> testing.out`
+* `unittesting.sh` - a bash script run by `make unittesting` to test the puzzle module
+* `unittesting.out` - result of `make unittesting &> unittesting.out`
 
 # Compilation
 
