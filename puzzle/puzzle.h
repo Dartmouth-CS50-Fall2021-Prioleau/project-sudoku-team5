@@ -214,3 +214,4 @@ bool
 is_valid_solved(puzzle_t* puzzle);
 
 #endif // __PUZZLE_H 
+
