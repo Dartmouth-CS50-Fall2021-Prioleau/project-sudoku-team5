@@ -34,9 +34,8 @@ static char* normalize_word(char* word);
 void create_sudoku(puzzle_t* puzzle, char* level);
 void build_full_sudoku(puzzle_t* puzzle, char* level);
 
-/******************************* sudoku_create() ********************************/
+/******************************* build_full_sudoku() ********************************/
 /* see create.h for description */
-
 void build_full_sudoku(puzzle_t* puzzle, char* level) {
     srand (time(NULL));
     int random_num;
@@ -56,7 +55,7 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
                 random_num = (rand() % get_grid_size(puzzle)) + 1; //from (1-9)
             } 
             // while you can't add that value in, change the number
-            while (!val_not_in_cross_section(puzzle, i, i, random_num, level));
+            while (!val_not_in_cross_section(puzzle, i, i, random_num));
 
             // add the value to the grid
             set_box_value (puzzle, random_num, i,i);
@@ -74,7 +73,7 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
                         random_num = (rand() % get_grid_size(puzzle)) + 1; //from (1-9)
                     } 
                     // change number if can't be aded in specific box
-                    while (!is_val_in_box(puzzle, min_main_diag, min_main_diag + i, min_main_diag + j, random_num, level));
+                    while (!is_val_in_box(puzzle, min_main_diag, min_main_diag + i, min_main_diag + j, random_num));
 
                     // add the value to the grid
                     get_grid(puzzle)[min_main_diag + i][min_main_diag + j] = random_num;
@@ -90,12 +89,9 @@ void build_full_sudoku(puzzle_t* puzzle, char* level) {
 }
 
 
-
-
-
 /*********************** create_sudoku() ******************************/
-void
-create_sudoku(puzzle_t* puzzle, char* level){
+/* see create.h for description */
+void create_sudoku(puzzle_t* puzzle, char* level){
     
     if(puzzle == NULL) return ;
     // initialize non- seed randomization
@@ -103,7 +99,6 @@ create_sudoku(puzzle_t* puzzle, char* level){
     
     // nomalize dificulty level 
     normalize_word(level);
-    //printf("mmmmmmmmmmm   %d\n", get_num_todelete(puzzle, level));
 
     ///////////////////////////////////////////////
     // delete 44 box_values if num_to_delete == 44, 56 if num_to_delete == 56

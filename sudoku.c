@@ -32,10 +32,10 @@ int main(const int argc, const char** argv)
 {
 
   //check for valid number of parameters
-  if (argc != 3 && argc != 2) {
+  if (argc != 3 && argc != 2 && argc != 4) {
 
     fprintf(stderr, "Incorrect number of arguments. ");
-    fprintf(stderr,"Usage: ./sudoku mode difficulty\n");
+    fprintf(stderr,"Usage: ./sudoku mode difficulty size\n");
     return 1;
 
   }
@@ -43,41 +43,57 @@ int main(const int argc, const char** argv)
 
   char* mode;
   char* difficulty; 
+  int size = 9;
 
   //Allocate space and copy to variable for inputs
-  if(argc == 2) {
-    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
+  if(argc >= 2) {
+    mode = count_calloc_assert(strlen(argv[1]), sizeof(char) + 1, "mode");
     strcpy(mode, argv[1]);
   }
 
-  else {
-    mode = malloc(strlen(argv[1]) * sizeof(char) + 1);
-    difficulty = malloc(strlen(argv[2]) * sizeof(char) + 1);
-    strcpy(mode, argv[1]);
+  if (argc >= 3){
+    difficulty = count_calloc_assert(strlen(argv[2]), sizeof(char) + 1, "difficulty");
     strcpy(difficulty, argv[2]);
+  }
+
+  if (argc >= 4){
+    if(sscanf(argv[3], "%d", &size) < 1) {
+      fprintf(stderr, "Error: Please input a valid integer for size\n");
+      
+      free(mode);
+      free(difficulty);
+
+      return 2;
+    }
   }
 
 
   //Check mode and difficulty are valid
   if(strcmp(mode, "create") != 0 && strcmp(mode, "solve") != 0) {
     fprintf(stderr, "Mode must be 'create' or 'solve'\n");
+    
     free(mode);
+    if(argc == 3) { free(difficulty); }
+
+
     return 2;
   }
 
-  if(argc == 3 ) {
-    if(strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
+    if(argc == 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
     fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
+
     free(mode);
+    free(difficulty);
+
     return 2;
-    }
+    
   }
 
   //If 2 arguments are given make sure mode is solve
   if(argc == 2 && strcmp(mode, "create") == 0 ) {
     fprintf(stderr, "Create mode requires a third arguemnt for the difficulty\n");
     free(mode);
-    return 3;
+    return 2;
   } 
 
   time_t t;
@@ -86,63 +102,81 @@ int main(const int argc, const char** argv)
   //printf("hi\n");
 
   //check the mode
-  if(strcmp(mode, "create") == 0) {
+  if(strcmp(mode, "create") == 0) 
+  {
     
-    puzzle_t* puzzle = puzzle_new(4);
-    printf("\n%d\n\n", get_grid_size(puzzle));
-    printf("empty puzzle: \n\n");
-    puzzle_print_simple(stdout, puzzle);
-    printf("\n");
+    puzzle_t* puzzle = puzzle_new(size);
 
-    //build_sudoku(puzzle, mode);
+
+    //build a full, complete sudoku
     build_full_sudoku(puzzle, difficulty);
 
-    printf("fully  built sudoku: \n\n");
-    puzzle_print_simple(stdout, puzzle);
-    //puzzle_print_simple(stdout,puzzle);
-    printf("\n\n");
- 
-
-    // delete num  from fully built  sudoku
-    printf("removing entries from puzzle: \n\n");
+    // delete points from fully built sudoku
     create_sudoku(puzzle, difficulty);
-    puzzle_print_simple(stdout, puzzle);
-    solve_sudoku(puzzle,0,0,difficulty);
-    printf("solved recursively\n\n");
-    puzzle_print_simple(stdout, puzzle);
-    printf("\n\n");
 
-    // try solving 
-    //printf("solving sudoku: ... \n");
-    //build_sudoku(puzzle, "solve");
-    //puzzle_print_formated(puzzle, stdout);
-    //printf("\n\n");
-}  
-   else { 
-         // initialize sudoku to new one
-         puzzle_t* parsed = puzzle_new(4);
-         printf(" GRID SIZE : %d\n", get_grid_size(parsed));
-         // read from stdin
-         FILE* file  = stdin;
-         // try parsing puzzle from stdin
-         bool status = parse_user_puzzle(file, parsed);
+    //Print up the created sudoku
+    puzzle_print_formated(stdout, puzzle);
 
-         if (!status)
-         {
-             fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
-             return 3;
+    //Clean up for create:
+    free(mode);
+    if(argc >= 3) {free(difficulty);}
+    puzzle_delete(puzzle);
 
-         } else{
-            printf("\nPrinting parsed puzzle\n\n");
-            puzzle_print_simple(stdout, parsed);
-            puzzle_print_formated(stdout, parsed);
 
-            printf("\n\n");
-            // solve
-            solve_sudoku(parsed,0 ,0 ,"easy");
-            printf("\nPrinting solved ..... puzzle\n\n");
-            puzzle_print_simple(stdout, parsed);
-            printf("\n\n");
-        }
+  }  
+  else 
+  { 
+    // initialize sudoku to new one
+    puzzle_t* parsed = puzzle_new(size);
+    
+    // read from stdin
+    FILE* file  = stdin;
+    
+    // try parsing puzzle from stdin
+    bool status = parse_user_puzzle(file, parsed);
+
+    //If the parsing fails
+    if (!status)
+    {
+      fprintf(stderr, "Format Error: Could not parsed puzzle.\n");
+
+      //Clean up for solve:
+      free(mode);
+      if(argc == 3) {
+        free(difficulty);
+      }
+      puzzle_delete(parsed);
+      fclose(file);
+
+      return 3;
+
+    } 
+    else{
+
+      //If the given puzzle is not valid (less than 25 numbers or doesn't follow rules)
+      if(!is_valid_unsolved(parsed)) {
+      fprintf(stderr, "Invalid sudoku provided.\n");
+
+      //Clean up for solve:
+      free(mode);
+      if(argc == 3) { free(difficulty); }
+      puzzle_delete(parsed);
+      fclose(file);
+        
+      return 4;
+    }
+
+    solve_sudoku(parsed,0 ,0 ,"easy");
+
+    puzzle_print_formated(stdout, parsed);
+    }
+
+    //Clean up for solve:
+    free(mode);
+    if(argc == 3) { free(difficulty); }
+    puzzle_delete(parsed);
+    fclose(file);
    }
+
+  return 0;
 }

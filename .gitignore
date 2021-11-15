@@ -1,6 +1,4 @@
-# to ignore
-*.dSYM  
-*~ *.o
+*.o
 sudoku
-fuzztesting.o
-
+fuzztesting
+puzzletest
