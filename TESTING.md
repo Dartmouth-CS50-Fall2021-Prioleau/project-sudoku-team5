@@ -14,14 +14,18 @@ Valid testing is run on  `create` in `easy` and `hard` as well as solve takes th
 
 # Fuzz Testing
 
-Fuzz testing creates a set number of puzzles, verifying that each puzzlie follows Sudoku rules, is solvable, and has a unique solution
+**./fuzztesting difficulty numSudoku**
+
+Fuzz testing creates a set number of puzzles, verifying that each puzzle follows Sudoku rules, is solvable, and has a unique solution
+
+Note: fuzz testing does not check for valid arguements as it is assumed the user is aware of its useage and limitations
 
 # Run Time:
 
-We tested out our using fuzz testing and recorded the following data:
+We tested out our fuzz testing, building and solving a range of sudoku boards (3-20) with both difficulties (easy and hard) and found the average time fell un the following ranges:
 
-Individual Times:
-Average Time:
+Easy: 0.0003-0.0004 seconds
+Hard: 0.1-0.4 seconds 
 
 # Unit Testing
 

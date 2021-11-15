@@ -73,13 +73,13 @@ int main(const int argc, const char** argv)
     fprintf(stderr, "Mode must be 'create' or 'solve'\n");
     
     free(mode);
-    if(argc == 3) { free(difficulty); }
+    if(argc >= 3) { free(difficulty); }
 
 
     return 2;
   }
 
-    if(argc == 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
+    if(argc >= 3 && strcmp(difficulty, "easy") != 0 && strcmp(difficulty, "hard") != 0) {
     fprintf(stderr, "Difficulty must be 'easy' or 'hard'\n");
 
     free(mode);
@@ -107,6 +107,13 @@ int main(const int argc, const char** argv)
     
     puzzle_t* puzzle = puzzle_new(size);
 
+    if(puzzle == NULL) {
+      printf("Unsuccessful creating puzzle");
+      free(mode);
+      if(argc >= 3) {free(difficulty);}
+      puzzle_delete(puzzle);
+      return 5;
+    }
 
     //build a full, complete sudoku
     build_full_sudoku(puzzle, difficulty);
@@ -142,9 +149,7 @@ int main(const int argc, const char** argv)
 
       //Clean up for solve:
       free(mode);
-      if(argc == 3) {
-        free(difficulty);
-      }
+      if(argc >= 3) {free(difficulty);}
       puzzle_delete(parsed);
       fclose(file);
 
@@ -173,7 +178,7 @@ int main(const int argc, const char** argv)
 
     //Clean up for solve:
     free(mode);
-    if(argc == 3) { free(difficulty); }
+    if(argc >= 3) { free(difficulty); }
     puzzle_delete(parsed);
     fclose(file);
    }
