@@ -96,3 +96,7 @@ See TESTING.md
 The 4x4 sudoku intermittently segfaults (at create.c:87 and 86) which traces back to rand.c:27() (error is `random.c: No such file or directory`)and puzzle.c:190, which traces back to puzzle.c:120 (error is `Cannot access memory at location...`). 
 
 We believe this bug to be the result of the `rand()` function. 
+
+# PRESENTATION LINK
+
+https://docs.google.com/presentation/d/1s4Fb97WfO4MLSmJelNiZvF0o_-3w9XQ98lbBxU_UKzM/edit?usp=sharing 
