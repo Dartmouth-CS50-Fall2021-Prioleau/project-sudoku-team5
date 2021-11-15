@@ -451,13 +451,17 @@ bool is_valid_unsolved(puzzle_t* puzzle) {
 
         }
 
-        if (count >= 25) {
+        //If its a 9 by 9 check there are 25 points
+        if (puzzle->size == 9 ) {
+          if (count >= 25) {return true;}
+          else {return false;}
+        } 
+        else {
             return true;
-        } else {
-            return false;
         }
-    } else {
-        return false;
+    } 
+    else {
+      return false;
     }
 }
 
