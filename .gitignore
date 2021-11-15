@@ -1,4 +1,6 @@
+*.dSYM 
 *.o
+*~
 sudoku
 fuzztesting
 puzzletest
